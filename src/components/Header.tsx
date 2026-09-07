@@ -71,7 +71,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Main Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-center justify-between gap-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-24 flex items-center justify-between gap-3">
         {/* Dual Logos Side by Side */}
         <div className="flex items-center gap-4 sm:gap-6">
           {/* Logo 1: Jamoka Properties (Linked Image navigating to Home) */}
@@ -89,7 +89,7 @@ export const Header: React.FC<HeaderProps> = ({
           </a>
 
           {/* Elegant Divider */}
-          <div className="h-10 w-px bg-neutral-200 hidden sm:block"></div>
+          <div className="h-11 w-px bg-neutral-200 hidden sm:block"></div>
 
           {/* Logo 2: SQFT DXB (Partnered Site for Secondary Resale) */}
           <div className="hidden sm:block">

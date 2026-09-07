@@ -8,7 +8,7 @@ import React, { useState } from 'react';
  */
 export const JAMOKA_HEADER_CLOUD_LOGOS: string[] = [
   // Primary Cloudinary link (configured with cloud name: dy6km7beb)
-  'https://res.cloudinary.com/dy6km7beb/image/upload/v1788756022/jamoka-header-logo.png',
+  'https://res.cloudinary.com/dy6km7beb/image/upload/v1788770576/Untitled_design_8_wgqp5r.png',
   // Local high-resolution brand asset fallback
   '/jamoka-header-logo.png',
 ];
@@ -55,9 +55,10 @@ export const JamokaMonogram: React.FC<{ className?: string; size?: number }> = (
 };
 
 export interface JamokaLogoProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   lightMode?: boolean;
   className?: string;
+  imageClassName?: string;
   href?: string;
   onClick?: (e: React.MouseEvent) => void;
   cloudImages?: string[];
@@ -67,6 +68,7 @@ export const JamokaLogo: React.FC<JamokaLogoProps> = ({
   size = 'md',
   lightMode = false,
   className = '',
+  imageClassName = '',
   href,
   onClick,
   cloudImages = JAMOKA_HEADER_CLOUD_LOGOS,
@@ -75,10 +77,21 @@ export const JamokaLogo: React.FC<JamokaLogoProps> = ({
 
   const heightClass =
     size === 'sm'
-      ? 'h-7 sm:h-8'
+      ? 'h-8 sm:h-9'
       : size === 'lg'
-      ? 'h-11 sm:h-12'
-      : 'h-8 sm:h-9 md:h-[42px]';
+      ? 'h-14 sm:h-16 md:h-20'
+      : size === 'xl'
+      ? 'h-16 sm:h-20 md:h-24'
+      : 'h-11 sm:h-13 md:h-14 lg:h-[58px]';
+
+  const maxWidthClass =
+    size === 'sm'
+      ? 'max-w-[220px] sm:max-w-[260px]'
+      : size === 'lg'
+      ? 'max-w-[360px] sm:max-w-[440px]'
+      : size === 'xl'
+      ? 'max-w-[460px] sm:max-w-[560px]'
+      : 'max-w-[280px] sm:max-w-[350px] md:max-w-[400px]';
 
   const imageList =
     cloudImages && cloudImages.length > 0
@@ -98,9 +111,9 @@ export const JamokaLogo: React.FC<JamokaLogoProps> = ({
       src={currentSrc}
       alt="Jamoka Properties"
       onError={handleImageError}
-      className={`${heightClass} w-auto max-w-[220px] sm:max-w-[260px] object-contain shrink-0 ${
+      className={`${heightClass} ${maxWidthClass} w-auto object-contain shrink-0 ${
         lightMode ? 'brightness-110 drop-shadow-sm' : ''
-      }`}
+      } ${imageClassName}`}
       referrerPolicy="no-referrer"
       loading="eager"
     />

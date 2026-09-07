@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 120" width="100%" height="100%" fill="none">
   <defs>
     <style>
-      @import url(https://res.cloudinary.com/dy6km7beb/image/upload/v1788770576/Untitled_design_8_wgqp5r.png);
+      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&amp;display=swap');
       .jamoka-gold-text {
         font-family: 'Cinzel', 'Playfair Display', 'Cormorant Garamond', 'Times New Roman', serif;
         font-weight: 600;
