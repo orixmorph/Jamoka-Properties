@@ -42,7 +42,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
               <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
               {t.projects.badge}
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
               {t.projects.title}
             </h2>
             <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-2xl font-light">

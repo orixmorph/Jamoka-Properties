@@ -62,10 +62,10 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
 
             {/* Subtitle / Description */}
             <p className="text-slate-500 text-sm sm:text-[15px] font-light leading-relaxed max-w-xl font-jakarta">
-              A specialized collective of 70+ property advisors bringing local regulatory precision and international financial acumen to every Dubai off-plan acquisition.
+              A specialized collective of 70+ property advisors bringing local market intelligence, strategic insight, and international financial acumen to every Dubai off-plan acquisition.
             </p>
 
-            {/* Metric Items with Circular Badges matching screenshot */}
+            {/* Metric Items with Circular Badges */}
             <div className="space-y-4 pt-1">
               {/* Metric 1 */}
               <div className="flex items-center gap-4">
@@ -75,7 +75,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                   </span>
                 </div>
                 <span className="text-xs sm:text-[14px] text-slate-700 font-medium font-jakarta">
-                  Certified Advisors across DIFC and Marina offices
+                  Property Advisors across Dubai
                 </span>
               </div>
 
@@ -87,7 +87,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                   </span>
                 </div>
                 <span className="text-xs sm:text-[14px] text-slate-700 font-medium font-jakarta">
-                  Spoken languages including English, Arabic, Russian & French
+                  Languages spoken, connecting clients across global markets
                 </span>
               </div>
 
@@ -99,7 +99,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                   </span>
                 </div>
                 <span className="text-xs sm:text-[14px] text-slate-700 font-medium font-jakarta">
-                  RERA certified brokers with escrow compliance expertise
+                  Client-focused approach, from property selection to acquisition
                 </span>
               </div>
             </div>

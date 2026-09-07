@@ -135,7 +135,7 @@ export const TrustStats: React.FC = () => {
           <div className="flex items-center gap-4 text-slate-600">
             <span className="flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
               <ShieldCheck className="w-4 h-4" />
-              RERA Lic. #31822
+              RERA Lic. #49679
             </span>
             <span className="hidden sm:inline text-neutral-300">|</span>
             <span className="text-slate-500 hidden sm:inline font-light">

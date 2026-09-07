@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <rect width="1000" height="1000" fill="#000000"/>
+  
+  <!-- White S-Q Monogram Geometric Outline -->
+  <path
+    fill="#FFFFFF"
+    fill-rule="evenodd"
+    d="
+      M 212 190
+      H 788
+      V 690
+      H 724
+      V 254
+      H 276
+      V 438
+      H 628
+      V 750
+      H 212
+      V 636
+      H 276
+      V 686
+      H 564
+      V 502
+      H 212
+      Z
+    "
+  />
+
+  <!-- Gold Q Diagonal Tail Accent (#CCA14C / #C59B4F) -->
+  <polygon
+    fill="#CCA14C"
+    points="
+      628,636
+      788,754
+      788,794
+      744,794
+      628,708
+    "
+  />
+</svg>

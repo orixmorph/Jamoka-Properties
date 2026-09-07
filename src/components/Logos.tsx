@@ -5,34 +5,65 @@ import React from 'react';
  * Displays the luxury interlocking 'PJ' monogram in champagne gold along with
  * the Caughe/editorial typography.
  */
+export const JamokaMonogram: React.FC<{ className?: string; size?: number }> = ({
+  className = '',
+  size = 42,
+}) => {
+  return (
+    <div
+      className={`relative flex items-center justify-center rounded-sm overflow-hidden bg-black border border-[#D4AF37]/60 shadow-sm shrink-0 select-none ${className}`}
+      style={{ width: size, height: size }}
+      title="Jamoka Properties"
+    >
+      <svg
+        viewBox="0 0 1000 1000"
+        className="w-full h-full"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <rect width="1000" height="1000" fill="#000000" />
+        <g fill="#BA9452">
+          {/* Letter J Serif & Trunk & Tail */}
+          <path d="M 472 240 C 480 240 500 240 548 240 C 533 255 525 268 525 288 L 525 715 C 522 745 495 770 452 775 C 475 765 495 740 495 710 L 495 288 C 495 268 487 255 472 240 Z" />
+          
+          {/* Letter P Stem with Left-Top Serif and Base Serif */}
+          <path d="M 382 338 C 394 345 405 354 405 370 L 405 645 C 405 658 395 668 385 675 L 455 675 C 445 668 435 658 435 645 L 435 338 Z" />
+          
+          {/* Letter P Bar Left of J (Bridge between P stem and J stem) */}
+          <path d="M 435 338 L 495 338 L 495 368 L 435 368 Z" />
+          <path d="M 435 468 L 495 468 L 495 498 L 435 498 Z" />
+          
+          {/* Letter P Outer Bowl Right of J */}
+          <path d="M 525 338 C 585 338 618 375 618 418 C 618 461 585 498 525 498 L 525 468 C 565 468 586 444 586 418 C 586 392 565 368 525 368 Z" />
+        </g>
+      </svg>
+    </div>
+  );
+};
+
 export const JamokaLogo: React.FC<{ size?: 'sm' | 'md' | 'lg'; lightMode?: boolean }> = ({
   size = 'md',
   lightMode = false,
 }) => {
   const isSm = size === 'sm';
   const isLg = size === 'lg';
+  const pixelSize = isSm ? 34 : isLg ? 48 : 42;
 
   return (
     <div className="flex items-center gap-2.5 sm:gap-3 group cursor-pointer select-none">
       {/* Exact PJ interlocking monogram logo matching user's uploaded brand mark */}
-      <div
-        className={`relative flex items-center justify-center rounded-sm overflow-hidden bg-black border border-[#D4AF37]/50 shadow-sm transition-transform duration-300 group-hover:scale-105 shrink-0 ${
-          isSm ? 'w-8 h-8' : isLg ? 'w-12 h-12' : 'w-10 h-10'
-        }`}
-      >
-        <img
-          src="/jamoka-logo.png"
-          alt="Jamoka Properties Monogram Logo"
-          className="w-full h-full object-cover"
-        />
-      </div>
+      <JamokaMonogram
+        size={pixelSize}
+        className="transition-transform duration-300 group-hover:scale-105"
+      />
 
       {/* Brand Name Typography */}
       <div className="flex flex-col leading-tight">
         <span
-          className={`font-bold tracking-[0.22em] uppercase font-jakarta ${
+          className={`font-bold tracking-[0.24em] uppercase font-caughe ${
             lightMode ? 'text-white' : 'text-[#0F172A]'
           } ${isSm ? 'text-sm sm:text-base' : isLg ? 'text-xl sm:text-2xl' : 'text-base sm:text-lg'}`}
+          style={{ fontFamily: "'Caughe', 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif" }}
         >
           JAMOKA
         </span>
@@ -57,71 +88,61 @@ export const JamokaFullLogo: React.FC<{ isDarkBackground?: boolean }> = ({
   return <JamokaLogo lightMode={isDarkBackground} size="md" />;
 };
 
-export const JamokaMonogram: React.FC<{ className?: string; size?: number }> = ({
+export const SqftMonogram: React.FC<{ className?: string; size?: number }> = ({
+  className = '',
   size = 40,
 }) => {
   return (
     <div
-      className="relative flex items-center justify-center rounded-sm overflow-hidden bg-black border border-[#D4AF37]/50 shadow-sm shrink-0"
+      className={`relative flex items-center justify-center rounded-sm overflow-hidden bg-black border border-white/20 shadow-sm shrink-0 select-none ${className}`}
       style={{ width: size, height: size }}
+      title="SQFT DXB - Secondary & Resale"
     >
       <img
-        src="/jamoka-logo.png"
-        alt="Jamoka Properties Monogram Logo"
+        src="/sqft-logo.png"
+        alt="SQFT DXB Monogram Logo"
         className="w-full h-full object-cover"
       />
     </div>
   );
 };
 
-export const SqftMonogram: React.FC<{ className?: string; size?: number }> = ({
-  size = 40,
-}) => {
-  return (
-    <div
-      className="relative flex items-center justify-center rounded-sm bg-black border border-white/20 shadow-sm shrink-0"
-      style={{ width: size, height: size }}
-    >
-      <svg
-        viewBox="0 0 100 100"
-        className="w-3/4 h-3/4"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M20 20H80V70H70V30H30V45H70V75H20V65H60V55H20V20Z"
-          fill="white"
-        />
-        <path
-          d="M62 65L78 80H68L55 68L62 65Z"
-          fill="#C5A059"
-        />
-      </svg>
-    </div>
-  );
-};
-
-export const SqftDxbLogo: React.FC<{ size?: 'sm' | 'md' | 'lg'; onClick?: () => void }> = ({
+export const SqftDxbLogo: React.FC<{
+  size?: 'sm' | 'md' | 'lg';
+  lightMode?: boolean;
+  onClick?: () => void;
+}> = ({
   size = 'md',
+  lightMode = false,
   onClick,
 }) => {
-  const pixelSize = size === 'sm' ? 32 : size === 'lg' ? 48 : 40;
+  const isSm = size === 'sm';
+  const isLg = size === 'lg';
+  const pixelSize = isSm ? 34 : isLg ? 48 : 42;
+
   return (
     <div
       onClick={onClick}
-      className="flex items-center gap-2 group cursor-pointer select-none relative"
+      className="flex items-center gap-2.5 sm:gap-3 group cursor-pointer select-none relative"
       title="Partnered Website: SQFT DXB - Secondary Market & Ready Resale"
     >
-      <SqftMonogram size={pixelSize} />
+      <SqftMonogram
+        size={pixelSize}
+        className="transition-transform duration-300 group-hover:scale-105"
+      />
       <div className="flex flex-col leading-tight">
-        <div className="flex items-center gap-1">
-          <span className="text-[12px] sm:text-[13px] font-extrabold tracking-[0.14em] text-[#0F172A] uppercase">
+        <div className="flex items-center gap-1.5">
+          <span
+            className={`font-bold tracking-[0.20em] uppercase font-jakarta ${
+              lightMode ? 'text-white' : 'text-[#0F172A]'
+            } ${isSm ? 'text-sm sm:text-base' : isLg ? 'text-xl sm:text-2xl' : 'text-base sm:text-lg'}`}
+          >
             SQFT DXB
           </span>
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse"></span>
         </div>
-        <span className="text-[7.5px] sm:text-[8.5px] font-medium tracking-[0.16em] uppercase text-slate-500">
-          Secondary Resale
+        <span className="text-[8px] sm:text-[9px] font-semibold tracking-[0.30em] uppercase text-slate-500 font-jakarta">
+          Secondary • Resale
         </span>
       </div>
     </div>

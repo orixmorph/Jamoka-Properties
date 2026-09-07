@@ -15,7 +15,7 @@ export const BlogsSection: React.FC = () => {
               <BookOpen className="w-3.5 h-3.5 text-[#D4AF37]" />
               <span>MARKET INTELLIGENCE</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
               Dubai Real Estate Insights
             </h2>
             <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-2xl font-light">

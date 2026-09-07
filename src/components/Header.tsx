@@ -44,28 +44,28 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-neutral-100 transition-all">
       {/* Top Announcement Strip */}
-      <div className="hidden lg:flex items-center justify-between px-6 xl:px-12 py-1.5 bg-[#0F172A] text-white text-[11px] font-medium tracking-wide">
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between px-3 sm:px-6 xl:px-12 py-1.5 bg-[#0F172A] text-white text-[10px] sm:text-[11px] font-medium tracking-wide border-b border-white/5">
+        <div className="flex items-center gap-2 sm:gap-4 overflow-hidden text-ellipsis whitespace-nowrap">
           <span className="flex items-center gap-1.5 text-neutral-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            BAYSWATER TOWER, BUSINESS BAY • DIRECT DEVELOPER ALLOCATIONS
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+            <span className="truncate">BAYSWATER TOWER, OFFICE 807, BUSINESS BAY</span>
           </span>
-          <span className="text-neutral-500">|</span>
-          <span className="text-[#D4AF37] font-semibold tracking-wider">
+          <span className="text-neutral-500 hidden xl:inline">|</span>
+          <span className="text-[#D4AF37] font-semibold tracking-wider hidden xl:inline">
             DUBAI LAND DEPARTMENT (DLD) ESCROW VERIFIED
           </span>
         </div>
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-1 text-neutral-300 hover:text-white transition-colors">
+        <div className="flex items-center gap-3 sm:gap-6 shrink-0 ml-2">
+          <div className="hidden sm:flex items-center gap-1 text-neutral-300 hover:text-white transition-colors">
             <ShieldCheck className="w-3.5 h-3.5 text-[#D4AF37]" />
-            <span>RERA ORN: 31822</span>
+            <span>RERA: 49679</span>
           </div>
           <a
-            href="tel:+97143999999"
+            href="tel:+971588648093"
             className="flex items-center gap-1 text-[#D4AF37] hover:text-[#e4c259] font-medium transition-colors"
           >
             <PhoneCall className="w-3 h-3" />
-            <span>+971 4 399 9999</span>
+            <span>+971 58 864 8093</span>
           </a>
         </div>
       </div>
@@ -84,7 +84,7 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Elegant Divider */}
-          <div className="h-9 w-px bg-neutral-200 hidden sm:block"></div>
+          <div className="h-10 w-px bg-neutral-200 hidden sm:block"></div>
 
           {/* Logo 2: SQFT DXB (Partnered Site for Secondary Resale) */}
           <div className="hidden sm:block">
@@ -93,11 +93,11 @@ export const Header: React.FC<HeaderProps> = ({
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && onOpenSecondarySite()}
-              className="flex items-center cursor-pointer p-1 rounded-md hover:bg-neutral-50 transition-colors"
+              className="flex items-center cursor-pointer p-0.5 rounded-md hover:bg-neutral-50/80 transition-colors"
               title="Click to visit SQFT DXB for Secondary Market Resales"
             >
-              <SqftDxbLogo size="sm" />
-              <ExternalLink className="w-3 h-3 text-neutral-400 ml-1.5 opacity-60 group-hover:opacity-100" />
+              <SqftDxbLogo size="md" />
+              <ExternalLink className="w-3.5 h-3.5 text-neutral-400 ml-2 opacity-60 group-hover:opacity-100" />
             </div>
           </div>
         </div>
@@ -298,6 +298,17 @@ export const Header: React.FC<HeaderProps> = ({
               <span>{t.nav.contactBtn}</span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
             </button>
+          </div>
+
+          <div className="pt-3 border-t border-neutral-100 flex flex-col gap-1.5 text-xs text-neutral-600">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-neutral-500">RERA No. 49679</span>
+              <a href="tel:+971588648093" className="text-[#D4AF37] font-bold flex items-center gap-1">
+                <PhoneCall className="w-3 h-3" />
+                +971 58 864 8093
+              </a>
+            </div>
+            <span className="text-[11px] text-neutral-400">Bayswater Tower, Office 807, Business Bay, Dubai</span>
           </div>
         </div>
       )}

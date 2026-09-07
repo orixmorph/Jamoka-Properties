@@ -51,7 +51,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
             <Calculator className="w-3.5 h-3.5 text-[#D4AF37]" />
             <span>FINANCIAL ARCHITECTURE</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
             Off-Plan Milestone & Mortgage Advisory
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed font-light">
@@ -70,7 +70,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
                   <label className="text-xs font-bold uppercase tracking-wider text-neutral-300">
                     Property Allocation Value (AED)
                   </label>
-                  <span className="text-xl sm:text-2xl font-black text-[#D4AF37] font-caughe">
+                  <span className="text-xl sm:text-2xl font-black text-[#D4AF37] font-jakarta">
                     AED {propertyPrice.toLocaleString()}
                   </span>
                 </div>
@@ -176,7 +176,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
                 <span className="text-[11px] font-bold text-[#D4AF37] tracking-[0.2em] uppercase block mb-1">
                   DISBURSEMENT SCHEDULE
                 </span>
-                <h4 className="text-xl font-bold font-caughe text-white">
+                <h4 className="text-xl font-bold font-jakarta text-white">
                   Capital Commitment Summary
                 </h4>
 

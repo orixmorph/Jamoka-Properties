@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="100%" height="100%">
+  <rect width="1000" height="1000" fill="#000000"/>
+  <g fill="#BA9452">
+    <!-- Letter J Serif & Trunk & Tail -->
+    <path d="M 472 240 C 480 240 500 240 548 240 C 533 255 525 268 525 288 L 525 715 C 522 745 495 770 452 775 C 475 765 495 740 495 710 L 495 288 C 495 268 487 255 472 240 Z"/>
+    
+    <!-- Letter P Stem with Left-Top Serif and Base Serif -->
+    <path d="M 382 338 C 394 345 405 354 405 370 L 405 645 C 405 658 395 668 385 675 L 455 675 C 445 668 435 658 435 645 L 435 338 Z"/>
+    
+    <!-- Letter P Bar Left of J (Bridge between P stem and J stem) -->
+    <path d="M 435 338 L 495 338 L 495 368 L 435 368 Z"/>
+    <path d="M 435 468 L 495 468 L 495 498 L 435 498 Z"/>
+    
+    <!-- Letter P Outer Bowl Right of J -->
+    <path d="M 525 338 C 585 338 618 375 618 418 C 618 461 585 498 525 498 L 525 468 C 565 468 586 444 586 418 C 586 392 565 368 525 368 Z"/>
+  </g>
+</svg>

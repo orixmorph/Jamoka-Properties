@@ -36,7 +36,7 @@ export const ProcessSection: React.FC = () => {
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#D4AF37]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
             <span>THE JAMOKA METHOD</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
             Our 4-Step Acquisition Process
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed font-light">
@@ -52,7 +52,7 @@ export const ProcessSection: React.FC = () => {
                 key={step.num}
                 className="bg-white rounded-2xl p-7 border border-neutral-200/80 shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-xl hover:border-[#D4AF37]/50 transition-all"
               >
-                <div className="absolute top-3 right-4 text-4xl font-black text-neutral-100 font-caughe select-none group-hover:text-[#FAF5EC] transition-colors">
+                <div className="absolute top-3 right-4 text-4xl font-black text-neutral-100 font-jakarta select-none group-hover:text-[#FAF5EC] transition-colors">
                   {step.num}
                 </div>
 

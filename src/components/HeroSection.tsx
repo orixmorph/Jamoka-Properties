@@ -131,12 +131,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           }}
           className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center py-10 transition-all duration-200"
         >
-          {/* Main Hero Title - Jakarta Sans Bold */}
+          {/* Main Hero Title - Caughe font */}
           <motion.h1
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight uppercase font-jakarta text-white leading-tight mb-3 select-none"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight uppercase font-caughe text-white leading-tight mb-3 select-none"
+            style={{ fontFamily: "'Caughe', 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif" }}
           >
             {t.hero.title}
           </motion.h1>

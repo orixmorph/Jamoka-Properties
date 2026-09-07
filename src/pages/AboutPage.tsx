@@ -200,7 +200,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
               <ShieldCheck className="w-10 h-10 text-emerald-400 shrink-0" />
               <div>
                 <span className="font-bold text-white text-sm block">RERA Registered Brokerage</span>
-                <span className="text-xs text-neutral-400">Office Registration ORN: 31822</span>
+                <span className="text-xs text-neutral-400">Office Registration ORN: 49679</span>
               </div>
             </div>
             <div className="flex items-center gap-4 justify-center md:justify-start">

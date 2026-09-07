@@ -44,7 +44,7 @@ export const ServicesSection: React.FC<{ onBookConsultation: () => void }> = ({
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#D4AF37]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
             <span>FULL-LIFECYCLE MANDATE</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
             Institutional Real Estate Services
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed font-light">

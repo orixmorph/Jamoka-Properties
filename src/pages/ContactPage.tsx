@@ -183,8 +183,8 @@ export const ContactPage: React.FC = () => {
                     <span className="text-neutral-400 block text-[10px] uppercase">
                       {t.contactPage.phoneTitle}
                     </span>
-                    <a href="tel:+97143999999" className="font-bold text-white hover:text-[#D4AF37]">
-                      +971 4 399 9999
+                    <a href="tel:+971588648093" className="font-bold text-white hover:text-[#D4AF37]">
+                      +971 58 864 8093
                     </a>
                   </div>
                 </div>

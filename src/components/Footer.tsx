@@ -68,7 +68,7 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="pt-2 text-xs text-neutral-300 space-y-2">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>RERA Registered Brokerage ORN: 31822</span>
+                <span>RERA Registered Brokerage ORN: 49679</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-[#D4AF37]" />
@@ -167,8 +167,8 @@ export const Footer: React.FC<FooterProps> = ({
                 </button>
               </li>
               <li>
-                <a href="tel:+97143999999" className="hover:text-white transition-colors">
-                  +971 4 399 9999
+                <a href="tel:+971588648093" className="hover:text-white transition-colors">
+                  +971 58 864 8093
                 </a>
               </li>
               <li>

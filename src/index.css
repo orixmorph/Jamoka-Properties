@@ -20,10 +20,18 @@
   }
 }
 
-.font-caughe,
+@font-face {
+  font-family: 'Caughe';
+  src: local('Caughe'), local('Caughe-Regular'), local('Caughe Regular'), local('Caughe-Bold'), local('Caughe Bold');
+  font-display: swap;
+}
+
+.font-caughe {
+  font-family: 'Caughe', 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+}
+
 .font-serif-luxury {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-  font-weight: 700;
+  font-family: 'Caughe', 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
 }
 
 .font-jakarta {

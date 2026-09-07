@@ -14,7 +14,7 @@ export const DevelopersSection: React.FC<{ onInquireDeveloper?: (name: string) =
             <ShieldCheck className="w-3.5 h-3.5 text-[#D4AF37]" />
             <span>DIRECT INSTITUTIONAL APPOINTMENTS</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
             Dubai Master Developers
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed font-light">
@@ -32,7 +32,7 @@ export const DevelopersSection: React.FC<{ onInquireDeveloper?: (name: string) =
               <div>
                 {/* Developer Logo Monogram Header */}
                 <div className="flex items-center justify-between mb-4">
-                  <div className="h-10 px-3 bg-neutral-900 text-white rounded-lg flex items-center justify-center font-black tracking-widest text-xs font-caughe uppercase group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
+                  <div className="h-10 px-3 bg-neutral-900 text-white rounded-lg flex items-center justify-center font-black tracking-widest text-xs font-jakarta uppercase group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
                     {dev.logoText}
                   </div>
                   <span className="text-[10px] font-bold text-[#A6833D] bg-[#FAF5EC] px-2 py-0.5 rounded-full border border-[#D4AF37]/20">

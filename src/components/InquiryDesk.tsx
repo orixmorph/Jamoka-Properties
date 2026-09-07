@@ -76,7 +76,7 @@ export const InquiryDesk: React.FC = () => {
                 <div>
                   <span className="text-white font-bold text-sm block">Licensed Brokerage</span>
                   <span className="font-light text-neutral-300">
-                    RERA Broker Registration No. 31822 • DLD Certified Escrow Verification
+                    RERA Broker Registration No. 49679 • DLD Certified Escrow Verification
                   </span>
                 </div>
               </div>
@@ -85,7 +85,7 @@ export const InquiryDesk: React.FC = () => {
             {/* Quick Contact Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 pt-1">
               <a
-                href="https://wa.me/97143999999"
+                href="https://wa.me/971588648093"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 py-3 px-4 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366]/30 border border-[#25D366]/40 text-emerald-300 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
@@ -94,11 +94,11 @@ export const InquiryDesk: React.FC = () => {
                 <span>WhatsApp Us</span>
               </a>
               <a
-                href="tel:+97143999999"
+                href="tel:+971588648093"
                 className="flex-1 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
               >
                 <PhoneCall className="w-4 h-4 text-[#D4AF37]" />
-                <span>+971 4 399 9999</span>
+                <span>+971 58 864 8093</span>
               </a>
             </div>
           </div>

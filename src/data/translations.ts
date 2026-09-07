@@ -283,7 +283,7 @@ export const translations: Record<Language, Translations> = {
       hoursText: 'Monday to Saturday: 9:00 AM – 7:00 PM (GST)',
       phoneTitle: 'Telephone',
       whatsappTitle: 'WhatsApp Desk',
-      licenseTitle: 'RERA License ORN: 31822',
+      licenseTitle: 'RERA License ORN: 49679',
     },
     footer: {
       tagline: 'Jamoka Properties is a certified real estate brokerage based in Dubai, UAE, specializing in prime off-plan residential developments.',
@@ -430,7 +430,7 @@ export const translations: Record<Language, Translations> = {
       hoursText: 'من الإثنين إلى السبت: 9:00 صباحاً – 7:00 مساءً (توقيت الإمارات)',
       phoneTitle: 'الهاتف المباشر',
       whatsappTitle: 'خدمة الواتساب',
-      licenseTitle: 'ترخيص ريرا ORN: 31822',
+      licenseTitle: 'ترخيص ريرا ORN: 49679',
     },
     footer: {
       tagline: 'جاموكا العقارية هي شركة وساطة عقارية مرخصة في دبي، متخصصة في تسويق المشاريع السكنية الفاخرة قيد الإنشاء.',

@@ -39,7 +39,7 @@ export const AdvantagesSection: React.FC = () => {
               <TrendingUp className="w-3.5 h-3.5 text-[#D4AF37]" />
               <span>EMPIRICAL APPRECIATION</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] font-caughe tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] font-jakarta tracking-tight leading-tight">
               The Off-Plan Capital Appreciation Curve
             </h2>
             <p className="text-slate-600 text-sm leading-relaxed font-light">

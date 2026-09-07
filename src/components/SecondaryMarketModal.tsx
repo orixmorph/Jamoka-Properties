@@ -64,7 +64,7 @@ export const SecondaryMarketModal: React.FC<SecondaryMarketModalProps> = ({
                 </span>
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold font-caughe tracking-tight text-white">
+              <h3 className="text-2xl sm:text-3xl font-bold font-jakarta tracking-tight text-white">
                 SQFT DXB Prime Resale
               </h3>
               <p className="text-xs text-neutral-400 mt-1">
