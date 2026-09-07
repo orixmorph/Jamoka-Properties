@@ -1,4 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+/**
+ * Cloudinary / Cloud Image Array for Jamoka Properties Header Logo
+ * You can insert your direct Cloudinary or external cloud-hosted image URL(s) in this array.
+ * The system automatically loads from this cloud array and seamlessly falls back through
+ * the list if a URL fails to load.
+ */
+export const JAMOKA_HEADER_CLOUD_LOGOS: string[] = [
+  // Primary Cloudinary link (configured with cloud name: dy6km7beb)
+  'https://res.cloudinary.com/dy6km7beb/image/upload/v1788756022/jamoka-header-logo.png',
+  // Local high-resolution brand asset fallback
+  '/jamoka-header-logo.png',
+];
 
 /**
  * Jamoka Properties Logo
@@ -41,38 +54,80 @@ export const JamokaMonogram: React.FC<{ className?: string; size?: number }> = (
   );
 };
 
-export const JamokaLogo: React.FC<{ size?: 'sm' | 'md' | 'lg'; lightMode?: boolean }> = ({
+export interface JamokaLogoProps {
+  size?: 'sm' | 'md' | 'lg';
+  lightMode?: boolean;
+  className?: string;
+  href?: string;
+  onClick?: (e: React.MouseEvent) => void;
+  cloudImages?: string[];
+}
+
+export const JamokaLogo: React.FC<JamokaLogoProps> = ({
   size = 'md',
   lightMode = false,
+  className = '',
+  href,
+  onClick,
+  cloudImages = JAMOKA_HEADER_CLOUD_LOGOS,
 }) => {
-  const isSm = size === 'sm';
-  const isLg = size === 'lg';
-  const pixelSize = isSm ? 34 : isLg ? 48 : 42;
+  const [imageIndex, setImageIndex] = useState(0);
+
+  const heightClass =
+    size === 'sm'
+      ? 'h-7 sm:h-8'
+      : size === 'lg'
+      ? 'h-11 sm:h-12'
+      : 'h-8 sm:h-9 md:h-[42px]';
+
+  const imageList =
+    cloudImages && cloudImages.length > 0
+      ? cloudImages
+      : JAMOKA_HEADER_CLOUD_LOGOS;
+  const currentSrc = imageList[imageIndex] || '/jamoka-header-logo.png';
+
+  const handleImageError = () => {
+    // If a cloud URL fails to load (e.g. pending Cloudinary asset), smoothly step to next URL in array
+    if (imageIndex < imageList.length - 1) {
+      setImageIndex((prev) => prev + 1);
+    }
+  };
+
+  const imageElement = (
+    <img
+      src={currentSrc}
+      alt="Jamoka Properties"
+      onError={handleImageError}
+      className={`${heightClass} w-auto max-w-[220px] sm:max-w-[260px] object-contain shrink-0 ${
+        lightMode ? 'brightness-110 drop-shadow-sm' : ''
+      }`}
+      referrerPolicy="no-referrer"
+      loading="eager"
+    />
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        onClick={onClick}
+        className={`inline-flex items-center group select-none transition-transform duration-300 hover:scale-[1.02] cursor-pointer outline-none ${className}`}
+        title="Jamoka Properties"
+      >
+        {imageElement}
+      </a>
+    );
+  }
 
   return (
-    <div className="flex items-center gap-2.5 sm:gap-3 group cursor-pointer select-none">
-      {/* Exact PJ interlocking monogram logo matching user's uploaded brand mark */}
-      <JamokaMonogram
-        size={pixelSize}
-        className="transition-transform duration-300 group-hover:scale-105"
-      />
-
-      {/* Brand Name Typography */}
-      <div className="flex flex-col leading-tight">
-        <span
-          className={`font-bold tracking-[0.24em] uppercase font-caughe ${
-            lightMode ? 'text-white' : 'text-[#0F172A]'
-          } ${isSm ? 'text-sm sm:text-base' : isLg ? 'text-xl sm:text-2xl' : 'text-base sm:text-lg'}`}
-          style={{ fontFamily: "'Caughe', 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif" }}
-        >
-          JAMOKA
-        </span>
-        <span
-          className="text-[8px] sm:text-[9px] font-semibold tracking-[0.32em] uppercase text-[#D4AF37] font-jakarta"
-        >
-          Properties • Dubai
-        </span>
-      </div>
+    <div
+      onClick={onClick}
+      className={`inline-flex items-center group select-none transition-transform duration-300 hover:scale-[1.02] ${
+        onClick ? 'cursor-pointer' : ''
+      } ${className}`}
+      title="Jamoka Properties"
+    >
+      {imageElement}
     </div>
   );
 };

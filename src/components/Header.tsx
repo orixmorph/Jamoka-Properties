@@ -74,14 +74,19 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-22 flex items-center justify-between gap-3">
         {/* Dual Logos Side by Side */}
         <div className="flex items-center gap-4 sm:gap-6">
-          {/* Logo 1: Jamoka Properties (Clicking navigates to Home) */}
-          <button
-            onClick={() => handleNavClick('home')}
-            className="flex items-center group text-left cursor-pointer outline-none"
+          {/* Logo 1: Jamoka Properties (Linked Image navigating to Home) */}
+          <a
+            href="#home"
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavClick('home');
+            }}
+            className="flex items-center group text-left cursor-pointer outline-none focus:ring-2 focus:ring-[#BA9452]/40 rounded-sm"
             aria-label="Jamoka Properties Home"
+            title="Jamoka Properties - Return to Home"
           >
             <JamokaLogo size="md" />
-          </button>
+          </a>
 
           {/* Elegant Divider */}
           <div className="h-10 w-px bg-neutral-200 hidden sm:block"></div>

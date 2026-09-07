@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 120" width="100%" height="100%" fill="none">
+  <defs>
+    <style>
+      @import url(https://res.cloudinary.com/dy6km7beb/image/upload/v1788770576/Untitled_design_8_wgqp5r.png);
+      .jamoka-gold-text {
+        font-family: 'Cinzel', 'Playfair Display', 'Cormorant Garamond', 'Times New Roman', serif;
+        font-weight: 600;
+        font-size: 38px;
+        letter-spacing: 0.16em;
+        fill: #BA9452;
+      }
+      .jamoka-gold-mark {
+        fill: #BA9452;
+      }
+    </style>
+  </defs>
+
+  <!-- Interlocking Classical PJ Monogram in Antique Gold (#BA9452) -->
+  <!-- Scaled from 1000x1000 viewBox: x:382..618, y:240..775 (h:535 -> 96, scale: 0.1794) -->
+  <g transform="translate(10, 12) scale(0.1794) translate(-382, -240)" class="jamoka-gold-mark">
+    <!-- Letter J Serif & Trunk & Tail -->
+    <path d="M 472 240 C 480 240 500 240 548 240 C 533 255 525 268 525 288 L 525 715 C 522 745 495 770 452 775 C 475 765 495 740 495 710 L 495 288 C 495 268 487 255 472 240 Z"/>
+    
+    <!-- Letter P Stem with Left-Top Serif and Base Serif -->
+    <path d="M 382 338 C 394 345 405 354 405 370 L 405 645 C 405 658 395 668 385 675 L 455 675 C 445 668 435 658 435 645 L 435 338 Z"/>
+    
+    <!-- Letter P Bar Left of J (Bridge between P stem and J stem) -->
+    <path d="M 435 338 L 495 338 L 495 368 L 435 368 Z"/>
+    <path d="M 435 468 L 495 468 L 495 498 L 435 498 Z"/>
+    
+    <!-- Letter P Outer Bowl Right of J -->
+    <path d="M 525 338 C 585 338 618 375 618 418 C 618 461 585 498 525 498 L 525 468 C 565 468 586 444 586 418 C 586 392 565 368 525 368 Z"/>
+  </g>
+
+  <!-- Typography: JAMOKA PROPERTIES -->
+  <text x="86" y="69" class="jamoka-gold-text">JAMOKA PROPERTIES</text>
+</svg>
