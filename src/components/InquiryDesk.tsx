@@ -6,7 +6,7 @@ export const InquiryDesk: React.FC = () => {
     name: '',
     email: '',
     phone: '',
-    area: 'Palm Jumeirah',
+    queryType: 'Off-Plan Properties',
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -20,7 +20,7 @@ export const InquiryDesk: React.FC = () => {
         name: '',
         email: '',
         phone: '',
-        area: 'Palm Jumeirah',
+        queryType: 'Off-Plan Properties',
         message: '',
       });
     }, 4000);
@@ -56,7 +56,7 @@ export const InquiryDesk: React.FC = () => {
                 <div>
                   <span className="text-white font-bold text-sm block">Business Bay Office</span>
                   <span className="font-light text-neutral-300">
-                    Bayswater Tower, Office 807, Business Bay, Dubai, UAE
+                    Bayswater Tower, 8th and 11th floor, Business Bay, Dubai, UAE
                   </span>
                 </div>
               </div>
@@ -175,20 +175,15 @@ export const InquiryDesk: React.FC = () => {
 
                   <div>
                     <label className="block text-xs font-semibold text-neutral-300 mb-1.5 tracking-wider">
-                      Preferred Area or Project
+                      Off-Plan or Secondary Query *
                     </label>
                     <select
-                      value={formData.area}
-                      onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+                      value={formData.queryType}
+                      onChange={(e) => setFormData({ ...formData, queryType: e.target.value })}
                       className="w-full bg-[#111622] border border-white/15 focus:border-[#D4AF37] rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white focus:outline-none transition-colors font-light"
                     >
-                      <option value="Palm Jumeirah">Palm Jumeirah</option>
-                      <option value="Downtown Dubai">Downtown Dubai</option>
-                      <option value="Dubai Hills Estate">Dubai Hills Estate</option>
-                      <option value="Dubai Islands">Dubai Islands</option>
-                      <option value="Dubai Harbour">Dubai Harbour</option>
-                      <option value="Business Bay">Business Bay</option>
-                      <option value="Other Area">Other Area / General Inquiry</option>
+                      <option value="Off-Plan Properties">Off-Plan Properties (Developer Releases)</option>
+                      <option value="Secondary Market">Secondary Market (Ready & Resale)</option>
                     </select>
                   </div>
                 </div>

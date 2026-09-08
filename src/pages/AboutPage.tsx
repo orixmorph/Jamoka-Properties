@@ -47,7 +47,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 text-white">
                   <span className="text-xs text-[#D4AF37] font-bold uppercase tracking-widest block">
-                    Bayswater Tower, Business Bay, Dubai
+                    Bayswater Tower, 8th and 11th floor, Business Bay, Dubai
                   </span>
                   <p className="text-lg font-bold font-serif-luxury mt-1">
                     Licensed & Regulated by Dubai Real Estate Regulatory Agency (RERA)
@@ -207,7 +207,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
               <MapPin className="w-10 h-10 text-[#D4AF37] shrink-0" />
               <div>
                 <span className="font-bold text-white text-sm block">Business Bay Headquarters</span>
-                <span className="text-xs text-neutral-400">Bayswater Tower, Office 807, Business Bay, Dubai</span>
+                <span className="text-xs text-neutral-400">Bayswater Tower, 8th and 11th floor, Business Bay, Dubai</span>
               </div>
             </div>
             <div className="flex items-center gap-4 justify-center md:justify-start">

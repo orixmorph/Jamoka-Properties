@@ -9,7 +9,7 @@ export const ContactPage: React.FC = () => {
     name: '',
     email: '',
     phone: '',
-    interest: 'Off-Plan Investment',
+    queryType: 'Off-Plan Properties',
     message: '',
   });
 
@@ -62,7 +62,7 @@ export const ContactPage: React.FC = () => {
                   <button
                     onClick={() => {
                       setSubmitted(false);
-                      setFormData({ name: '', email: '', phone: '', interest: 'Off-Plan Investment', message: '' });
+                      setFormData({ name: '', email: '', phone: '', queryType: 'Off-Plan Properties', message: '' });
                     }}
                     className="px-4 py-2 rounded-xl bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider hover:bg-emerald-800 transition-colors"
                   >
@@ -119,18 +119,15 @@ export const ContactPage: React.FC = () => {
 
                   <div>
                     <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1.5">
-                      Area of Interest
+                      {t.contactPage.queryType} *
                     </label>
                     <select
-                      value={formData.interest}
-                      onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+                      value={formData.queryType}
+                      onChange={(e) => setFormData({ ...formData, queryType: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs font-semibold text-slate-700 bg-neutral-50/50 focus:border-[#D4AF37] focus:outline-none"
                     >
-                      <option>Off-Plan Investment (Emaar, Nakheel, etc.)</option>
-                      <option>10-Year UAE Golden Visa Consultation</option>
-                      <option>Mortgage & Handover Financing</option>
-                      <option>Ready Property Resale (SQFT DXB)</option>
-                      <option>Developer Master Contract Verification</option>
+                      <option value="Off-Plan Properties">{t.contactPage.queryOffPlan}</option>
+                      <option value="Secondary Market">{t.contactPage.querySecondary}</option>
                     </select>
                   </div>
                 </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Send } from 'lucide-react';
 import { OffPlanProperty } from '../data/mockData';
 
 interface ProjectModalProps {
@@ -18,6 +19,8 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [queryType, setQueryType] = useState('Off-Plan Properties');
+  const [message, setMessage] = useState('');
 
   if (!isOpen || !property) return null;
 
@@ -181,41 +184,87 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 <span className="text-xs font-bold uppercase tracking-wider text-[#0F172A] block">
                   Request Priority Unit Allocation
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <input
-                    type="text"
-                    required
-                    placeholder="Full Legal Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
-                  />
-                  <input
-                    type="email"
-                    required
-                    placeholder="Email Address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
-                  />
-                  <input
-                    type="tel"
-                    required
-                    placeholder="Phone / WhatsApp (+971)"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Your Full Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="name@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="+971 50 123 4567"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Off-Plan or Secondary Query *
+                    </label>
+                    <select
+                      value={queryType}
+                      onChange={(e) => setQueryType(e.target.value)}
+                      className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
+                    >
+                      <option value="Off-Plan Properties">Off-Plan Properties (Developer Releases)</option>
+                      <option value="Secondary Market">Secondary Market (Ready & Resale)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    Message
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder={`Inquiring about ${property.name} (preferred layouts, unit elevation, or payment terms)...`}
+                    className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37] resize-none"
                   />
                 </div>
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
                   <span className="text-[10px] text-neutral-500">
                     Direct developer price • No agency commission on off-plan acquisitions
                   </span>
                   <button
                     type="submit"
-                    className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-[#D4AF37] to-[#C5A059] text-[#0F172A] font-bold text-xs uppercase tracking-wider rounded-lg hover:brightness-105 transition-all shadow-sm"
+                    className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-[#D4AF37] to-[#C5A059] text-[#0F172A] font-bold text-xs uppercase tracking-wider rounded-lg hover:brightness-105 transition-all shadow-sm flex items-center justify-center gap-2"
                   >
-                    SEND VIP INQUIRY
+                    <Send className="w-3.5 h-3.5" />
+                    <span>Send Message</span>
                   </button>
                 </div>
               </form>

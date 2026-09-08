@@ -15,9 +15,8 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
     name: '',
     email: '',
     phone: '',
-    date: '',
-    time: '11:00 AM',
-    notes: '',
+    queryType: 'Off-Plan Properties',
+    message: '',
   });
 
   const handleBookingSubmit = (e: React.FormEvent) => {
@@ -30,9 +29,8 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
         name: '',
         email: '',
         phone: '',
-        date: '',
-        time: '11:00 AM',
-        notes: '',
+        queryType: 'Off-Plan Properties',
+        message: '',
       });
     }, 3500);
   };
@@ -143,7 +141,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                     Private Client Advisory Council
                   </h4>
                   <p className="text-xs text-[#CCA14C] font-medium tracking-wide font-jakarta mt-0.5">
-                    DIFC Gate Precinct 4, Level 7
+                    Bayswater Tower, 8th & 11th Floor, Business Bay
                   </p>
                 </div>
 
@@ -228,7 +226,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                         }`}
                       >
                         <MapPin className="w-3.5 h-3.5 text-[#CCA14C]" />
-                        <span>Bayswater Tower, 807</span>
+                        <span>Bayswater (8th & 11th Fl.)</span>
                       </button>
 
                       <button
@@ -279,7 +277,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Phone / WhatsApp *
+                        Phone Number *
                       </label>
                       <input
                         type="tel"
@@ -293,27 +291,29 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
 
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Preferred Date
+                        Off-Plan or Secondary Query *
                       </label>
-                      <input
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                        className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-3.5 py-2 text-xs text-slate-900 focus:outline-none focus:border-[#CCA14C]"
-                      />
+                      <select
+                        value={formData.queryType}
+                        onChange={(e) => setFormData({ ...formData, queryType: e.target.value })}
+                        className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#CCA14C]"
+                      >
+                        <option value="Off-Plan Properties">Off-Plan Properties (Developer Releases)</option>
+                        <option value="Secondary Market">Secondary Market (Ready & Resale)</option>
+                      </select>
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">
-                      Project or Investment Interest
+                      Message
                     </label>
-                    <input
-                      type="text"
-                      value={formData.notes}
-                      onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      placeholder="e.g. Palm Jumeirah 3-bed, AED 5M-10M budget, Stage-0 launches"
-                      className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#CCA14C]"
+                    <textarea
+                      rows={3}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      placeholder="Your message, preferred meeting time, or property requirements..."
+                      className="w-full bg-neutral-50 border border-neutral-200 rounded-xl p-3 text-xs text-slate-900 focus:outline-none focus:border-[#CCA14C] resize-none"
                     />
                   </div>
 
@@ -322,8 +322,8 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                       type="submit"
                       className="w-full py-3.5 px-6 rounded-xl bg-[#CCA14C] hover:bg-[#B88F3E] text-[#1F1600] font-bold text-xs uppercase tracking-wider transition-colors shadow-sm flex items-center justify-center gap-2"
                     >
-                      <Calendar className="w-4 h-4" />
-                      <span>Confirm Advisory Appointment</span>
+                      <Send className="w-4 h-4" />
+                      <span>Send Message</span>
                     </button>
                   </div>
                 </form>

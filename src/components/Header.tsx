@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-2 sm:gap-4 overflow-hidden text-ellipsis whitespace-nowrap">
           <span className="flex items-center gap-1.5 text-neutral-300">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-            <span className="truncate">BAYSWATER TOWER, OFFICE 807, BUSINESS BAY</span>
+            <span className="truncate">BAYSWATER TOWER, 8TH & 11TH FLOOR, BUSINESS BAY</span>
           </span>
           <span className="text-neutral-500 hidden xl:inline">|</span>
           <span className="text-[#D4AF37] font-semibold tracking-wider hidden xl:inline">
@@ -313,7 +313,7 @@ export const Header: React.FC<HeaderProps> = ({
                 +971 58 864 8093
               </a>
             </div>
-            <span className="text-[11px] text-neutral-400">Bayswater Tower, Office 807, Business Bay, Dubai</span>
+            <span className="text-[11px] text-neutral-400">Bayswater Tower, 8th and 11th floor, Business Bay, Dubai</span>
           </div>
         </div>
       )}

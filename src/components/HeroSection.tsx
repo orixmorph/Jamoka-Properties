@@ -180,29 +180,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </button>
           </motion.div>
 
-          {/* Reduced-Size Search Bar with Instant Live Filter & Clear Button */}
+          {/* Sleek Search Bar: Increased Width & Reduced Height */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="w-full max-w-lg bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-1.5 sm:p-2 shadow-2xl"
+            className="w-full max-w-2xl lg:max-w-3xl bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl sm:rounded-2xl px-2.5 py-1.5 sm:px-3 sm:py-1.5 shadow-2xl"
           >
-            <form onSubmit={handleSearchSubmit} className="flex items-center gap-1.5">
-              <div className="flex items-center pl-2 text-neutral-400">
-                <Search className="w-4 h-4 text-[#D4AF37]" />
+            <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+              <div className="flex items-center pl-1 text-neutral-400">
+                <Search className="w-4 h-4 text-[#D4AF37] shrink-0" />
               </div>
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => handleInputChange(e.target.value)}
                 placeholder={t.hero.searchPlaceholder}
-                className="w-full bg-transparent text-white placeholder:text-neutral-400 text-xs sm:text-sm focus:outline-none py-1.5 px-1 font-light"
+                className="w-full bg-transparent text-white placeholder:text-neutral-400 text-xs sm:text-sm focus:outline-none py-1 px-1 font-light"
               />
               {searchTerm && (
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="p-1 rounded-full text-neutral-400 hover:text-white hover:bg-white/10 transition-colors"
+                  className="p-1 rounded-full text-neutral-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
                   title="Clear search"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -210,15 +210,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               )}
               <button
                 type="submit"
-                className="px-3.5 py-1.5 bg-[#D4AF37] hover:bg-[#ECC86A] text-black font-bold text-[11px] tracking-wider uppercase rounded-xl transition-colors shrink-0"
+                className="px-4 py-1.5 bg-[#D4AF37] hover:bg-[#ECC86A] text-black font-bold text-[11px] tracking-wider uppercase rounded-lg sm:rounded-xl transition-colors shrink-0 shadow-sm"
               >
                 {t.hero.searchBtn}
               </button>
             </form>
 
-            {/* Trending Community Tags - Compact */}
-            <div className="flex items-center flex-wrap gap-1 sm:gap-1.5 mt-2 pt-2 border-t border-white/10 px-1 text-left">
-              <span className="text-[10px] text-neutral-400 flex items-center gap-1 font-medium mr-1">
+            {/* Trending Community Tags - Sleek Single-Line Strip */}
+            <div className="flex items-center flex-wrap gap-1 sm:gap-1.5 mt-1.5 pt-1.5 border-t border-white/10 px-0.5 text-left">
+              <span className="text-[10px] text-neutral-400 flex items-center gap-1 font-medium mr-1 shrink-0">
                 <Sparkles className="w-2.5 h-2.5 text-[#D4AF37]" /> {t.hero.trending}:
               </span>
               {trendingTags.map((tag) => (

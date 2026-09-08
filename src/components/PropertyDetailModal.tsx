@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { OffPlanProject } from '../data/realEstateData';
 import { useLanguage } from '../context/LanguageContext';
-import { X, Calendar, Percent, Landmark, Download, CheckCircle2, MessageSquare, ShieldCheck, MapPin, Sparkles } from 'lucide-react';
+import { X, Calendar, Percent, Landmark, Download, CheckCircle2, MessageSquare, ShieldCheck, MapPin, Sparkles, Send } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface PropertyDetailModalProps {
@@ -22,6 +22,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
     name: '',
     email: '',
     phone: '',
+    message: '',
   });
 
   if (!project) return null;
@@ -42,12 +43,6 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
   const handleBrochureSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setDownloadSuccess(true);
-    setTimeout(() => {
-      // Simulate brochure download initiation
-      const dummyLink = document.createElement('a');
-      dummyLink.href = '#';
-      dummyLink.download = `${project.name.replace(/\s+/g, '_')}_Official_Brochure.pdf`;
-    }, 1200);
   };
 
   return (
@@ -234,30 +229,74 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
               </div>
             ) : (
               <form onSubmit={handleBrochureSubmit} className="space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder={t.projects.namePlaceholder}
-                    className="px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
-                  />
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder={t.projects.emailPlaceholder}
-                    className="px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
-                  />
-                  <input
-                    type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder={t.projects.phonePlaceholder}
-                    className="px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      {t.projects.namePlaceholder} *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="e.g. Michael Smith"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      {t.projects.emailPlaceholder} *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="name@example.com"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      {t.projects.phonePlaceholder} *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="+971 50 123 4567"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Off-Plan or Secondary Query *
+                    </label>
+                    <select
+                      value={formData.queryType}
+                      onChange={(e) => setFormData({ ...formData, queryType: e.target.value })}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
+                    >
+                      <option value="Off-Plan Properties">Off-Plan Properties (Developer Releases)</option>
+                      <option value="Secondary Market">Secondary Market (Ready & Resale)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    Message
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder={`Inquiry about ${project.name} (pricing, payment schedule, or floor plans)...`}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800 resize-none"
                   />
                 </div>
 
@@ -266,8 +305,8 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                     type="submit"
                     className="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs tracking-wider uppercase hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2"
                   >
-                    <Download className="w-4 h-4" />
-                    <span>{t.projects.requestBrochure}</span>
+                    <Send className="w-4 h-4" />
+                    <span>Send Message</span>
                   </button>
 
                   <a

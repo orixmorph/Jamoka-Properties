@@ -70,7 +70,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* 7. Dubai Real Estate Insights / Blogs */}
       <BlogsSection />
 
-      {/* 8. Official Contact / Inquiry Desk (Friendly tone, Bayswater Tower 807 address) */}
+      {/* 8. Official Contact / Inquiry Desk (Friendly tone, Bayswater Tower 8th & 11th floor address) */}
       <InquiryDesk />
     </div>
   );

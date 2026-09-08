@@ -14,8 +14,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
     name: '',
     email: '',
     phone: '',
-    budget: 'AED 3M - 7M',
-    preferredEnclave: 'Palm Jumeirah',
+    queryType: 'Off-Plan Properties',
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -121,7 +120,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300 block mb-1">
-                        Full Legal Name *
+                        Name *
                       </label>
                       <input
                         type="text"
@@ -135,7 +134,23 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
 
                     <div>
                       <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300 block mb-1">
-                        Direct Phone / WhatsApp *
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="investor@example.com"
+                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#D4AF37]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300 block mb-1">
+                        Phone Number *
                       </label>
                       <input
                         type="tel"
@@ -146,68 +161,31 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                         className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#D4AF37]"
                       />
                     </div>
-                  </div>
-
-                  <div>
-                    <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300 block mb-1">
-                      Corporate / Personal Email *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="investor@sovereign-capital.com"
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#D4AF37]"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300 block mb-1">
-                        Capital Allocation Bracket
-                      </label>
-                      <select
-                        value={formData.budget}
-                        onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                        className="w-full bg-[#141C2C] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
-                      >
-                        <option value="AED 2M - 4M">AED 2M - 4M ($550K - $1.1M USD)</option>
-                        <option value="AED 4M - 8M">AED 4M - 8M ($1.1M - $2.2M USD)</option>
-                        <option value="AED 8M - 15M">AED 8M - 15M (Prime Penthouses)</option>
-                        <option value="AED 15M - 35M">AED 15M - 35M (Sky Mansions)</option>
-                        <option value="AED 35M+">AED 35M+ (Ultra-Prime / Full Floor)</option>
-                      </select>
-                    </div>
 
                     <div>
                       <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300 block mb-1">
-                        Target Enclave
+                        Off-Plan or Secondary Query *
                       </label>
                       <select
-                        value={formData.preferredEnclave}
-                        onChange={(e) => setFormData({ ...formData, preferredEnclave: e.target.value })}
+                        value={formData.queryType}
+                        onChange={(e) => setFormData({ ...formData, queryType: e.target.value })}
                         className="w-full bg-[#141C2C] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
                       >
-                        <option value="Palm Jumeirah">Palm Jumeirah & Waterfront</option>
-                        <option value="Downtown Dubai">Downtown Dubai & DIFC</option>
-                        <option value="Dubai Water Canal">Dubai Water Canal</option>
-                        <option value="Dubai Harbour">Dubai Harbour & Marina</option>
-                        <option value="Dubai Hills Estate">Dubai Hills Mansions</option>
-                        <option value="Island Developments">Dubai Islands & Jebel Ali</option>
+                        <option value="Off-Plan Properties">Off-Plan Properties (Developer Releases)</option>
+                        <option value="Secondary Market">Secondary Market (Ready & Resale)</option>
                       </select>
                     </div>
                   </div>
 
                   <div>
                     <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300 block mb-1">
-                      Special Requirements or Milestone Structuring
+                      Message
                     </label>
                     <textarea
                       rows={3}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Specify preferred bedroom counts, payment milestones (e.g. 60/40), Golden Visa assistance, or Stage-0 bulk allocation interests..."
+                      placeholder="Specify preferred bedroom counts, payment milestones, or property requirements..."
                       className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#D4AF37]"
                     ></textarea>
                   </div>
@@ -216,7 +194,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                     type="submit"
                     className="w-full py-4 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] hover:brightness-105 active:scale-[0.99] text-[#0F172A] font-bold text-xs uppercase tracking-[0.16em] shadow-lg transition-all cursor-pointer"
                   >
-                    REQUEST CONFIDENTIAL ALLOCATION DOSSIER
+                    SEND MESSAGE
                   </button>
 
                   <p className="text-[10px] text-neutral-400 text-center font-normal">

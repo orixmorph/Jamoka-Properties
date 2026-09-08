@@ -72,7 +72,7 @@ export const Footer: React.FC<FooterProps> = ({
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-[#D4AF37]" />
-                <span>Bayswater Tower, Office 807, Business Bay, Dubai, UAE</span>
+                <span>Bayswater Tower, 8th and 11th floor, Business Bay, Dubai, UAE</span>
               </div>
             </div>
           </div>
