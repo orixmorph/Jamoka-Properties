@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { OffPlanProject } from '../data/realEstateData';
 import { useLanguage } from '../context/LanguageContext';
-import { X, Calendar, Percent, Landmark, Download, CheckCircle2, MessageSquare, ShieldCheck, MapPin, Sparkles, Send } from 'lucide-react';
+import { X, Calendar, Percent, Landmark, Download, CheckCircle2, MessageSquare, ShieldCheck, MapPin, Sparkles, Send, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
 
 interface PropertyDetailModalProps {
   project: OffPlanProject | null;
@@ -18,6 +19,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
   const { t, isRTL } = useLanguage();
   const [showBrochureForm, setShowBrochureForm] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -40,8 +42,19 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
     }
   };
 
-  const handleBrochureSubmit = (e: React.FormEvent) => {
+  const handleBrochureSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    await sendToFormBold({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+      project: project.name,
+      source: 'Property Detail Modal (Off-Plan)',
+      subject: `Project Advisory Inquiry: ${project.name}`,
+    });
+    setIsSubmitting(false);
     setDownloadSuccess(true);
   };
 
@@ -228,7 +241,9 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleBrochureSubmit} className="space-y-3.5">
+              <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleBrochureSubmit} className="space-y-3.5">
+                <input type="hidden" name="project" value={project.name} />
+                <input type="hidden" name="source" value="Property Detail Modal" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <label className="block text-[11px] font-semibold text-slate-700 mb-1">
@@ -236,6 +251,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                     </label>
                     <input
                       type="text"
+                      name="name"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -249,6 +265,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                     </label>
                     <input
                       type="email"
+                      name="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -264,6 +281,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                   </label>
                   <input
                     type="tel"
+                    name="phone"
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -278,6 +296,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                   </label>
                   <textarea
                     rows={3}
+                    name="message"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder={`Please send me details, current availability, and the best payment plans for ${project.name}...`}
@@ -288,10 +307,20 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <button
                     type="submit"
-                    className="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs tracking-wider uppercase hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    disabled={isSubmitting}
+                    className="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs tracking-wider uppercase hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                   >
-                    <Send className="w-4 h-4" />
-                    <span>Send Message</span>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Sending...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        <span>Send Message</span>
+                      </>
+                    )}
                   </button>
 
                   <a

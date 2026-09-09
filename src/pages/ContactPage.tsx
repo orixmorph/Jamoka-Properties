@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { MapPin, Phone, Mail, Clock, MessageSquare, ShieldCheck, CheckCircle2, Send, Building } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, MessageSquare, ShieldCheck, CheckCircle2, Send, Building, Loader2 } from 'lucide-react';
+import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
 
 export const ContactPage: React.FC = () => {
   const { t, isRTL } = useLanguage();
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -12,8 +14,18 @@ export const ContactPage: React.FC = () => {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    await sendToFormBold({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+      source: 'Contact Page (Main Inquiry)',
+      subject: 'New Inquiry from Contact Page',
+    });
+    setIsSubmitting(false);
     setSubmitted(true);
   };
 
@@ -70,7 +82,8 @@ export const ContactPage: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-4">
+                <input type="hidden" name="source" value="Contact Page" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1.5">
@@ -78,6 +91,7 @@ export const ContactPage: React.FC = () => {
                     </label>
                     <input
                       type="text"
+                      name="name"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -92,6 +106,7 @@ export const ContactPage: React.FC = () => {
                     </label>
                     <input
                       type="email"
+                      name="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -107,6 +122,7 @@ export const ContactPage: React.FC = () => {
                   </label>
                   <input
                     type="tel"
+                    name="phone"
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -121,6 +137,7 @@ export const ContactPage: React.FC = () => {
                   </label>
                   <textarea
                     rows={4}
+                    name="message"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Provide any specific development name, budget, or preferred handover year..."
@@ -130,10 +147,20 @@ export const ContactPage: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs uppercase tracking-wider hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs uppercase tracking-wider hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                 >
-                  <Send className="w-4 h-4" />
-                  <span>{t.contactPage.sendBtn}</span>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Sending Message...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>{t.contactPage.sendBtn}</span>
+                    </>
+                  )}
                 </button>
               </form>
             )}

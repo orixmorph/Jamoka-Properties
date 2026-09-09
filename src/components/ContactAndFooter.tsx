@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { JamokaFullLogo, SqftPartnerLogo } from './Logos';
+import { Loader2 } from 'lucide-react';
+import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
 
 interface ContactAndFooterProps {
   onOpenMortgage: () => void;
@@ -17,9 +19,20 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    await sendToFormBold({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+      source: 'VIP Sovereign Advisory Desk (Footer Section)',
+      subject: 'New VIP Sovereign Advisory Mandate Request',
+    });
+    setIsSubmitting(false);
     setIsSubmitted(true);
   };
 
@@ -106,7 +119,8 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-4">
+                  <input type="hidden" name="source" value="VIP Sovereign Advisory Desk" />
                   <div className="flex items-center justify-between pb-2 border-b border-white/10">
                     <span className="text-xs font-bold uppercase tracking-wider text-[#D4AF37]">
                       Confidential Advisory Form
@@ -123,6 +137,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                       </label>
                       <input
                         type="text"
+                        name="name"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -137,6 +152,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                       </label>
                       <input
                         type="email"
+                        name="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -152,6 +168,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                     </label>
                     <input
                       type="tel"
+                      name="phone"
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -166,6 +183,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                     </label>
                     <textarea
                       rows={3}
+                      name="message"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Specify preferred bedroom counts, payment milestones, or property requirements..."
@@ -175,9 +193,17 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
 
                   <button
                     type="submit"
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] hover:brightness-105 active:scale-[0.99] text-[#0F172A] font-bold text-xs uppercase tracking-[0.16em] shadow-lg transition-all cursor-pointer"
+                    disabled={isSubmitting}
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] hover:brightness-105 active:scale-[0.99] text-[#0F172A] font-bold text-xs uppercase tracking-[0.16em] shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
                   >
-                    SEND MESSAGE
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>SENDING MANDATE...</span>
+                      </>
+                    ) : (
+                      <span>SEND MESSAGE</span>
+                    )}
                   </button>
 
                   <p className="text-[10px] text-neutral-400 text-center font-normal">

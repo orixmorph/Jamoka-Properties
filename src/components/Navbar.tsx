@@ -60,10 +60,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
 
             {/* Subtle Divider */}
-            <div className="h-6 w-px bg-neutral-200 hidden sm:block"></div>
+            <div className="h-6 w-px bg-neutral-200 hidden sm:block shrink-0"></div>
 
             {/* Secondary Partner Logo: SQFT DXB */}
-            <div className="hidden sm:block">
+            <div className="hidden sm:flex items-center shrink-0">
               <SqftPartnerLogo />
             </div>
           </div>

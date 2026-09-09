@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ShieldCheck, PhoneCall, Mail, MapPin, Send, CheckCircle2, MessageSquare, Clock } from 'lucide-react';
+import { ShieldCheck, PhoneCall, Mail, MapPin, Send, CheckCircle2, MessageSquare, Clock, Loader2 } from 'lucide-react';
+import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
 
 export const InquiryDesk: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -9,9 +10,20 @@ export const InquiryDesk: React.FC = () => {
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    await sendToFormBold({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+      source: 'Homepage Inquiry Desk (Contact Section)',
+      subject: 'New Inquiry from Homepage Contact Section',
+    });
+    setIsSubmitting(false);
     setIsSubmitted(true);
     setTimeout(() => {
       setIsSubmitted(false);
@@ -21,7 +33,7 @@ export const InquiryDesk: React.FC = () => {
         phone: '',
         message: '',
       });
-    }, 4000);
+    }, 5000);
   };
 
   return (
@@ -116,7 +128,8 @@ export const InquiryDesk: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4 font-jakarta">
+              <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-4 font-jakarta">
+                <input type="hidden" name="source" value="Inquiry Desk (Section 8)" />
                 <div className="border-b border-white/10 pb-3 mb-2">
                   <h3 className="text-lg sm:text-xl font-bold text-white font-jakarta">
                     Send a Message
@@ -133,6 +146,7 @@ export const InquiryDesk: React.FC = () => {
                     </label>
                     <input
                       type="text"
+                      name="name"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -147,6 +161,7 @@ export const InquiryDesk: React.FC = () => {
                     </label>
                     <input
                       type="email"
+                      name="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -162,6 +177,7 @@ export const InquiryDesk: React.FC = () => {
                   </label>
                   <input
                     type="tel"
+                    name="phone"
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -176,6 +192,7 @@ export const InquiryDesk: React.FC = () => {
                   </label>
                   <textarea
                     rows={3}
+                    name="message"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Tell us what you are looking for (bedrooms, budget, handover year, etc.)..."
@@ -186,10 +203,20 @@ export const InquiryDesk: React.FC = () => {
                 <div className="pt-1">
                   <button
                     type="submit"
-                    className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs uppercase tracking-wider hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                    className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs uppercase tracking-wider hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                   >
-                    <Send className="w-4 h-4" />
-                    <span>Send Message</span>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Sending Message...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        <span>Send Message</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </form>

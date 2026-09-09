@@ -74,7 +74,7 @@ export const TrustStats: React.FC = () => {
       targetNumber: 2,
       suffix: '',
       label: 'Dubai Offices',
-      detail: 'Bayswater Tower Business Bay & Marina',
+      detail: 'Bayswater Tower Business Bay',
     },
     {
       icon: Globe,

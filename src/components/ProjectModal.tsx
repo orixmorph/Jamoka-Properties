@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
 import { OffPlanProperty } from '../data/mockData';
+import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
 
 interface ProjectModalProps {
   property: OffPlanProperty | null;
@@ -16,6 +17,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
   onOpenMortgage,
 }) => {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -25,13 +27,26 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
   const rawPriceNumber = parseInt(property.priceAed.replace(/[^0-9]/g, ''), 10) || 3000000;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    await sendToFormBold({
+      name,
+      email,
+      phone,
+      message,
+      project: property.name,
+      developer: property.developer,
+      price: property.priceAed,
+      source: 'Project Modal (Priority Unit Allocation)',
+      subject: `Priority Allocation: ${property.name} (${property.developer})`,
+    });
+    setIsSubmitting(false);
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
       onClose();
-    }, 2500);
+    }, 3500);
   };
 
   return (
@@ -179,7 +194,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-3">
+                <input type="hidden" name="source" value="Project Modal (Priority Unit Allocation)" />
+                <input type="hidden" name="project" value={property.name} />
+                <input type="hidden" name="developer" value={property.developer} />
                 <span className="text-xs font-bold uppercase tracking-wider text-[#0F172A] block">
                   Request Priority Unit Allocation
                 </span>
@@ -190,6 +208,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                     </label>
                     <input
                       type="text"
+                      name="name"
                       required
                       placeholder="Your Full Name"
                       value={name}
@@ -203,6 +222,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                     </label>
                     <input
                       type="email"
+                      name="email"
                       required
                       placeholder="name@example.com"
                       value={email}
@@ -218,6 +238,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                   </label>
                   <input
                     type="tel"
+                    name="phone"
                     required
                     placeholder="+971 50 123 4567"
                     value={phone}
@@ -232,6 +253,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                   </label>
                   <textarea
                     rows={2}
+                    name="message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder={`Inquiring about ${property.name} (preferred layouts, unit elevation, or payment terms)...`}
@@ -245,10 +267,20 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                   </span>
                   <button
                     type="submit"
-                    className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-[#D4AF37] to-[#C5A059] text-[#0F172A] font-bold text-xs uppercase tracking-wider rounded-lg hover:brightness-105 transition-all shadow-sm flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                    className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-[#D4AF37] to-[#C5A059] text-[#0F172A] font-bold text-xs uppercase tracking-wider rounded-lg hover:brightness-105 transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                   >
-                    <Send className="w-3.5 h-3.5" />
-                    <span>Send Message</span>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Sending...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Send Message</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </form>

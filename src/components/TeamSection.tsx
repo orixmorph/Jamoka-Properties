@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, Calendar, Clock, MapPin, CheckCircle2, ShieldCheck, Phone, Mail, Send, Users } from 'lucide-react';
+import { X, Calendar, Clock, MapPin, CheckCircle2, ShieldCheck, Phone, Mail, Send, Users, Loader2 } from 'lucide-react';
 import { TEAM_MEMBERS } from '../data/realEstateData';
+import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
 
 interface TeamSectionProps {
   onNavigateContact?: () => void;
@@ -11,6 +12,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
   const [selectedOffice, setSelectedOffice] = useState<'Business Bay' | 'DIFC'>('Business Bay');
   const [selectedAdvisor, setSelectedAdvisor] = useState('Senior Advisory Partner');
   const [bookingSubmitted, setBookingSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,8 +20,20 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
     message: '',
   });
 
-  const handleBookingSubmit = (e: React.FormEvent) => {
+  const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    await sendToFormBold({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+      office: selectedOffice,
+      advisor: selectedAdvisor,
+      source: 'Team Section (Private Client Advisory Consultation)',
+      subject: `Advisory Session Request - ${selectedOffice}`,
+    });
+    setIsSubmitting(false);
     setBookingSubmitted(true);
     setTimeout(() => {
       setBookingSubmitted(false);
@@ -30,7 +44,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
         phone: '',
         message: '',
       });
-    }, 3500);
+    }, 4500);
   };
 
   const handleOpenBooking = () => {
@@ -207,7 +221,9 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                   </p>
                 </div>
 
-                <form onSubmit={handleBookingSubmit} className="space-y-4">
+                <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleBookingSubmit} className="space-y-4">
+                  <input type="hidden" name="source" value="Team Section (Advisory Booking)" />
+                  <input type="hidden" name="office" value={selectedOffice} />
                   {/* Office Selection Tabs */}
                   <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1.5 tracking-wider uppercase">
@@ -249,6 +265,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                       </label>
                       <input
                         type="text"
+                        name="name"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -263,6 +280,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                       </label>
                       <input
                         type="email"
+                        name="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -278,6 +296,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                     </label>
                     <input
                       type="tel"
+                      name="phone"
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -292,6 +311,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                     </label>
                     <textarea
                       rows={3}
+                      name="message"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Your message, preferred meeting time, or property requirements..."
@@ -302,10 +322,20 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full py-3.5 px-6 rounded-xl bg-[#CCA14C] hover:bg-[#B88F3E] text-[#1F1600] font-bold text-xs uppercase tracking-wider transition-colors shadow-sm flex items-center justify-center gap-2"
+                      disabled={isSubmitting}
+                      className="w-full py-3.5 px-6 rounded-xl bg-[#CCA14C] hover:bg-[#B88F3E] text-[#1F1600] font-bold text-xs uppercase tracking-wider transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                     >
-                      <Send className="w-4 h-4" />
-                      <span>Send Message</span>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Sending Request...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" />
+                          <span>Send Message</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 </form>
