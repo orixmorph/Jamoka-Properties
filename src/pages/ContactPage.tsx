@@ -9,7 +9,6 @@ export const ContactPage: React.FC = () => {
     name: '',
     email: '',
     phone: '',
-    queryType: 'Off-Plan Properties',
     message: '',
   });
 
@@ -102,34 +101,18 @@ export const ContactPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1.5">
-                      {t.contactPage.phone} *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+971 50 000 0000"
-                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs focus:border-[#D4AF37] focus:outline-none bg-neutral-50/50"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1.5">
-                      {t.contactPage.queryType} *
-                    </label>
-                    <select
-                      value={formData.queryType}
-                      onChange={(e) => setFormData({ ...formData, queryType: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs font-semibold text-slate-700 bg-neutral-50/50 focus:border-[#D4AF37] focus:outline-none"
-                    >
-                      <option value="Off-Plan Properties">{t.contactPage.queryOffPlan}</option>
-                      <option value="Secondary Market">{t.contactPage.querySecondary}</option>
-                    </select>
-                  </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1.5">
+                    {t.contactPage.phone} *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+971 50 000 0000"
+                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs focus:border-[#D4AF37] focus:outline-none bg-neutral-50/50"
+                  />
                 </div>
 
                 <div>

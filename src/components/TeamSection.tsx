@@ -15,7 +15,6 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
     name: '',
     email: '',
     phone: '',
-    queryType: 'Off-Plan Properties',
     message: '',
   });
 
@@ -29,7 +28,6 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
         name: '',
         email: '',
         phone: '',
-        queryType: 'Off-Plan Properties',
         message: '',
       });
     }, 3500);
@@ -274,34 +272,18 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Phone Number *
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+971 50 123 4567"
-                        className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#CCA14C]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">
-                        Off-Plan or Secondary Query *
-                      </label>
-                      <select
-                        value={formData.queryType}
-                        onChange={(e) => setFormData({ ...formData, queryType: e.target.value })}
-                        className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#CCA14C]"
-                      >
-                        <option value="Off-Plan Properties">Off-Plan Properties (Developer Releases)</option>
-                        <option value="Secondary Market">Secondary Market (Ready & Resale)</option>
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="+971 50 123 4567"
+                      className="w-full bg-neutral-50 border border-neutral-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#CCA14C]"
+                    />
                   </div>
 
                   <div>

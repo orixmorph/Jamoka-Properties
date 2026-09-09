@@ -14,7 +14,6 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
     name: '',
     email: '',
     phone: '',
-    queryType: 'Off-Plan Properties',
     message: '',
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -147,34 +146,18 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300 block mb-1">
-                        Phone Number *
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+971 50 123 4567"
-                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#D4AF37]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300 block mb-1">
-                        Off-Plan or Secondary Query *
-                      </label>
-                      <select
-                        value={formData.queryType}
-                        onChange={(e) => setFormData({ ...formData, queryType: e.target.value })}
-                        className="w-full bg-[#141C2C] border border-white/20 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
-                      >
-                        <option value="Off-Plan Properties">Off-Plan Properties (Developer Releases)</option>
-                        <option value="Secondary Market">Secondary Market (Ready & Resale)</option>
-                      </select>
-                    </div>
+                  <div>
+                    <label className="text-[11px] font-semibold uppercase tracking-wider text-neutral-300 block mb-1">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="+971 50 123 4567"
+                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#D4AF37]"
+                    />
                   </div>
 
                   <div>

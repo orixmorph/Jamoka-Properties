@@ -187,11 +187,11 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
             </div>
           </div>
 
-          {/* Download Brochure Section */}
+          {/* Learn More & Project Inquiry Section */}
           <div className="p-6 rounded-2xl bg-gradient-to-br from-[#FAF5EC] via-white to-[#F5EFE6] border border-[#D4AF37]/40 shadow-sm">
             <div className="flex items-center gap-2 text-[#A6833D] text-[11px] font-bold uppercase tracking-widest mb-1">
-              <Download className="w-4 h-4" />
-              <span>Official Sales Documentation</span>
+              <Send className="w-4 h-4 text-[#D4AF37]" />
+              <span>Direct Developer Advisory</span>
             </div>
             <h3 className="text-lg font-bold text-slate-900 font-serif-luxury">
               {t.projects.downloadBrochure}
@@ -211,7 +211,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                 </p>
                 <div className="pt-2 flex flex-wrap gap-2">
                   <a
-                    href={`https://wa.me/97143999999?text=Hello%20Jamoka%20Properties,%20I%20have%20requested%20the%20brochure%20for%20${encodeURIComponent(project.name)}`}
+                    href={`https://wa.me/97143999999?text=Hello%20Jamoka%20Properties,%20I%20am%20inquiring%20about%20${encodeURIComponent(project.name)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-4 py-2 rounded-lg bg-[#25D366] text-white font-bold text-xs flex items-center gap-1.5 shadow-sm hover:brightness-105"
@@ -221,18 +221,18 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                   </a>
                   <button
                     onClick={() => setDownloadSuccess(false)}
-                    className="px-4 py-2 rounded-lg bg-neutral-200 text-slate-700 font-bold text-xs hover:bg-neutral-300"
+                    className="px-4 py-2 rounded-lg bg-neutral-200 text-slate-700 font-bold text-xs hover:bg-neutral-300 cursor-pointer"
                   >
-                    Request Another
+                    Send Another Inquiry
                   </button>
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleBrochureSubmit} className="space-y-3">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <form onSubmit={handleBrochureSubmit} className="space-y-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                      {t.projects.namePlaceholder} *
+                      Your Name *
                     </label>
                     <input
                       type="text"
@@ -240,51 +240,36 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. Michael Smith"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800 shadow-sm"
                     />
                   </div>
                   <div>
                     <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                      {t.projects.emailPlaceholder} *
+                      Email Address *
                     </label>
                     <input
                       type="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="name@example.com"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
+                      placeholder="investor@example.com"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800 shadow-sm"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                      {t.projects.phonePlaceholder} *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+971 50 123 4567"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                      Off-Plan or Secondary Query *
-                    </label>
-                    <select
-                      value={formData.queryType}
-                      onChange={(e) => setFormData({ ...formData, queryType: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800"
-                    >
-                      <option value="Off-Plan Properties">Off-Plan Properties (Developer Releases)</option>
-                      <option value="Secondary Market">Secondary Market (Ready & Resale)</option>
-                    </select>
-                  </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+971 50 123 4567"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800 shadow-sm"
+                  />
                 </div>
 
                 <div>
@@ -292,28 +277,28 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                     Message
                   </label>
                   <textarea
-                    rows={2}
+                    rows={3}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder={`Inquiry about ${project.name} (pricing, payment schedule, or floor plans)...`}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800 resize-none"
+                    placeholder={`Please send me details, current availability, and the best payment plans for ${project.name}...`}
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800 resize-none shadow-sm"
                   />
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <button
                     type="submit"
-                    className="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs tracking-wider uppercase hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2"
+                    className="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs tracking-wider uppercase hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Send className="w-4 h-4" />
                     <span>Send Message</span>
                   </button>
 
                   <a
-                    href={`https://wa.me/97143999999?text=Hello%20Jamoka%20Properties,%20please%20send%20me%20details%20for%20${encodeURIComponent(project.name)}`}
+                    href={`https://wa.me/97143999999?text=Hello%20Jamoka%20Properties,%20please%20send%20me%20details%20and%20payment%20plans%20for%20${encodeURIComponent(project.name)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-3.5 px-5 rounded-xl bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 transition-colors"
+                    className="py-3.5 px-5 rounded-xl bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <MessageSquare className="w-4 h-4 text-emerald-400" />
                     <span>WhatsApp</span>

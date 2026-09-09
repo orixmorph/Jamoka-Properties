@@ -19,7 +19,6 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [queryType, setQueryType] = useState('Off-Plan Properties');
   const [message, setMessage] = useState('');
 
   if (!isOpen || !property) return null;
@@ -213,33 +212,18 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                      Phone Number *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="+971 50 123 4567"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
-                      Off-Plan or Secondary Query *
-                    </label>
-                    <select
-                      value={queryType}
-                      onChange={(e) => setQueryType(e.target.value)}
-                      className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
-                    >
-                      <option value="Off-Plan Properties">Off-Plan Properties (Developer Releases)</option>
-                      <option value="Secondary Market">Secondary Market (Ready & Resale)</option>
-                    </select>
-                  </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="+971 50 123 4567"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
+                  />
                 </div>
 
                 <div>
