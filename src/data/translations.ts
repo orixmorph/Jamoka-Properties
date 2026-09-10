@@ -105,6 +105,8 @@ export interface Translations {
     subtitle: string;
     goldenVisaTitle: string;
     goldenVisaDesc: string;
+    twoYearVisaTitle: string;
+    twoYearVisaDesc: string;
     stage0Title: string;
     stage0Desc: string;
     escrowTitle: string;
@@ -226,7 +228,7 @@ export const translations: Record<Language, Translations> = {
       title: 'About Jamoka Properties',
       subtitle: 'A trusted real estate brokerage headquartered in Dubai, guiding global clients with integrity and deep market knowledge.',
       storyTitle: 'Our Heritage & Mission',
-      storyText1: 'Jamoka Properties was established to provide transparent, analytical guidance in Dubai’s vibrant off-plan market. Headquartered at DIFC Gate Precinct, our advisory team helps individuals, families, and sovereign investors navigate developer releases with confidence.',
+      storyText1: 'Jamoka Properties was established to provide transparent, analytical guidance in Dubai’s vibrant off-plan market. Headquartered at Bayswater Tower, 8th and 11th floor, Business Bay, our advisory team helps individuals, families, and sovereign investors navigate developer releases with confidence.',
       storyText2: 'Our team monitors every construction milestone, verifies Land Department trust accounts, and ensures each client receives the most advantageous payment structure and prime unit allocations.',
       teamTitle: 'Meet Our Leadership & Senior Advisors',
       teamSubtitle: 'Decades of combined experience in Dubai master developments, conveyancing, and property investment.',
@@ -257,6 +259,8 @@ export const translations: Record<Language, Translations> = {
       subtitle: 'Comprehensive real estate support from early project selection to handover and ongoing asset management.',
       goldenVisaTitle: '10-Year UAE Golden Visa Assistance',
       goldenVisaDesc: 'Property purchases of AED 2M+ qualify for the UAE 10-Year Golden Residency. We coordinate the full verification with the Dubai Land Department and GDRFA.',
+      twoYearVisaTitle: '2-Year Property Investor Residency (Under AED 2M)',
+      twoYearVisaDesc: 'Purchasing a property valued from AED 750,000 up to AED 2M qualifies international buyers for a 2-Year Renewable UAE Property Investor Residence Visa, including full family sponsorship.',
       stage0Title: 'Direct Developer Pre-Launch Access',
       stage0Desc: 'Gain access to first-tier pricing and prime high-floor units before public launch releases.',
       escrowTitle: 'Escrow Account & Contract Diligence',
@@ -376,7 +380,7 @@ export const translations: Record<Language, Translations> = {
       title: 'عن جاموكا العقارية',
       subtitle: 'شركة وساطة واستشارات عقارية معتمدة في دبي، تقدم خدمات متميزة قائمة على الشفافية والخبرة السوقية العميقة.',
       storyTitle: 'مسيرتنا ورؤيتنا',
-      storyText1: 'تأسست جاموكا العقارية لتقديم استشارات دقيقة وموثوقة للمستثمرين في سوق دبي العقاري المتنامي. من مقرنا في مركز دبي المالي العالمي (DIFC)، نساعد العائلات والمستثمرين على اقتناء أفضل الوحدات بأسعار الإطلاق الأولى.',
+      storyText1: 'تأسست جاموكا العقارية لتقديم استشارات دقيقة وموثوقة للمستثمرين في سوق دبي العقاري المتنامي. من مقرنا في برج بيزواتر، الطابقين الثامن والحادي عشر، منطقة الخليج التجاري في دبي، نساعد العائلات والمستثمرين على اقتناء أفضل الوحدات بأسعار الإطلاق الأولى.',
       storyText2: 'نحرص على متابعة مراحل الإنجاز الميداني، والتحقق من حسابات الضمان المعتمدة لدى دائرة الأراضي والأملاك، لضمان أعلى مستويات الأمان الاستثماري لعملائنا.',
       teamTitle: 'فريق الإدارة والمستشارين',
       teamSubtitle: 'خبرة طويلة متراكمة في مجالات التطوير العقاري والاستثمار في دبي.',
@@ -407,6 +411,8 @@ export const translations: Record<Language, Translations> = {
       subtitle: 'دعم عقاري شامل يبدأ من اختيار المشروع وحتى الاستلام وإعادة البيع وإدارة الأصول.',
       goldenVisaTitle: 'المساعدة في الإقامة الذهبية (10 سنوات)',
       goldenVisaDesc: 'شراء عقار بقيمة 2 مليون درهم فما فوق يمنحك حق الحصول على الإقامة الذهبية في الإمارات. نقوم بتنسيق الإجراءات كاملة مع دائرة الأراضي والأملاك والإقامة.',
+      twoYearVisaTitle: 'إقامة المستثمر العقاري لسنتين (أقل من 2 مليون درهم)',
+      twoYearVisaDesc: 'شراء عقار بقيمة تبدأ من 750,000 درهم وحتى أقل من مليوني درهم يمنح المستثمر الدولي إقامة عقارية قابلة للتجديد لمدة سنتين، تشمل كفالة أفراد الأسرة.',
       stage0Title: 'أولوية الحجز قبل الإطلاق الرسمي',
       stage0Desc: 'احصل على وحدات الطوابق العليا بأسعار المرحلة الأولى المتميزة قبل طرحها للجمهور.',
       escrowTitle: 'تدقيق حسابات الضمان والعقود',

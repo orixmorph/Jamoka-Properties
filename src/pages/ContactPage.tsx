@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { MapPin, Phone, Mail, Clock, MessageSquare, ShieldCheck, CheckCircle2, Send, Building, Loader2 } from 'lucide-react';
 import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
+import { SOCIAL_LINKS } from '../components/SocialIcons';
 
 export const ContactPage: React.FC = () => {
   const { t, isRTL } = useLanguage();
@@ -227,6 +228,46 @@ export const ContactPage: React.FC = () => {
                   <MessageSquare className="w-4 h-4" />
                   <span>{t.contactPage.whatsappTitle}</span>
                 </a>
+              </div>
+            </div>
+
+            {/* Official Social Channels Card - Bigger Version */}
+            <div className="bg-white rounded-3xl p-6 sm:p-7 border border-neutral-200/80 shadow-md">
+              <span className="text-[11px] font-bold text-[#A6833D] uppercase tracking-widest block mb-1">
+                OFFICIAL SOCIAL MEDIA
+              </span>
+              <h4 className="text-lg font-bold text-slate-900 font-serif-luxury mb-1">
+                Follow Jamoka Properties
+              </h4>
+              <p className="text-xs text-slate-500 font-light mb-5">
+                Stay updated with off-plan launch videos, construction updates, and market briefings.
+              </p>
+
+              <div className="grid grid-cols-2 gap-3">
+                {SOCIAL_LINKS.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-3 p-3.5 rounded-2xl bg-neutral-50 hover:bg-white border border-neutral-200/80 hover:border-[#D4AF37] hover:shadow-md transition-all duration-300 group`}
+                    >
+                      <div className={`w-11 h-11 rounded-xl bg-slate-900 text-white flex items-center justify-center ${social.hoverBg} transition-colors shrink-0 shadow-sm`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-xs font-bold text-slate-900 block truncate group-hover:text-[#A6833D] transition-colors">
+                          {social.name}
+                        </span>
+                        <span className="text-[10px] text-slate-500 font-medium block">
+                          Follow us
+                        </span>
+                      </div>
+                    </a>
+                  );
+                })}
               </div>
             </div>
 

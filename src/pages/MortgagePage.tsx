@@ -31,7 +31,8 @@ export const MortgagePage: React.FC<MortgagePageProps> = ({ onNavigateContact })
   const partnerBanks = [
     { name: 'Emirates NBD', type: 'Premier Retail & Wealth Bank', maxLTV: 'Up to 80%' },
     { name: 'First Abu Dhabi Bank (FAB)', type: 'UAE Largest Financial Institution', maxLTV: 'Up to 80%' },
-    { name: 'Dubai Islamic Bank (DIB)', type: 'Sharia-Compliant Home Murabaha', maxLTV: 'Up to 80%' },
+    { name: 'Dubai Islamic Bank (DIB)', type: 'Pioneering Sharia-Compliant Home Murabaha', maxLTV: 'Up to 80%' },
+    { name: 'Abu Dhabi Islamic Bank (ADIB)', type: 'Leading Islamic Home Finance & Fast Approvals', maxLTV: 'Up to 80%' },
     { name: 'Abu Dhabi Commercial Bank (ADCB)', type: 'Competitive Fixed Rate Facilities', maxLTV: 'Up to 75%' },
     { name: 'Mashreq Neo & Private Bank', type: 'Fast Digital Pre-Approvals', maxLTV: 'Up to 80%' },
     { name: 'Standard Chartered & HSBC', type: 'Cross-Border Non-Resident Specialists', maxLTV: 'Up to 65%' },

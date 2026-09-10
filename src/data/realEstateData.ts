@@ -64,7 +64,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Managing Partner & Founder',
     experience: '18+ Years Dubai Real Estate',
     specialty: 'Master Developer Negotiations & Sovereign Portfolios',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop',
+    image: 'https://res.cloudinary.com/jamoka/image/upload/v1710000001/team/tariq-al-mansoor.jpg',
     bio: 'Former senior investment director at top regional sovereign wealth funds, Tariq founded Jamoka Properties to bring transparency, institutional discipline, and priority developer access to private investors worldwide.',
   },
   {
@@ -72,7 +72,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Head of Off-Plan Investments',
     experience: '12+ Years Advisory',
     specialty: 'Stage-0 Allocations & Escrow Account Structuring',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop',
+    image: 'https://res.cloudinary.com/jamoka/image/upload/v1710000002/team/farhan-sheikh.jpg',
     bio: 'Directly oversees off-plan developer relationships with Emaar, Nakheel, and Omniyat. Farhan has advised on over AED 2.4 Billion in off-plan residential transactions.',
   },
   {
@@ -80,7 +80,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Senior Investment Advisor - Prime Waterfront',
     experience: '9+ Years in UAE',
     specialty: 'Palm Jumeirah, Dubai Islands & Canal Estates',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop',
+    image: 'https://res.cloudinary.com/jamoka/image/upload/v1710000003/team/sarah-jenkins.jpg',
     bio: 'Specializing in trophy residences and beachfront acquisitions, Sarah represents international family offices seeking prime capital appreciation and Golden Visa qualification.',
   },
   {
@@ -88,7 +88,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Director of International Client Relations',
     experience: '10+ Years Cross-Border Advisory',
     specialty: 'European & CIS Wealth Management & Golden Visa',
-    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop',
+    image: 'https://res.cloudinary.com/jamoka/image/upload/v1710000004/team/elena-rostova.jpg',
     bio: 'Guides overseas buyers through zero-tax residency setup, seamless banking onboarding, and legal conveyancing under the Dubai Land Department framework.',
   },
   {
@@ -96,7 +96,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Head of Legal & Escrow Conveyancing',
     experience: '14+ Years Property Law',
     specialty: 'RERA Law No. 8 & Title Deed Registration',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=800&auto=format&fit=crop',
+    image: 'https://res.cloudinary.com/jamoka/image/upload/v1710000005/team/zaid-al-hashimi.jpg',
     bio: 'Licensed legal counsel ensuring all client transactions strictly comply with RERA escrow custody rules, developer sales contracts, and Oqood registrations.',
   },
   {
@@ -104,7 +104,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Head of Mortgage & Financing Solutions',
     experience: '11+ Years Banking',
     specialty: 'UAE Central Bank Regulations & Non-Resident Mortgages',
-    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop',
+    image: 'https://res.cloudinary.com/jamoka/image/upload/v1710000006/team/marcus-vance.jpg',
     bio: 'Former senior private banker coordinating pre-approvals and handover financing with top UAE institutions including Emirates NBD, First Abu Dhabi Bank (FAB), and ADCB.',
   },
 ];

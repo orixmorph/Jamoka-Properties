@@ -3,6 +3,7 @@ import { JamokaLogo } from './Logos';
 import { ShieldCheck, ExternalLink, MapPin, ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { PageType } from './Header';
+import { SOCIAL_LINKS } from './SocialIcons';
 
 interface FooterProps {
   onOpenSecondarySite: () => void;
@@ -34,7 +35,7 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
             <div>
               <span className="text-[10px] font-bold text-[#D4AF37] tracking-widest uppercase block">
-                SECONDARY MARKET & READY PROPERTIES
+                SQFT DXB • WE FIND, YOU MOVE IN
               </span>
               <span className="text-sm font-semibold text-white">
                 Looking for ready-to-move penthouses or prime resale villas in Dubai?
@@ -73,6 +74,30 @@ export const Footer: React.FC<FooterProps> = ({
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-[#D4AF37]" />
                 <span>Bayswater Tower, 8th and 11th floor, Business Bay, Dubai, UAE</span>
+              </div>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="pt-3">
+              <span className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider block mb-2.5">
+                Connect With Us
+              </span>
+              <div className="flex items-center gap-2.5">
+                {SOCIAL_LINKS.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Follow Jamoka Properties on ${social.name}`}
+                      className={`w-9 h-9 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-300 hover:text-white ${social.hoverBg} transition-all duration-300 hover:scale-110 shadow-sm`}
+                    >
+                      <Icon className="w-4 h-4" />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -188,8 +213,8 @@ export const Footer: React.FC<FooterProps> = ({
             <span>•</span>
             <span className="text-neutral-400">DLD Escrow Protected</span>
             <span>•</span>
-            <button onClick={onOpenSecondarySite} className="hover:text-[#D4AF37] flex items-center gap-1">
-              <span>Partner: SQFT DXB</span>
+            <button onClick={onOpenSecondarySite} className="hover:text-[#D4AF37] flex items-center gap-1 cursor-pointer">
+              <span>Partner: SQFT DXB • We Find, You Move In</span>
               <ArrowUpRight className="w-3 h-3" />
             </button>
           </div>

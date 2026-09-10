@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { TEAM_MEMBERS } from '../data/realEstateData';
+import { AgentSlider } from '../components/AgentSlider';
 import { ShieldCheck, Award, Building, Users, MapPin, CheckCircle2, ArrowRight } from 'lucide-react';
 
 interface AboutPageProps {
@@ -149,6 +150,14 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
                   <img
                     src={member.image}
                     alt={member.name}
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      const fallback = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop';
+                      const target = e.target as HTMLImageElement;
+                      if (target.src !== fallback) {
+                        target.src = fallback;
+                      }
+                    }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
@@ -167,12 +176,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
                     <span className="text-xs font-bold text-slate-800 uppercase tracking-wide block">
                       {member.role}
                     </span>
-                    <span className="text-[11px] font-semibold text-[#A6833D] block mt-1">
+                    <span className="text-xs font-semibold text-[#A6833D] block mt-1.5 leading-snug">
                       {member.specialty}
                     </span>
-                    <p className="text-xs text-slate-600 mt-3 font-light leading-relaxed">
-                      {member.bio}
-                    </p>
                   </div>
 
                   <div className="pt-3 border-t border-neutral-200 flex items-center justify-between text-xs">
@@ -189,6 +195,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
               </div>
             ))}
           </div>
+
+          {/* Horizontal Sliding Team Profiles (20 Specialized Advisors) */}
+          <AgentSlider onContactAgent={() => onNavigateContact()} />
         </div>
       </section>
 

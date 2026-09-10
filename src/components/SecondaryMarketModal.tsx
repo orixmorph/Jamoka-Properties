@@ -64,10 +64,13 @@ export const SecondaryMarketModal: React.FC<SecondaryMarketModalProps> = ({
                 </span>
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold font-jakarta tracking-tight text-white">
-                SQFT DXB Prime Resale
+              <h3 className="text-2xl sm:text-3xl font-bold font-jakarta tracking-tight text-white flex items-center gap-2.5">
+                <span>SQFT DXB</span>
+                <span className="text-sm sm:text-base font-semibold text-[#ECC86A] tracking-normal font-jakarta">
+                  • We Find, You Move In
+                </span>
               </h3>
-              <p className="text-xs text-neutral-400 mt-1">
+              <p className="text-xs text-neutral-300 mt-1">
                 While Jamoka Properties commands Dubai’s off-plan sector, SQFT DXB curates verified secondary market and ready-to-move luxury properties.
               </p>
             </div>
@@ -92,15 +95,50 @@ export const SecondaryMarketModal: React.FC<SecondaryMarketModalProps> = ({
             </span>
           </div>
 
-          {/* Grid of sample secondary homes */}
+          {/* Grid of sample secondary homes with iOS zoom-in and settle spring animation */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {sampleSecondaryUnits.map((unit) => (
-              <div
+            {sampleSecondaryUnits.map((unit, index) => (
+              <motion.div
                 key={unit.title}
-                className="bg-neutral-50 rounded-2xl overflow-hidden border border-neutral-200 flex flex-col justify-between"
+                initial={{
+                  opacity: 0,
+                  scale: 1.35,
+                  y: -12,
+                  filter: 'blur(6px)',
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  filter: 'blur(0px)',
+                }}
+                transition={{
+                  type: 'spring',
+                  damping: 22,
+                  stiffness: 180,
+                  mass: 0.9,
+                  delay: 0.15 + index * 0.1,
+                }}
+                whileHover={{
+                  y: -4,
+                  transition: { duration: 0.2 },
+                }}
+                className="bg-neutral-50 rounded-2xl overflow-hidden border border-neutral-200 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow will-change-transform"
               >
-                <div className="relative h-40 w-full bg-slate-900">
-                  <img src={unit.image} alt={unit.title} className="w-full h-full object-cover" />
+                <div className="relative h-40 w-full bg-slate-900 overflow-hidden">
+                  <motion.img
+                    src={unit.image}
+                    alt={unit.title}
+                    className="w-full h-full object-cover"
+                    initial={{ scale: 1.15 }}
+                    animate={{ scale: 1 }}
+                    transition={{
+                      type: 'spring',
+                      damping: 25,
+                      stiffness: 160,
+                      delay: 0.18 + index * 0.1,
+                    }}
+                  />
                   <div className="absolute top-2 left-2">
                     <span className="text-[9px] font-bold bg-black/70 text-amber-300 px-2 py-0.5 rounded backdrop-blur-sm">
                       {unit.status}
@@ -120,7 +158,7 @@ export const SecondaryMarketModal: React.FC<SecondaryMarketModalProps> = ({
                     <span className="font-extrabold text-slate-900 text-sm">{unit.price}</span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 

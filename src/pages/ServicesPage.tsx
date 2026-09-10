@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { ShieldCheck, Sparkles, Award, Key, Building, CheckCircle2, ArrowRight, ArrowUpRight, ExternalLink } from 'lucide-react';
+import { ShieldCheck, Sparkles, Award, Key, Building, CheckCircle2, ArrowRight, ArrowUpRight, ExternalLink, UserCheck, FileCheck } from 'lucide-react';
 
 interface ServicesPageProps {
   onNavigateContact: () => void;
@@ -17,7 +17,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     {
       icon: <Award className="w-7 h-7 text-[#D4AF37]" />,
       title: t.servicesPage.goldenVisaTitle,
-      subtitle: 'Residency by Investment',
+      subtitle: 'Residency by Investment (AED 2M+)',
       desc: t.servicesPage.goldenVisaDesc,
       highlights: [
         'Eligible on cumulative real estate value of AED 2,000,000+',
@@ -26,6 +26,20 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         'Direct coordination with Dubai Land Department (DLD) and GDRFA',
       ],
       ctaText: 'Inquire Golden Visa',
+      action: onNavigateContact,
+    },
+    {
+      icon: <FileCheck className="w-7 h-7 text-[#A6833D]" />,
+      title: t.servicesPage.twoYearVisaTitle,
+      subtitle: 'Investor Visa Service (AED 750,000 – AED 2,000,000)',
+      desc: t.servicesPage.twoYearVisaDesc,
+      highlights: [
+        'Accessible threshold starting from just AED 750,000 property value',
+        'Ideal for studio, 1-bed, and 2-bed apartment purchases under AED 2M',
+        '100% renewable residency status for the principal investor',
+        'Enables sponsorship of spouse, children, and UAE residency banking',
+      ],
+      ctaText: 'Inquire 2-Year Investor Visa',
       action: onNavigateContact,
     },
     {
@@ -152,6 +166,9 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
             <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif-luxury">
               Jamoka Properties & SQFT DXB
             </h3>
+            <span className="text-xs font-semibold text-[#A6833D] tracking-wide block mt-0.5">
+              SQFT DXB: We Find, You Move In
+            </span>
             <p className="text-xs sm:text-sm text-slate-600 max-w-xl mt-1 font-light leading-relaxed">
               While Jamoka Properties specializes exclusively in high-yield off-plan developer allocations, our partner brokerage SQFT DXB manages resale, ready villa acquisitions, and tenant leasing across prime Dubai communities.
             </p>

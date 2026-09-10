@@ -83,11 +83,14 @@ export const SecondaryMarketPopup: React.FC<SecondaryMarketPopupProps> = ({
                 </div>
 
                 <div className="flex flex-col">
-                  <span className="text-[10px] font-bold text-[#A6833D] tracking-[0.2em] uppercase">
-                    READY INVENTORY
-                  </span>
-                  <span className="text-sm font-bold text-[#0F172A] leading-tight font-jakarta">
-                    SQFT DXB Prime Resale
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm sm:text-base font-bold text-[#0F172A] leading-tight font-jakarta">
+                      SQFT DXB
+                    </span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse shrink-0 inline-block" />
+                  </div>
+                  <span className="text-[11px] font-semibold text-[#A6833D] tracking-wide font-jakarta">
+                    We Find, You Move In
                   </span>
                 </div>
               </div>
@@ -109,7 +112,7 @@ export const SecondaryMarketPopup: React.FC<SecondaryMarketPopupProps> = ({
 
             {/* Subtext */}
             <p className="text-xs text-slate-600 leading-relaxed mb-4 font-light font-jakarta">
-              Explore curated ready-to-move penthouses, luxury villas, and exclusive secondary market inventory across Dubai.
+              Explore curated ready-to-move penthouses, luxury villas, and exclusive secondary market inventory across Dubai with SQFT DXB — <span className="font-semibold text-slate-800">We Find, You Move In</span>.
             </p>
 
             <div className="h-px w-full bg-neutral-100 mb-3.5" />
@@ -131,7 +134,7 @@ export const SecondaryMarketPopup: React.FC<SecondaryMarketPopupProps> = ({
         <button
           onClick={() => setIsOpen(true)}
           className="fixed bottom-5 right-4 sm:right-6 z-40 flex items-center gap-2.5 bg-[#0F172A] text-white px-4 py-2.5 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.3)] border border-[#D4AF37]/50 hover:border-[#D4AF37] hover:scale-105 transition-all text-xs font-bold font-jakarta"
-          title="Looking for Ready / Secondary properties?"
+          title="SQFT DXB • We Find, You Move In"
         >
           <div className="relative p-[1.5px] rounded-lg overflow-hidden shrink-0">
             <div className="absolute inset-[-100%] animate-rotate-gradient bg-[conic-gradient(from_0deg,#D4AF37_0%,#F59E0B_50%,#D4AF37_100%)]" />
@@ -139,7 +142,7 @@ export const SecondaryMarketPopup: React.FC<SecondaryMarketPopupProps> = ({
               SQ
             </div>
           </div>
-          <span className="tracking-wide">Secondary Market</span>
+          <span className="tracking-wide">SQFT DXB • We Find, You Move In</span>
           <ExternalLink className="w-3.5 h-3.5 text-[#D4AF37]" />
         </button>
       )}

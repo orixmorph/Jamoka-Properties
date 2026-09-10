@@ -98,7 +98,7 @@ export const Header: React.FC<HeaderProps> = ({
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && onOpenSecondarySite()}
               className="flex items-center cursor-pointer p-1 rounded-lg hover:bg-neutral-50/80 transition-colors shrink-0 whitespace-nowrap group"
-              title="Click to visit SQFT DXB for Secondary Market Resales"
+              title="SQFT DXB • We Find, You Move In"
             >
               <SqftDxbLogo size="sm" />
               <ExternalLink className="w-3.5 h-3.5 text-neutral-400 ml-1.5 opacity-60 group-hover:opacity-100 group-hover:text-[#D4AF37] transition-all shrink-0" />

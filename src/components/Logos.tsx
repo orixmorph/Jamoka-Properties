@@ -164,7 +164,7 @@ export const SqftMonogram: React.FC<{ className?: string; size?: number }> = ({
     <div
       className={`relative flex items-center justify-center rounded-sm overflow-hidden bg-black border border-white/20 shadow-sm shrink-0 select-none ${className}`}
       style={{ width: size, height: size }}
-      title="SQFT DXB - Secondary & Resale"
+      title="SQFT DXB • We Find, You Move In"
     >
       <img
         src="/sqft-logo.png"
@@ -192,7 +192,7 @@ export const SqftDxbLogo: React.FC<{
     <div
       onClick={onClick}
       className="flex items-center gap-2.5 sm:gap-3 group cursor-pointer select-none relative whitespace-nowrap shrink-0"
-      title="Partnered Website: SQFT DXB - Secondary Market & Ready Resale"
+      title="Partnered Website: SQFT DXB • We Find, You Move In"
     >
       <SqftMonogram
         size={pixelSize}
@@ -209,8 +209,8 @@ export const SqftDxbLogo: React.FC<{
           </span>
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse shrink-0"></span>
         </div>
-        <span className="text-[8px] sm:text-[9px] font-semibold tracking-[0.24em] uppercase text-slate-500 font-jakarta whitespace-nowrap">
-          Secondary • Resale
+        <span className="text-[8px] sm:text-[9px] font-semibold tracking-[0.18em] uppercase text-slate-500 font-jakarta whitespace-nowrap">
+          We Find, You Move In
         </span>
       </div>
     </div>
@@ -230,7 +230,7 @@ export const SqftPartnerLogo: React.FC<{ isDarkBackground?: boolean }> = ({
           ? 'bg-white/5 border-neutral-700 hover:border-[#D4AF37]/80 text-white'
           : 'bg-white/90 border-neutral-200/90 hover:border-[#D4AF37]/60 text-[#0F172A]'
       }`}
-      title="Visit Partner Site: SQFT DXB Prime Resale & Secondary Market"
+      title="Visit Partner Site: SQFT DXB • We Find, You Move In"
     >
       <SqftMonogram size={30} className="shrink-0" />
       <div className="flex flex-col text-left whitespace-nowrap">
@@ -251,7 +251,7 @@ export const SqftPartnerLogo: React.FC<{ isDarkBackground?: boolean }> = ({
             isDarkBackground ? 'text-neutral-400' : 'text-neutral-500'
           }`}
         >
-          Secondary • Resale
+          We Find, You Move In
         </span>
       </div>
     </a>
