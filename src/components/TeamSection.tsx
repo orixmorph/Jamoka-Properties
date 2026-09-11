@@ -65,7 +65,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
               </span>
               
               {/* Heading */}
-              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#0D1B2A] tracking-tight leading-[1.18] font-jakarta">
+              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#0D1B2A] tracking-tight leading-[1.18] font-caughe">
                 Meet the People Behind JAMOKA
               </h2>
             </div>

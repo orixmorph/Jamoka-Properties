@@ -41,7 +41,7 @@ export const ServicesSection: React.FC<{ onBookConsultation: () => void }> = ({
     <section id="services" className="py-20 bg-neutral-50 border-t border-neutral-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#D4AF37]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
             <span>FULL-LIFECYCLE MANDATE</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
@@ -59,13 +59,13 @@ export const ServicesSection: React.FC<{ onBookConsultation: () => void }> = ({
             return (
               <div
                 key={srv.title}
-                className="bg-white rounded-2xl p-7 border border-neutral-200/80 hover:border-[#D4AF37]/60 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                className="bg-white rounded-2xl p-7 border border-neutral-200/80 hover:border-[#CFA55A]/60 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-[#FAF5EC] border border-[#D4AF37]/25 flex items-center justify-center text-[#D4AF37] mb-5 group-hover:scale-110 group-hover:bg-[#0F172A] transition-all">
+                  <div className="w-12 h-12 rounded-xl bg-[#FAF5EC] border border-[#CFA55A]/25 flex items-center justify-center text-[#CFA55A] mb-5 group-hover:scale-110 group-hover:bg-black transition-all">
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#D4AF37] transition-colors leading-tight mb-2">
+                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#CFA55A] transition-colors leading-tight mb-2">
                     {srv.title}
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -79,7 +79,7 @@ export const ServicesSection: React.FC<{ onBookConsultation: () => void }> = ({
                   </span>
                   <button
                     onClick={onBookConsultation}
-                    className="text-xs font-bold text-[#D4AF37] hover:text-[#0F172A] flex items-center gap-1 transition-colors"
+                    className="text-xs font-bold text-[#CFA55A] hover:text-black flex items-center gap-1 transition-colors"
                   >
                     <span>Engage Advisory</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />

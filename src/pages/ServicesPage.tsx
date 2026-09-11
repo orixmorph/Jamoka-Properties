@@ -15,7 +15,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
 
   const services = [
     {
-      icon: <Award className="w-7 h-7 text-[#D4AF37]" />,
+      icon: <Award className="w-7 h-7 text-[#CFA55A]" />,
       title: t.servicesPage.goldenVisaTitle,
       subtitle: 'Residency by Investment (AED 2M+)',
       desc: t.servicesPage.goldenVisaDesc,
@@ -43,7 +43,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       action: onNavigateContact,
     },
     {
-      icon: <Sparkles className="w-7 h-7 text-[#D4AF37]" />,
+      icon: <Sparkles className="w-7 h-7 text-[#CFA55A]" />,
       title: t.servicesPage.stage0Title,
       subtitle: 'VIP Priority Allocation',
       desc: t.servicesPage.stage0Desc,
@@ -71,7 +71,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       action: onNavigateContact,
     },
     {
-      icon: <Key className="w-7 h-7 text-[#D4AF37]" />,
+      icon: <Key className="w-7 h-7 text-[#CFA55A]" />,
       title: t.servicesPage.portfolioTitle,
       subtitle: 'Secondary Market Partnership with SQFT DXB',
       desc: t.servicesPage.portfolioDesc,
@@ -89,11 +89,11 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   return (
     <div className="min-h-screen bg-[#FAF9F6] pb-24">
       {/* Header Banner */}
-      <section className="relative py-20 bg-[#0A0E17] text-white overflow-hidden">
+      <section className="relative pt-36 sm:pt-40 pb-20 bg-[#0A0E17] text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0E17] via-[#0A0E17]/90 to-transparent" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#D4AF37]/40 text-[#ECC86A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#CFA55A]/40 text-[#CFA55A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>EXECUTIVE ADVISORY</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-bold font-serif-luxury text-white mb-3">
@@ -110,12 +110,12 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         {services.map((service, index) => (
           <div
             key={index}
-            className="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-neutral-200/80 hover:border-[#D4AF37]/60 hover:shadow-xl transition-all"
+            className="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-neutral-200/80 hover:border-[#CFA55A]/60 hover:shadow-xl transition-all"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-8 space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 rounded-2xl bg-[#FAF5EC] border border-[#D4AF37]/30 flex items-center justify-center shrink-0">
+                  <div className="w-14 h-14 rounded-2xl bg-[#FAF5EC] border border-[#CFA55A]/30 flex items-center justify-center shrink-0">
                     {service.icon}
                   </div>
                   <div>
@@ -145,10 +145,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
               <div className="lg:col-span-4 flex flex-col justify-center items-start lg:items-end pt-4 lg:pt-0 border-t lg:border-t-0 border-neutral-100">
                 <button
                   onClick={service.action}
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#0F172A] to-[#1E293B] hover:brightness-125 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-black hover:bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>{service.ctaText}</span>
-                  <ArrowRight className="w-4 h-4 text-[#D4AF37]" />
+                  <ArrowRight className="w-4 h-4 text-[#CFA55A]" />
                 </button>
               </div>
             </div>
@@ -158,7 +158,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
 
       {/* Secondary Resale Synergy Notice */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <div className="p-8 rounded-3xl bg-gradient-to-r from-[#FAF5EC] via-white to-[#F5EFE6] border border-[#D4AF37]/40 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="p-8 rounded-3xl bg-gradient-to-r from-[#FAF5EC] via-white to-[#F5EFE6] border border-[#CFA55A]/40 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
             <span className="text-xs font-bold text-[#A6833D] uppercase tracking-widest block mb-1">
               DUAL BROKERAGE ECOSYSTEM
@@ -175,10 +175,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           </div>
           <button
             onClick={onOpenSecondaryModal}
-            className="shrink-0 px-6 py-3.5 rounded-xl bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2"
+            className="shrink-0 px-6 py-3.5 rounded-xl bg-black hover:bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2 cursor-pointer"
           >
             <span>Visit SQFT DXB</span>
-            <ExternalLink className="w-4 h-4 text-[#ECC86A]" />
+            <ExternalLink className="w-4 h-4 text-[#CFA55A]" />
           </button>
         </div>
       </section>

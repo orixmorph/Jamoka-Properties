@@ -10,8 +10,8 @@ export const EnclavesSection: React.FC<{ onExploreEnclave?: (name: string) => vo
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#D4AF37]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-3">
-              <Compass className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-3">
+              <Compass className="w-3.5 h-3.5 text-[#CFA55A]" />
               <span>TERRITORIAL SPECIALIZATION</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
@@ -51,7 +51,7 @@ export const EnclavesSection: React.FC<{ onExploreEnclave?: (name: string) => vo
 
               {/* Bottom Content */}
               <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
-                <span className="text-xs text-[#ECC86A] font-semibold tracking-wider uppercase block">
+                <span className="text-xs text-[#CFA55A] font-semibold tracking-wider uppercase block">
                   {enclave.developers}
                 </span>
                 <h3 className="text-2xl font-bold font-serif-luxury leading-snug">
@@ -65,7 +65,7 @@ export const EnclavesSection: React.FC<{ onExploreEnclave?: (name: string) => vo
                   <span className="text-xs font-bold text-white tracking-wide">
                     {enclave.startingPrice}
                   </span>
-                  <div className="w-8 h-8 rounded-full bg-white/10 group-hover:bg-[#D4AF37] group-hover:text-black transition-colors flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-white/10 group-hover:bg-[#CFA55A] group-hover:text-black transition-colors flex items-center justify-center">
                     <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>

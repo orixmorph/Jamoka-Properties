@@ -86,7 +86,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
 
           {/* Badge & Developer */}
           <div className={`absolute top-4 ${isRTL ? 'right-4' : 'left-4'} flex items-center gap-2`}>
-            <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-[#D4AF37]/50 text-[#ECC86A] text-[10px] font-bold tracking-wider uppercase">
+            <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-[#CFA55A]/50 text-[#CFA55A] text-[10px] font-bold tracking-wider uppercase">
               {project.badge}
             </span>
             <span className="px-3 py-1 rounded-full bg-white/90 text-slate-900 text-[10px] font-extrabold uppercase">
@@ -97,7 +97,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
           {/* Bottom Title & Pricing */}
           <div className="absolute bottom-4 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-2 text-white">
             <div>
-              <span className="text-xs text-[#D4AF37] font-semibold flex items-center gap-1.5 uppercase tracking-wider">
+              <span className="text-xs text-[#CFA55A] font-semibold flex items-center gap-1.5 uppercase tracking-wider">
                 <MapPin className="w-3.5 h-3.5" />
                 {project.enclave}
               </span>
@@ -122,14 +122,14 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
             <div>
               <span className="text-slate-400 block uppercase text-[10px]">{t.projects.handover}</span>
               <span className="font-bold text-slate-900 text-sm mt-0.5 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <Calendar className="w-3.5 h-3.5 text-[#CFA55A]" />
                 {project.handover}
               </span>
             </div>
             <div>
               <span className="text-slate-400 block uppercase text-[10px]">{t.projects.paymentPlan}</span>
               <span className="font-bold text-slate-900 text-sm mt-0.5 flex items-center gap-1">
-                <Percent className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <Percent className="w-3.5 h-3.5 text-[#CFA55A]" />
                 {project.paymentPlan}
               </span>
             </div>
@@ -168,7 +168,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                   key={idx}
                   className="flex items-center gap-2.5 p-3 rounded-xl bg-white border border-neutral-200/80 text-xs text-slate-700 shadow-xs"
                 >
-                  <Sparkles className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                  <Sparkles className="w-4 h-4 text-[#CFA55A] shrink-0" />
                   <span className="font-medium">{feat}</span>
                 </div>
               ))}
@@ -187,7 +187,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                   className="flex items-center justify-between p-3 rounded-xl border border-neutral-200/80 bg-neutral-50/60"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-[#FAF5EC] text-[#D4AF37] font-bold text-xs flex items-center justify-center border border-[#D4AF37]/30">
+                    <div className="w-9 h-9 rounded-lg bg-[#FAF5EC] text-[#CFA55A] font-bold text-xs flex items-center justify-center border border-[#CFA55A]/30">
                       {m.percentage}%
                     </div>
                     <div>
@@ -201,9 +201,9 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
           </div>
 
           {/* Learn More & Project Inquiry Section */}
-          <div className="p-6 rounded-2xl bg-gradient-to-br from-[#FAF5EC] via-white to-[#F5EFE6] border border-[#D4AF37]/40 shadow-sm">
+          <div className="p-6 rounded-2xl bg-gradient-to-br from-[#FAF5EC] via-white to-[#F5EFE6] border border-[#CFA55A]/40 shadow-sm">
             <div className="flex items-center gap-2 text-[#A6833D] text-[11px] font-bold uppercase tracking-widest mb-1">
-              <Send className="w-4 h-4 text-[#D4AF37]" />
+              <Send className="w-4 h-4 text-[#CFA55A]" />
               <span>Direct Developer Advisory</span>
             </div>
             <h3 className="text-lg font-bold text-slate-900 font-serif-luxury">
@@ -256,7 +256,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. Michael Smith"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800 shadow-sm"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#CFA55A] bg-white text-slate-800 shadow-sm"
                     />
                   </div>
                   <div>
@@ -270,7 +270,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="investor@example.com"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800 shadow-sm"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#CFA55A] bg-white text-slate-800 shadow-sm"
                     />
                   </div>
                 </div>
@@ -286,7 +286,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="+971 50 123 4567"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800 shadow-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#CFA55A] bg-white text-slate-800 shadow-sm"
                   />
                 </div>
 
@@ -300,7 +300,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder={`Please send me details, current availability, and the best payment plans for ${project.name}...`}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#D4AF37] bg-white text-slate-800 resize-none shadow-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-xs focus:outline-none focus:border-[#CFA55A] bg-white text-slate-800 resize-none shadow-sm"
                   />
                 </div>
 
@@ -308,7 +308,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs tracking-wider uppercase hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                    className="flex-1 py-3.5 px-6 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0F172A] font-bold text-xs tracking-wider uppercase transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                   >
                     {isSubmitting ? (
                       <>
@@ -324,10 +324,10 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                   </button>
 
                   <a
-                    href={`https://wa.me/97143999999?text=Hello%20Jamoka%20Properties,%20please%20send%20me%20details%20and%20payment%20plans%20for%20${encodeURIComponent(project.name)}`}
+                    href={`https://wa.me/971588648093?text=Hello%20Jamoka%20Properties,%20please%20send%20me%20details%20and%20payment%20plans%20for%20${encodeURIComponent(project.name)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-3.5 px-5 rounded-xl bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="py-3.5 px-5 rounded-xl bg-black hover:bg-neutral-900 text-white font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <MessageSquare className="w-4 h-4 text-emerald-400" />
                     <span>WhatsApp</span>

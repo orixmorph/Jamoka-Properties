@@ -66,26 +66,25 @@ export const Hero: React.FC<HeroProps> = ({
         }}
       >
         {/* Sovereign Desk Top Badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-[#D4AF37]/40 mb-6 animate-in fade-in zoom-in-95 duration-500">
-          <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-ping" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-[#CFA55A]/40 mb-6 animate-in fade-in zoom-in-95 duration-500">
+          <span className="w-2 h-2 rounded-full bg-[#CFA55A] animate-ping" />
           <span className="text-[10px] md:text-[11px] font-bold tracking-[0.22em] text-[#FAF5EC] uppercase">
             DUBAI OFF-PLAN ADVISORY • SOVEREIGN DESK
           </span>
           <span className="hidden sm:inline text-neutral-400 text-xs">|</span>
-          <span className="hidden sm:inline text-[10px] tracking-widest text-[#D4AF37] font-semibold uppercase">
+          <span className="hidden sm:inline text-[10px] tracking-widest text-[#CFA55A] font-semibold uppercase">
             DIRECT ALLOCATIONS
           </span>
         </div>
 
         {/* Eyebrow */}
-        <p className="text-xs md:text-sm font-semibold tracking-[0.3em] text-[#D4AF37] uppercase mb-3">
+        <p className="text-xs md:text-sm font-semibold tracking-[0.3em] text-[#CFA55A] uppercase mb-3">
           PRIVATE REAL ESTATE COUNSEL
         </p>
 
         {/* Main Headline */}
         <h1
-          className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-[1.08] mb-6 font-serif-luxury"
-          style={{ fontFamily: "'Cormorant Garamond', 'Playfair Display', serif" }}
+          className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-[1.08] mb-6 font-caughe"
         >
           The Benchmark in Dubai <br className="hidden sm:inline" />
           <span className="text-gold-gradient italic font-normal">
@@ -102,7 +101,7 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="max-w-3xl mx-auto mb-8">
           <form
             onSubmit={handleSearchSubmit}
-            className="flex flex-col sm:flex-row items-center p-2 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl focus-within:border-[#D4AF37]/70 transition-all gap-2"
+            className="flex flex-col sm:flex-row items-center p-2 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl focus-within:border-[#CFA55A]/70 transition-all gap-2"
           >
             <div className="flex items-center flex-1 w-full px-3 py-1">
               <span className="material-symbols-outlined text-neutral-400 text-[20px] mr-2">
@@ -131,7 +130,7 @@ export const Hero: React.FC<HeroProps> = ({
 
             <button
               type="submit"
-              className="w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] hover:brightness-105 active:scale-95 text-[#0F172A] text-xs font-bold uppercase tracking-[0.14em] shadow-lg transition-all shrink-0 cursor-pointer"
+              className="w-full sm:w-auto px-7 py-3 rounded-xl bg-[#CFA55A] hover:brightness-105 active:scale-95 text-[#0F172A] text-xs font-bold uppercase tracking-[0.14em] shadow-lg transition-all shrink-0 cursor-pointer"
             >
               Search Off-Plan
             </button>
@@ -149,7 +148,7 @@ export const Hero: React.FC<HeroProps> = ({
                   setSearchInput(tag);
                   onSearch(tag);
                 }}
-                className="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/15 text-neutral-300 hover:text-white border border-white/10 hover:border-[#D4AF37]/50 transition-all cursor-pointer text-[10px] sm:text-[11px]"
+                className="px-2.5 py-1 rounded-full bg-white/5 hover:bg-white/15 text-neutral-300 hover:text-white border border-white/10 hover:border-[#CFA55A]/50 transition-all cursor-pointer text-[10px] sm:text-[11px]"
               >
                 {tag}
               </button>
@@ -171,9 +170,9 @@ export const Hero: React.FC<HeroProps> = ({
 
           <button
             onClick={onOpenConsultation}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-transparent border border-white/30 text-white font-bold text-xs uppercase tracking-[0.16em] hover:bg-white/10 hover:border-[#D4AF37] transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-transparent border border-white/30 text-white font-bold text-xs uppercase tracking-[0.16em] hover:bg-white/10 hover:border-[#CFA55A] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[16px] text-[#D4AF37]">
+            <span className="material-symbols-outlined text-[16px] text-[#CFA55A]">
               calendar_month
             </span>
             <span>PRIVATE CONSULTATION</span>
@@ -183,7 +182,7 @@ export const Hero: React.FC<HeroProps> = ({
         {/* Trust Badges / Telemetry */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 border-t border-white/10 text-center">
           <div className="p-3">
-            <span className="text-xl sm:text-2xl font-extrabold text-[#D4AF37] block font-serif-luxury">
+            <span className="text-xl sm:text-2xl font-extrabold text-[#CFA55A] block font-serif-luxury">
               AED 2.4B+
             </span>
             <span className="text-[10px] sm:text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
@@ -199,7 +198,7 @@ export const Hero: React.FC<HeroProps> = ({
             </span>
           </div>
           <div className="p-3">
-            <span className="text-xl sm:text-2xl font-extrabold text-[#D4AF37] block font-serif-luxury">
+            <span className="text-xl sm:text-2xl font-extrabold text-[#CFA55A] block font-serif-luxury">
               0% Commission
             </span>
             <span className="text-[10px] sm:text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">

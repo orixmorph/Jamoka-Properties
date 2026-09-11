@@ -3,7 +3,7 @@
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&amp;display=swap');
       .jamoka-gold-text {
-        font-family: 'Cinzel', 'Playfair Display', 'Cormorant Garamond', 'Times New Roman', serif;
+        font-family: 'Caughe', 'Cinzel', 'Playfair Display', Georgia, serif;
         font-weight: 600;
         font-size: 38px;
         letter-spacing: 0.16em;

@@ -51,7 +51,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-[#D4AF37]/40 overflow-hidden max-h-[92vh] flex flex-col">
+      <div className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl border border-[#CFA55A]/40 overflow-hidden max-h-[92vh] flex flex-col">
         {/* Modal Header Image */}
         <div className="relative h-56 md:h-72 w-full overflow-hidden shrink-0">
           <img
@@ -74,10 +74,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 <span className="px-2.5 py-0.5 rounded bg-[#0F172A]/90 text-[10px] font-bold tracking-wider text-white border border-white/20 uppercase">
                   {property.developer}
                 </span>
-                <span className="px-2.5 py-0.5 rounded bg-[#D4AF37] text-[10px] font-bold tracking-wider text-[#0F172A] uppercase">
+                <span className="px-2.5 py-0.5 rounded bg-[#CFA55A] text-[10px] font-bold tracking-wider text-[#0F172A] uppercase">
                   {property.tag}
                 </span>
-                <span className="text-[11px] text-[#D4AF37] font-semibold">
+                <span className="text-[11px] text-[#CFA55A] font-semibold">
                   Handover: {property.handover}
                 </span>
               </div>
@@ -90,7 +90,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             </div>
 
             <div className="text-right">
-              <span className="text-[10px] font-bold text-[#D4AF37] uppercase block tracking-wider">
+              <span className="text-[10px] font-bold text-[#CFA55A] uppercase block tracking-wider">
                 Baseline Price
               </span>
               <span className="text-xl md:text-2xl font-extrabold text-white">
@@ -107,7 +107,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
         <div className="p-6 md:p-8 overflow-y-auto space-y-6">
           {/* Overview */}
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#D4AF37] block mb-1">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#CFA55A] block mb-1">
               ARCHITECTURAL BRIEF
             </span>
             <p className="text-sm text-neutral-600 leading-relaxed">
@@ -126,7 +126,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                   onClose();
                   onOpenMortgage(rawPriceNumber);
                 }}
-                className="text-xs font-bold text-[#D4AF37] hover:underline flex items-center gap-1"
+                className="text-xs font-bold text-[#CFA55A] hover:underline flex items-center gap-1"
               >
                 <span>Calculate Mortgage</span>
                 <span className="material-symbols-outlined text-[14px]">calculate</span>
@@ -147,7 +147,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                 <span className="text-[10px] font-bold text-neutral-400 uppercase block mb-1">
                   During Construction
                 </span>
-                <span className="text-lg font-bold text-[#D4AF37]">
+                <span className="text-lg font-bold text-[#CFA55A]">
                   {property.constructionPercent}
                 </span>
                 <span className="text-[10px] text-neutral-500 block">Staggered Escrow</span>
@@ -172,7 +172,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-neutral-700">
               {property.projectHighlights.map((highlight, idx) => (
                 <div key={idx} className="flex items-center gap-2 p-2 rounded-lg bg-neutral-50 border border-neutral-100">
-                  <span className="material-symbols-outlined text-[16px] text-[#D4AF37]">
+                  <span className="material-symbols-outlined text-[16px] text-[#CFA55A]">
                     check_circle
                   </span>
                   <span>{highlight}</span>
@@ -213,7 +213,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                       placeholder="Your Full Name"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
+                      className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#CFA55A]"
                     />
                   </div>
                   <div>
@@ -227,7 +227,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                       placeholder="name@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
+                      className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#CFA55A]"
                     />
                   </div>
                 </div>
@@ -243,7 +243,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                     placeholder="+971 50 123 4567"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37]"
+                    className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#CFA55A]"
                   />
                 </div>
 
@@ -257,7 +257,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder={`Inquiring about ${property.name} (preferred layouts, unit elevation, or payment terms)...`}
-                    className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#D4AF37] resize-none"
+                    className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs focus:outline-none focus:border-[#CFA55A] resize-none"
                   />
                 </div>
 
@@ -268,7 +268,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-[#D4AF37] to-[#C5A059] text-[#0F172A] font-bold text-xs uppercase tracking-wider rounded-lg hover:brightness-105 transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                    className="w-full sm:w-auto px-6 py-2.5 bg-[#CFA55A] hover:bg-[#b8914b] text-[#0F172A] font-bold text-xs uppercase tracking-wider rounded-lg transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                   >
                     {isSubmitting ? (
                       <>

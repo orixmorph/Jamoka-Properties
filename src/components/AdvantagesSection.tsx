@@ -35,8 +35,8 @@ export const AdvantagesSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Capital Appreciation Chart Visual */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#D4AF37]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase">
-              <TrendingUp className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase">
+              <TrendingUp className="w-3.5 h-3.5 text-[#CFA55A]" />
               <span>EMPIRICAL APPRECIATION</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-[#0F172A] font-jakarta tracking-tight leading-tight">
@@ -47,11 +47,11 @@ export const AdvantagesSection: React.FC = () => {
             </p>
 
             {/* Custom SVG Capital Appreciation Graph */}
-            <div className="p-6 rounded-2xl bg-[#0F172A] text-white border border-neutral-800 shadow-xl">
+            <div className="p-6 rounded-2xl bg-neutral-950 text-white border border-neutral-800 shadow-xl">
               <div className="flex justify-between items-center mb-4 text-xs">
                 <div>
                   <span className="text-[10px] uppercase text-neutral-400 block">Average Value Expansion</span>
-                  <span className="text-xl font-extrabold text-[#D4AF37]">+58.4% Net Appreciation</span>
+                  <span className="text-xl font-extrabold text-[#CFA55A]">+58.4% Net Appreciation</span>
                 </div>
                 <div className="text-right">
                   <span className="text-[10px] uppercase text-neutral-400 block">Typical Horizon</span>
@@ -64,8 +64,8 @@ export const AdvantagesSection: React.FC = () => {
                 <svg viewBox="0 0 500 160" className="w-full h-full overflow-visible" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#D4AF37" stopOpacity="0.35" />
-                      <stop offset="100%" stopColor="#D4AF37" stopOpacity="0.0" />
+                      <stop offset="0%" stopColor="#CFA55A" stopOpacity="0.35" />
+                      <stop offset="100%" stopColor="#CFA55A" stopOpacity="0.0" />
                     </linearGradient>
                   </defs>
 
@@ -79,16 +79,16 @@ export const AdvantagesSection: React.FC = () => {
                   <path
                     d="M 10 140 C 120 135, 180 110, 260 80 C 340 50, 420 30, 490 15"
                     fill="none"
-                    stroke="#D4AF37"
+                    stroke="#CFA55A"
                     strokeWidth="3.5"
                     strokeLinecap="round"
                   />
 
                   {/* Milestone Points */}
-                  <circle cx="10" cy="140" r="5" fill="#D4AF37" />
-                  <circle cx="170" cy="115" r="5" fill="#D4AF37" />
-                  <circle cx="340" cy="50" r="5" fill="#D4AF37" />
-                  <circle cx="490" cy="15" r="6" fill="#FFFFFF" stroke="#D4AF37" strokeWidth="3" />
+                  <circle cx="10" cy="140" r="5" fill="#CFA55A" />
+                  <circle cx="170" cy="115" r="5" fill="#CFA55A" />
+                  <circle cx="340" cy="50" r="5" fill="#CFA55A" />
+                  <circle cx="490" cy="15" r="6" fill="#FFFFFF" stroke="#CFA55A" strokeWidth="3" />
                 </svg>
 
                 {/* Milestone Labels */}
@@ -96,7 +96,7 @@ export const AdvantagesSection: React.FC = () => {
                   <span>VIP Launch (0%)</span>
                   <span>Superstructure (+22%)</span>
                   <span>Handover (+48%)</span>
-                  <span className="text-[#D4AF37] font-bold">Resale / Handover (+58%)</span>
+                  <span className="text-[#CFA55A] font-bold">Resale / Handover (+58%)</span>
                 </div>
               </div>
             </div>
@@ -107,10 +107,10 @@ export const AdvantagesSection: React.FC = () => {
             {advantages.map((adv) => (
               <div
                 key={adv.title}
-                className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200/80 hover:border-[#D4AF37]/50 hover:bg-white transition-all shadow-sm group"
+                className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200/80 hover:border-[#CFA55A]/50 hover:bg-white transition-all shadow-sm group"
               >
-                <div className="flex items-center gap-2 mb-2 text-[#0F172A] group-hover:text-[#D4AF37] transition-colors">
-                  <CheckCircle2 className="w-4 h-4 text-[#D4AF37]" />
+                <div className="flex items-center gap-2 mb-2 text-[#0F172A] group-hover:text-[#CFA55A] transition-colors">
+                  <CheckCircle2 className="w-4 h-4 text-[#CFA55A]" />
                   <h3 className="font-bold text-sm">{adv.title}</h3>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed font-light">

@@ -33,11 +33,11 @@ export const ContactPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] pb-24">
       {/* Header Banner */}
-      <section className="relative py-20 bg-[#0A0E17] text-white overflow-hidden">
+      <section className="relative pt-36 sm:pt-40 pb-20 bg-[#0A0E17] text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0E17] via-[#0A0E17]/90 to-transparent" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#D4AF37]/40 text-[#ECC86A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
-            <Mail className="w-3.5 h-3.5 text-[#D4AF37]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#CFA55A]/40 text-[#CFA55A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
+            <Mail className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>GET IN TOUCH</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-bold font-serif-luxury text-white mb-3">
@@ -97,7 +97,7 @@ export const ContactPage: React.FC = () => {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. Michael Smith"
-                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs focus:border-[#D4AF37] focus:outline-none bg-neutral-50/50"
+                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs focus:border-[#CFA55A] focus:outline-none bg-neutral-50/50"
                     />
                   </div>
 
@@ -112,7 +112,7 @@ export const ContactPage: React.FC = () => {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="name@example.com"
-                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs focus:border-[#D4AF37] focus:outline-none bg-neutral-50/50"
+                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs focus:border-[#CFA55A] focus:outline-none bg-neutral-50/50"
                     />
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export const ContactPage: React.FC = () => {
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="+971 50 000 0000"
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs focus:border-[#D4AF37] focus:outline-none bg-neutral-50/50"
+                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs focus:border-[#CFA55A] focus:outline-none bg-neutral-50/50"
                   />
                 </div>
 
@@ -142,14 +142,14 @@ export const ContactPage: React.FC = () => {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Provide any specific development name, budget, or preferred handover year..."
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs focus:border-[#D4AF37] focus:outline-none bg-neutral-50/50 resize-none"
+                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 text-xs focus:border-[#CFA55A] focus:outline-none bg-neutral-50/50 resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs uppercase tracking-wider hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                  className="w-full py-4 px-6 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0F172A] font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                 >
                   {isSubmitting ? (
                     <>
@@ -170,45 +170,45 @@ export const ContactPage: React.FC = () => {
           {/* Right: Office & Direct Contact Info */}
           <div className="lg:col-span-5 space-y-6">
             {/* Quick Contact Card */}
-            <div className="bg-[#0F172A] rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-6 border border-neutral-800">
+            <div className="bg-neutral-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-6 border border-neutral-800">
               <div>
-                <span className="text-xs font-bold text-[#ECC86A] uppercase tracking-widest block mb-1">
+                <span className="text-xs font-bold text-[#CFA55A] uppercase tracking-widest block mb-1">
                   OFFICE LOCATION
                 </span>
                 <h3 className="text-xl font-bold font-serif-luxury text-white">
                   {t.contactPage.officeTitle}
                 </h3>
                 <p className="text-xs text-neutral-300 font-light mt-1 flex items-start gap-2">
-                  <MapPin className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 text-[#CFA55A] shrink-0 mt-0.5" />
                   <span>{t.contactPage.officeAddress}</span>
                 </p>
               </div>
 
               <div className="pt-4 border-t border-white/10 space-y-3 text-xs">
                 <div className="flex items-center gap-3">
-                  <Phone className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                  <Phone className="w-4 h-4 text-[#CFA55A] shrink-0" />
                   <div>
                     <span className="text-neutral-400 block text-[10px] uppercase">
                       {t.contactPage.phoneTitle}
                     </span>
-                    <a href="tel:+971588648093" className="font-bold text-white hover:text-[#D4AF37]">
+                    <a href="tel:+971588648093" className="font-bold text-white hover:text-[#CFA55A]">
                       +971 58 864 8093
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                  <Mail className="w-4 h-4 text-[#CFA55A] shrink-0" />
                   <div>
                     <span className="text-neutral-400 block text-[10px] uppercase">Official Inquiries</span>
-                    <a href="mailto:info@jamokaproperties.com" className="font-bold text-white hover:text-[#D4AF37]">
+                    <a href="mailto:info@jamokaproperties.com" className="font-bold text-white hover:text-[#CFA55A]">
                       info@jamokaproperties.com
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Clock className="w-4 h-4 text-[#D4AF37] shrink-0" />
+                  <Clock className="w-4 h-4 text-[#CFA55A] shrink-0" />
                   <div>
                     <span className="text-neutral-400 block text-[10px] uppercase">
                       {t.contactPage.hoursTitle}
@@ -244,7 +244,7 @@ export const ContactPage: React.FC = () => {
               </p>
 
               <div className="grid grid-cols-2 gap-3">
-                {SOCIAL_LINKS.map((social) => {
+                {SOCIAL_LINKS.map((social, index) => {
                   const Icon = social.icon;
                   return (
                     <a
@@ -252,9 +252,11 @@ export const ContactPage: React.FC = () => {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex items-center gap-3 p-3.5 rounded-2xl bg-neutral-50 hover:bg-white border border-neutral-200/80 hover:border-[#D4AF37] hover:shadow-md transition-all duration-300 group`}
+                      className={`flex items-center gap-3 p-3.5 rounded-2xl bg-neutral-50 hover:bg-white border border-neutral-200/80 hover:border-[#CFA55A] hover:shadow-md transition-all duration-300 group ${
+                        index === SOCIAL_LINKS.length - 1 && SOCIAL_LINKS.length % 2 !== 0 ? 'col-span-2' : ''
+                      }`}
                     >
-                      <div className={`w-11 h-11 rounded-xl bg-slate-900 text-white flex items-center justify-center ${social.hoverBg} transition-colors shrink-0 shadow-sm`}>
+                      <div className={`w-11 h-11 rounded-xl bg-black text-white flex items-center justify-center ${social.hoverBg} transition-colors shrink-0 shadow-sm`}>
                         <Icon className="w-5 h-5" />
                       </div>
                       <div className="min-w-0">
@@ -273,7 +275,7 @@ export const ContactPage: React.FC = () => {
 
             {/* License & Regulatory Trust Badge */}
             <div className="bg-white rounded-3xl p-6 border border-neutral-200/80 shadow-md flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-[#FAF5EC] border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-[#FAF5EC] border border-[#CFA55A]/30 flex items-center justify-center text-[#CFA55A] shrink-0">
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <div>

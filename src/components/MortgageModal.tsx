@@ -38,11 +38,11 @@ export const MortgageModal: React.FC<MortgageModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-[#D4AF37]/40 overflow-hidden max-h-[90vh] flex flex-col">
+      <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-[#CFA55A]/40 overflow-hidden max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 bg-[#0F172A] text-white border-b border-[#D4AF37]/30">
+        <div className="flex items-center justify-between p-6 bg-[#0F172A] text-white border-b border-[#CFA55A]/30">
           <div>
-            <span className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-[0.24em] block">
+            <span className="text-[10px] font-bold text-[#CFA55A] uppercase tracking-[0.24em] block">
               DUBAI REAL ESTATE FINANCING
             </span>
             <h2 className="text-xl md:text-2xl font-bold font-serif-luxury text-white">
@@ -108,7 +108,7 @@ export const MortgageModal: React.FC<MortgageModalProps> = ({
                 step="250000"
                 value={propertyPrice}
                 onChange={(e) => setPropertyPrice(Number(e.target.value))}
-                className="w-full accent-[#D4AF37] cursor-pointer"
+                className="w-full accent-[#CFA55A] cursor-pointer"
               />
               <div className="flex justify-between text-[10px] text-neutral-400 mt-0.5">
                 <span>AED 1.5M</span>
@@ -122,7 +122,7 @@ export const MortgageModal: React.FC<MortgageModalProps> = ({
                 <label className="text-xs font-bold uppercase tracking-wider text-neutral-700">
                   Paid During Construction Phase ({constructionEquityPercent}%)
                 </label>
-                <span className="text-sm font-extrabold text-[#D4AF37]">
+                <span className="text-sm font-extrabold text-[#CFA55A]">
                   AED {constructionEquityAed.toLocaleString()}
                 </span>
               </div>
@@ -133,7 +133,7 @@ export const MortgageModal: React.FC<MortgageModalProps> = ({
                 step="10"
                 value={constructionEquityPercent}
                 onChange={(e) => setConstructionEquityPercent(Number(e.target.value))}
-                className="w-full accent-[#D4AF37] cursor-pointer"
+                className="w-full accent-[#CFA55A] cursor-pointer"
               />
               <p className="text-[11px] text-neutral-500 mt-1">
                 Staggered across 3-5 years linked to RERA construction milestones.
@@ -148,7 +148,7 @@ export const MortgageModal: React.FC<MortgageModalProps> = ({
                 <select
                   value={mortgageTermYears}
                   onChange={(e) => setMortgageTermYears(Number(e.target.value))}
-                  className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#CFA55A]"
                 >
                   <option value={10}>10 Years</option>
                   <option value={15}>15 Years</option>
@@ -168,14 +168,14 @@ export const MortgageModal: React.FC<MortgageModalProps> = ({
                   max="9.0"
                   value={interestRate}
                   onChange={(e) => setInterestRate(Number(e.target.value))}
-                  className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#D4AF37]"
+                  className="w-full p-2.5 bg-neutral-50 border border-neutral-200 rounded-lg text-xs font-semibold focus:outline-none focus:border-[#CFA55A]"
                 />
               </div>
             </div>
           </div>
 
           {/* Financial Breakdown Card */}
-          <div className="p-5 rounded-xl bg-[#FAF9F6] border border-[#D4AF37]/30 space-y-3">
+          <div className="p-5 rounded-xl bg-[#FAF9F6] border border-[#CFA55A]/30 space-y-3">
             <div className="flex justify-between items-baseline pb-2 border-b border-neutral-200">
               <span className="text-xs uppercase font-bold text-neutral-600">
                 Loan Amount at Handover ({100 - constructionEquityPercent}%)
@@ -189,7 +189,7 @@ export const MortgageModal: React.FC<MortgageModalProps> = ({
               <span className="text-xs uppercase font-bold text-neutral-600">
                 Estimated Monthly Repayment
               </span>
-              <span className="text-lg font-extrabold text-[#D4AF37]">
+              <span className="text-lg font-extrabold text-[#CFA55A]">
                 AED {Math.round(monthlyInstallment).toLocaleString()} / month
               </span>
             </div>
@@ -211,7 +211,7 @@ export const MortgageModal: React.FC<MortgageModalProps> = ({
               onClose();
               document.getElementById('vip-inquiry')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-[#D4AF37] to-[#C5A059] text-[#0F172A] font-bold text-xs uppercase tracking-wider rounded-lg hover:brightness-105 transition-all shrink-0"
+            className="w-full sm:w-auto px-6 py-2.5 bg-[#CFA55A] text-[#0F172A] font-bold text-xs uppercase tracking-wider rounded-lg hover:brightness-105 transition-all shrink-0"
           >
             Apply for Pre-Approval
           </button>

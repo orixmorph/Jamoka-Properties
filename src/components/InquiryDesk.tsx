@@ -39,19 +39,19 @@ export const InquiryDesk: React.FC = () => {
   return (
     <section id="contact" className="py-20 bg-[#0A0E17] text-white relative overflow-hidden font-jakarta">
       {/* Background Ambience */}
-      <div className="absolute -top-32 -right-32 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-32 -right-32 w-96 h-96 bg-[#CFA55A]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-[#CFA55A]/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12">
           {/* Left Column: Office & Authority Info */}
           <div className="lg:col-span-5 space-y-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-[#D4AF37]/35 text-[#ECC86A] text-[10px] font-bold tracking-[0.2em] uppercase mb-4">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-[#CFA55A]/35 text-[#CFA55A] text-[10px] font-bold tracking-[0.2em] uppercase mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#CFA55A]"></span>
                 <span>CONTACT US</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight font-jakarta">
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight font-caughe">
                 Get in Touch with Our Team
               </h2>
               <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed mt-3 font-light font-jakarta">
@@ -62,7 +62,7 @@ export const InquiryDesk: React.FC = () => {
             {/* Address & Credentials */}
             <div className="space-y-3 text-xs text-neutral-300 font-jakarta">
               <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white/5 border border-white/10">
-                <MapPin className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                <MapPin className="w-5 h-5 text-[#CFA55A] shrink-0 mt-0.5" />
                 <div>
                   <span className="text-white font-bold text-sm block">Business Bay Office</span>
                   <span className="font-light text-neutral-300">
@@ -72,7 +72,7 @@ export const InquiryDesk: React.FC = () => {
               </div>
 
               <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white/5 border border-white/10">
-                <Clock className="w-5 h-5 text-[#D4AF37] shrink-0 mt-0.5" />
+                <Clock className="w-5 h-5 text-[#CFA55A] shrink-0 mt-0.5" />
                 <div>
                   <span className="text-white font-bold text-sm block">Working Hours</span>
                   <span className="font-light text-neutral-300">
@@ -107,7 +107,7 @@ export const InquiryDesk: React.FC = () => {
                 href="tel:+971588648093"
                 className="flex-1 py-3 px-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
               >
-                <PhoneCall className="w-4 h-4 text-[#D4AF37]" />
+                <PhoneCall className="w-4 h-4 text-[#CFA55A]" />
                 <span>+971 58 864 8093</span>
               </a>
             </div>
@@ -151,7 +151,7 @@ export const InquiryDesk: React.FC = () => {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. Alex Morgan"
-                      className="w-full bg-white/5 border border-white/15 focus:border-[#D4AF37] rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-neutral-500 focus:outline-none transition-colors font-light"
+                      className="w-full bg-white/5 border border-white/15 focus:border-[#CFA55A] rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-neutral-500 focus:outline-none transition-colors font-light"
                     />
                   </div>
 
@@ -166,7 +166,7 @@ export const InquiryDesk: React.FC = () => {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="name@example.com"
-                      className="w-full bg-white/5 border border-white/15 focus:border-[#D4AF37] rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-neutral-500 focus:outline-none transition-colors font-light"
+                      className="w-full bg-white/5 border border-white/15 focus:border-[#CFA55A] rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-neutral-500 focus:outline-none transition-colors font-light"
                     />
                   </div>
                 </div>
@@ -182,7 +182,7 @@ export const InquiryDesk: React.FC = () => {
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="+971 50 123 4567"
-                    className="w-full bg-white/5 border border-white/15 focus:border-[#D4AF37] rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-neutral-500 focus:outline-none transition-colors font-light"
+                    className="w-full bg-white/5 border border-white/15 focus:border-[#CFA55A] rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-neutral-500 focus:outline-none transition-colors font-light"
                   />
                 </div>
 
@@ -196,7 +196,7 @@ export const InquiryDesk: React.FC = () => {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Tell us what you are looking for (bedrooms, budget, handover year, etc.)..."
-                    className="w-full bg-white/5 border border-white/15 focus:border-[#D4AF37] rounded-xl p-3 text-xs sm:text-sm text-white placeholder:text-neutral-500 focus:outline-none transition-colors resize-none font-light"
+                    className="w-full bg-white/5 border border-white/15 focus:border-[#CFA55A] rounded-xl p-3 text-xs sm:text-sm text-white placeholder:text-neutral-500 focus:outline-none transition-colors resize-none font-light"
                   />
                 </div>
 
@@ -204,7 +204,7 @@ export const InquiryDesk: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs uppercase tracking-wider hover:brightness-105 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                    className="w-full py-3 px-6 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0F172A] font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
                   >
                     {isSubmitting ? (
                       <>

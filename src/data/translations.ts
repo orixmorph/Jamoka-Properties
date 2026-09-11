@@ -78,6 +78,14 @@ export interface Translations {
     storyText2: string;
     teamTitle: string;
     teamSubtitle: string;
+    ceoTitle: string;
+    ceoBadge: string;
+    ceoParagraph1: string;
+    ceoParagraph2: string;
+    ceoParagraph3: string;
+    ceoName: string;
+    ceoRole: string;
+    ceoCompany: string;
     valuesTitle: string;
   };
   mortgage: {
@@ -232,6 +240,14 @@ export const translations: Record<Language, Translations> = {
       storyText2: 'Our team monitors every construction milestone, verifies Land Department trust accounts, and ensures each client receives the most advantageous payment structure and prime unit allocations.',
       teamTitle: 'Meet Our Leadership & Senior Advisors',
       teamSubtitle: 'Decades of combined experience in Dubai master developments, conveyancing, and property investment.',
+      ceoTitle: 'CEO Message',
+      ceoBadge: 'EXECUTIVE LEADERSHIP',
+      ceoParagraph1: 'At Jamoka Properties, we believe real estate is more than transactions — it’s about creating opportunities, building trust, and helping clients achieve their goals.',
+      ceoParagraph2: 'With integrity, transparency, and a commitment to excellence, we guide every client through their journey with confidence, whether they are buying their first home or making an investment in Dubai.',
+      ceoParagraph3: 'Our greatest achievement is the trust we earn and the relationships we build. We are honoured to be part of your story and look forward to helping you discover the opportunities Dubai has to offer.',
+      ceoName: 'Basil Al Naimi',
+      ceoRole: 'Managing Director & CEO',
+      ceoCompany: 'Jamoka Properties',
       valuesTitle: 'Our Core Principles',
     },
     mortgage: {
@@ -384,6 +400,14 @@ export const translations: Record<Language, Translations> = {
       storyText2: 'نحرص على متابعة مراحل الإنجاز الميداني، والتحقق من حسابات الضمان المعتمدة لدى دائرة الأراضي والأملاك، لضمان أعلى مستويات الأمان الاستثماري لعملائنا.',
       teamTitle: 'فريق الإدارة والمستشارين',
       teamSubtitle: 'خبرة طويلة متراكمة في مجالات التطوير العقاري والاستثمار في دبي.',
+      ceoTitle: 'رسالة الرئيس التنفيذي',
+      ceoBadge: 'القيادة التنفيذية',
+      ceoParagraph1: 'في جاموكا العقارية، نؤمن بأن العمل العقاري يتجاوز كونه مجرد صفقات — إنه رحلة لخلق الفرص، وبناء جسور الثقة، ومساعدة عملائنا على تحقيق طموحاتهم وأهدافهم.',
+      ceoParagraph2: 'بفضل النزاهة والشفافية والالتزام الراسخ بالتميز، نرشد كل عميل خلال مسيرته العقارية بثقة واطمئنان، سواء كان يقتني منزله الأول أو يستثمر في سوق دبي الواعد.',
+      ceoParagraph3: 'إن أعظم إنجازاتنا تكمن في الثقة التي نكتسبها والعلاقات المستدامة التي نبنيها. يشرفنا أن نكون جزءاً من قصة نجاحكم ونتطلع إلى مساعدتكم في اكتشاف آفاق الفرص اللامحدودة التي تقدمها دبي.',
+      ceoName: 'باسل النعيمي',
+      ceoRole: 'المدير التنفيذي والعضو المنتدب',
+      ceoCompany: 'جاموكا العقارية',
       valuesTitle: 'مبادئنا الأساسية',
     },
     mortgage: {

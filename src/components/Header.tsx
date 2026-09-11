@@ -41,9 +41,9 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-neutral-100 transition-all">
+    <header className="absolute top-0 left-0 right-0 z-40 w-full bg-transparent transition-all">
       {/* Top Announcement Strip */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-1.5 bg-[#0F172A] text-white text-[10px] sm:text-[11px] font-medium tracking-wide border-b border-white/5 flex items-center justify-between">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-1.5 bg-transparent text-white text-[10px] sm:text-[11px] font-medium tracking-wide flex items-center justify-between">
         <div className="flex items-center gap-2 sm:gap-4 overflow-hidden text-ellipsis whitespace-nowrap">
           <span className="flex items-center gap-1.5 text-neutral-300">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
@@ -61,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <a
             href="tel:+971588648093"
-            className="flex items-center gap-1 text-[#D4AF37] hover:text-[#e4c259] font-medium transition-colors"
+            className="flex items-center gap-1 text-[#D4AF37] hover:text-[#ECC86A] font-medium transition-colors"
           >
             <PhoneCall className="w-3 h-3" />
             <span>+971 58 864 8093</span>
@@ -80,15 +80,15 @@ export const Header: React.FC<HeaderProps> = ({
               e.preventDefault();
               handleNavClick('home');
             }}
-            className="flex items-center group text-left cursor-pointer outline-none focus:ring-2 focus:ring-[#BA9452]/40 rounded-sm shrink-0"
+            className="flex items-center group text-left cursor-pointer outline-none focus:ring-2 focus:ring-[#D4AF37]/40 rounded-sm shrink-0"
             aria-label="Jamoka Properties Home"
             title="Jamoka Properties - Return to Home"
           >
-            <JamokaLogo size="md" />
+            <JamokaLogo lightMode={true} size="md" />
           </a>
 
           {/* Elegant Divider */}
-          <div className="h-10 w-px bg-neutral-200 hidden sm:block shrink-0" />
+          <div className="h-10 w-px bg-white/15 hidden sm:block shrink-0" />
 
           {/* Logo 2: SQFT DXB (Partnered Site for Secondary Resale) */}
           <div className="hidden sm:flex items-center shrink-0">
@@ -97,11 +97,11 @@ export const Header: React.FC<HeaderProps> = ({
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && onOpenSecondarySite()}
-              className="flex items-center cursor-pointer p-1 rounded-lg hover:bg-neutral-50/80 transition-colors shrink-0 whitespace-nowrap group"
+              className="flex items-center cursor-pointer p-1 rounded-lg hover:bg-white/10 transition-colors shrink-0 whitespace-nowrap group"
               title="SQFT DXB • We Find, You Move In"
             >
-              <SqftDxbLogo size="sm" />
-              <ExternalLink className="w-3.5 h-3.5 text-neutral-400 ml-1.5 opacity-60 group-hover:opacity-100 group-hover:text-[#D4AF37] transition-all shrink-0" />
+              <SqftDxbLogo lightMode={true} size="sm" />
+              <ExternalLink className="w-3.5 h-3.5 text-neutral-400 ml-1.5 opacity-70 group-hover:opacity-100 group-hover:text-[#D4AF37] transition-all shrink-0" />
             </div>
           </div>
         </div>
@@ -112,7 +112,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Very Right Side: Navigation menus, utility selectors & Contact Us */}
         <div className="flex items-center justify-end gap-2.5 sm:gap-3 lg:gap-4 xl:gap-5 shrink-0">
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-3 xl:gap-4.5 2xl:gap-6 text-xs xl:text-[13px] 2xl:text-sm font-medium text-slate-700 tracking-[0.01em] whitespace-nowrap">
+          <nav className="hidden lg:flex items-center gap-3 xl:gap-4.5 2xl:gap-6 text-xs xl:text-[13px] 2xl:text-sm font-medium text-neutral-200 tracking-[0.01em] whitespace-nowrap">
             {navLinks.map((link) => {
               const isActive = activePage === link.id;
               return (
@@ -120,12 +120,12 @@ export const Header: React.FC<HeaderProps> = ({
                   key={link.id}
                   onClick={() => handleNavClick(link.id)}
                   className={`relative py-1.5 px-1 transition-colors font-semibold cursor-pointer ${
-                    isActive ? 'text-[#0F172A]' : 'text-slate-600 hover:text-slate-900'
+                    isActive ? 'text-white' : 'text-neutral-300 hover:text-white'
                   }`}
                 >
                   <span>{link.label}</span>
                   {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#D4AF37] rounded-full" />
+                    <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#D4AF37] shadow-[0_0_8px_rgba(212,175,55,0.7)] rounded-full" />
                   )}
                 </button>
               );
@@ -133,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
           </nav>
 
           {/* Divider between nav links and utility controls */}
-          <div className="h-6 w-px bg-neutral-200 hidden lg:block shrink-0" />
+          <div className="h-6 w-px bg-white/15 hidden lg:block shrink-0" />
 
           {/* Right Controls: Currency Selector + Language Switcher + Contact Us Button */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
@@ -144,18 +144,18 @@ export const Header: React.FC<HeaderProps> = ({
                   setCurrencyDropdownOpen(!currencyDropdownOpen);
                   setLangDropdownOpen(false);
                 }}
-                className="flex items-center gap-1 text-xs font-bold text-slate-700 bg-neutral-100 hover:bg-neutral-200/80 px-2.5 py-2 rounded-xl transition-colors cursor-pointer"
+                className="flex items-center gap-1 text-xs font-bold text-neutral-200 bg-white/10 hover:bg-white/15 border border-white/15 px-2.5 py-2 rounded-xl transition-colors cursor-pointer backdrop-blur-sm"
                 title="Select Currency"
               >
                 <span>{currentCurrency}</span>
-                <ChevronDown className="w-3 h-3 text-neutral-500" />
+                <ChevronDown className="w-3 h-3 text-neutral-400" />
               </button>
 
               {currencyDropdownOpen && (
                 <div
                   className={`absolute ${
                     isRTL ? 'left-0' : 'right-0'
-                  } mt-1.5 w-24 bg-white border border-neutral-200 rounded-xl shadow-xl py-1 z-50 text-xs`}
+                  } mt-1.5 w-24 bg-[#0F172A] border border-white/15 rounded-xl shadow-2xl py-1 z-50 text-xs backdrop-blur-md`}
                 >
                   {(['AED', 'USD', 'EUR', 'GBP'] as const).map((curr) => (
                     <button
@@ -164,8 +164,8 @@ export const Header: React.FC<HeaderProps> = ({
                         onCurrencyChange(curr);
                         setCurrencyDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-1.5 hover:bg-neutral-50 flex items-center justify-between font-semibold cursor-pointer ${
-                        currentCurrency === curr ? 'text-[#D4AF37] bg-neutral-50' : 'text-slate-700'
+                      className={`w-full text-left px-3 py-1.5 flex items-center justify-between font-semibold cursor-pointer transition-colors ${
+                        currentCurrency === curr ? 'text-[#D4AF37] bg-white/10' : 'text-neutral-300 hover:bg-white/5 hover:text-white'
                       }`}
                     >
                       <span>{curr}</span>
@@ -185,27 +185,27 @@ export const Header: React.FC<HeaderProps> = ({
                   setLangDropdownOpen(!langDropdownOpen);
                   setCurrencyDropdownOpen(false);
                 }}
-                className="flex items-center gap-1.5 text-xs font-bold text-slate-800 bg-neutral-100 hover:bg-neutral-200/80 px-3 py-2 rounded-xl border border-neutral-200/60 transition-colors cursor-pointer"
+                className="flex items-center gap-1.5 text-xs font-bold text-neutral-200 bg-white/10 hover:bg-white/15 px-3 py-2 rounded-xl border border-white/15 transition-colors cursor-pointer backdrop-blur-sm"
                 title="Change Language (English / العربية)"
               >
                 <Globe className="w-3.5 h-3.5 text-[#D4AF37]" />
                 <span>{language === 'en' ? 'English' : 'العربية'}</span>
-                <ChevronDown className="w-3 h-3 text-neutral-500" />
+                <ChevronDown className="w-3 h-3 text-neutral-400" />
               </button>
 
               {langDropdownOpen && (
                 <div
                   className={`absolute ${
                     isRTL ? 'left-0' : 'right-0'
-                  } mt-1.5 w-32 bg-white border border-neutral-200 rounded-xl shadow-xl py-1 z-50 text-xs`}
+                  } mt-1.5 w-32 bg-[#0F172A] border border-white/15 rounded-xl shadow-2xl py-1 z-50 text-xs backdrop-blur-md`}
                 >
                   <button
                     onClick={() => {
                       setLanguage('en');
                       setLangDropdownOpen(false);
                     }}
-                    className={`w-full px-3 py-2 text-left flex items-center justify-between hover:bg-neutral-50 font-semibold cursor-pointer ${
-                      language === 'en' ? 'text-[#D4AF37] bg-neutral-50' : 'text-slate-700'
+                    className={`w-full px-3 py-2 text-left flex items-center justify-between font-semibold cursor-pointer transition-colors ${
+                      language === 'en' ? 'text-[#D4AF37] bg-white/10' : 'text-neutral-300 hover:bg-white/5 hover:text-white'
                     }`}
                   >
                     <span>English</span>
@@ -216,8 +216,8 @@ export const Header: React.FC<HeaderProps> = ({
                       setLanguage('ar');
                       setLangDropdownOpen(false);
                     }}
-                    className={`w-full px-3 py-2 text-right flex items-center justify-between hover:bg-neutral-50 font-semibold font-jakarta cursor-pointer ${
-                      language === 'ar' ? 'text-[#D4AF37] bg-neutral-50' : 'text-slate-700'
+                    className={`w-full px-3 py-2 text-right flex items-center justify-between font-semibold font-jakarta cursor-pointer transition-colors ${
+                      language === 'ar' ? 'text-[#D4AF37] bg-white/10' : 'text-neutral-300 hover:bg-white/5 hover:text-white'
                     }`}
                   >
                     <span>العربية</span>
@@ -232,19 +232,19 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => handleNavClick('contact')}
               className={`hidden sm:inline-flex items-center gap-2 text-xs font-bold tracking-wider uppercase px-3.5 lg:px-4 py-2.5 rounded-xl transition-all shadow-sm cursor-pointer whitespace-nowrap ${
                 activePage === 'contact'
-                  ? 'bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black shadow-md'
-                  : 'bg-[#0F172A] hover:bg-[#1E293B] text-white border border-[#D4AF37]/40 hover:border-[#D4AF37]'
+                  ? 'bg-[#CFA55A] hover:bg-[#b8914b] text-[#0A0E17] shadow-md'
+                  : 'bg-white/10 hover:bg-white/20 text-white border border-[#CFA55A]/50 hover:border-[#CFA55A]'
               }`}
             >
               <span>{t.nav.contactBtn}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#CFA55A]" />
             </button>
           </div>
 
           {/* Mobile / Tablet Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-slate-700 hover:text-slate-900 rounded-lg hover:bg-neutral-100 transition-colors shrink-0 cursor-pointer"
+            className="lg:hidden p-2 text-neutral-200 hover:text-white rounded-lg hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
             aria-label="Toggle Navigation Menu"
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -254,7 +254,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Mobile Drawer */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-neutral-200 px-6 py-5 space-y-4 shadow-2xl">
+        <div className="lg:hidden bg-[#0A0E17]/98 backdrop-blur-2xl border-b border-white/10 px-6 py-5 space-y-4 shadow-2xl">
           {/* SQFT DXB Mobile Link */}
           <div
             onClick={() => {
@@ -269,9 +269,9 @@ export const Header: React.FC<HeaderProps> = ({
                 onOpenSecondarySite();
               }
             }}
-            className="p-3 bg-neutral-50 rounded-xl border border-neutral-200 flex items-center justify-between cursor-pointer"
+            className="p-3 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 flex items-center justify-between cursor-pointer transition-colors"
           >
-            <SqftDxbLogo size="sm" />
+            <SqftDxbLogo lightMode={true} size="sm" />
             <span className="text-xs font-semibold text-[#D4AF37] flex items-center gap-1">
               Visit SQFT DXB <ExternalLink className="w-3.5 h-3.5" />
             </span>
@@ -282,7 +282,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={() => handleNavClick('home')}
               className={`w-full text-left py-2.5 px-3 rounded-lg text-sm font-semibold transition-colors ${
-                activePage === 'home' ? 'bg-[#FAF5EC] text-[#A6833D]' : 'text-slate-800'
+                activePage === 'home' ? 'bg-white/10 text-[#D4AF37] font-bold' : 'text-neutral-200 hover:bg-white/5 hover:text-white'
               }`}
             >
               {t.nav.home}
@@ -294,7 +294,7 @@ export const Header: React.FC<HeaderProps> = ({
                   key={link.id}
                   onClick={() => handleNavClick(link.id)}
                   className={`w-full text-left py-2.5 px-3 rounded-lg text-sm font-semibold transition-colors ${
-                    isActive ? 'bg-[#FAF5EC] text-[#A6833D]' : 'text-slate-800'
+                    isActive ? 'bg-white/10 text-[#D4AF37] font-bold' : 'text-neutral-200 hover:bg-white/5 hover:text-white'
                   }`}
                 >
                   {link.label}
@@ -313,9 +313,9 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          <div className="pt-3 border-t border-neutral-100 flex flex-col gap-1.5 text-xs text-neutral-600">
+          <div className="pt-3 border-t border-white/10 flex flex-col gap-1.5 text-xs text-neutral-400">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold text-neutral-500">RERA No. 49679</span>
+              <span className="text-[11px] font-semibold text-neutral-400">RERA No. 49679</span>
               <a href="tel:+971588648093" className="text-[#D4AF37] font-bold flex items-center gap-1">
                 <PhoneCall className="w-3 h-3" />
                 +971 58 864 8093

@@ -122,9 +122,9 @@ function MainApp() {
   return (
     <div
       dir={isRTL ? 'rtl' : 'ltr'}
-      className="min-h-screen bg-white text-slate-800 font-jakarta flex flex-col selection:bg-[#D4AF37]/30 selection:text-slate-900"
+      className="min-h-screen bg-white text-slate-800 font-jakarta flex flex-col selection:bg-[#CFA55A]/30 selection:text-slate-900"
     >
-      {/* Sticky Header with Dual Logos, Language Switcher, and Contact Us Button */}
+      {/* Header with Dual Logos, Language Switcher, and Contact Us Button (Transparent Background) */}
       <Header
         activePage={activePage}
         onNavigate={handleNavigate}

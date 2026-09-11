@@ -47,11 +47,11 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#D4AF37]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
-            <Calculator className="w-3.5 h-3.5 text-[#D4AF37]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
+            <Calculator className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>FINANCIAL ARCHITECTURE</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
             Off-Plan Milestone & Mortgage Advisory
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed font-light">
@@ -70,7 +70,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
                   <label className="text-xs font-bold uppercase tracking-wider text-neutral-300">
                     Property Allocation Value (AED)
                   </label>
-                  <span className="text-xl sm:text-2xl font-black text-[#D4AF37] font-jakarta">
+                  <span className="text-xl sm:text-2xl font-black text-[#CFA55A] font-jakarta">
                     AED {propertyPrice.toLocaleString()}
                   </span>
                 </div>
@@ -81,7 +81,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
                   step="250000"
                   value={propertyPrice}
                   onChange={(e) => setPropertyPrice(Number(e.target.value))}
-                  className="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#D4AF37]"
+                  className="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-[#CFA55A]"
                 />
                 <div className="flex justify-between text-[11px] text-neutral-400 mt-1">
                   <span>AED 1.0M (Entry Suite)</span>
@@ -108,7 +108,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
                       onClick={() => setPlanStructure(p.id as any)}
                       className={`p-3 rounded-xl border text-left transition-all ${
                         planStructure === p.id
-                          ? 'bg-[#D4AF37] text-black border-[#D4AF37] font-bold shadow-md'
+                          ? 'bg-[#CFA55A] text-black border-[#CFA55A] font-bold shadow-md'
                           : 'bg-neutral-800/80 hover:bg-neutral-800 text-neutral-300 border-neutral-700'
                       }`}
                     >
@@ -128,7 +128,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
                   <select
                     value={constructionYears}
                     onChange={(e) => setConstructionYears(Number(e.target.value))}
-                    className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
+                    className="w-full bg-neutral-800 border border-neutral-700 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-[#CFA55A]"
                   >
                     <option value={2}>2 Years (Fast-Track Handover)</option>
                     <option value={3}>3 Years (Master Planned)</option>
@@ -146,7 +146,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
                       id="mortgageToggle"
                       checked={applyMortgageOnHandover}
                       onChange={(e) => setApplyMortgageOnHandover(e.target.checked)}
-                      className="w-4 h-4 accent-[#D4AF37] rounded cursor-pointer"
+                      className="w-4 h-4 accent-[#CFA55A] rounded cursor-pointer"
                     />
                     <label htmlFor="mortgageToggle" className="text-xs text-neutral-200 cursor-pointer font-medium">
                       Finance {splits.handover}% upon completion
@@ -173,7 +173,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
             {/* Financial Output Summary (Right Column) */}
             <div className="lg:col-span-5 bg-neutral-900/90 rounded-2xl p-6 sm:p-8 border border-neutral-800 flex flex-col justify-between space-y-6">
               <div>
-                <span className="text-[11px] font-bold text-[#D4AF37] tracking-[0.2em] uppercase block mb-1">
+                <span className="text-[11px] font-bold text-[#CFA55A] tracking-[0.2em] uppercase block mb-1">
                   DISBURSEMENT SCHEDULE
                 </span>
                 <h4 className="text-xl font-bold font-jakarta text-white">
@@ -219,16 +219,16 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
                         {applyMortgageOnHandover ? 'Mortgageable via UAE Partner Banks' : 'Lump Sum Settlement'}
                       </span>
                     </div>
-                    <span className="font-bold text-[#D4AF37] text-sm">
+                    <span className="font-bold text-[#CFA55A] text-sm">
                       AED {handoverAmount.toLocaleString()}
                     </span>
                   </div>
 
                   {/* Estimated Handover Mortgage EMI */}
                   {applyMortgageOnHandover && (
-                    <div className="p-3.5 bg-[#FAF5EC]/10 rounded-xl border border-[#D4AF37]/30 flex items-center justify-between">
+                    <div className="p-3.5 bg-[#FAF5EC]/10 rounded-xl border border-[#CFA55A]/30 flex items-center justify-between">
                       <div>
-                        <span className="text-[11px] font-bold text-[#ECC86A] block">
+                        <span className="text-[11px] font-bold text-[#CFA55A] block">
                           Handover Bank EMI (Monthly)
                         </span>
                         <span className="text-[10px] text-neutral-300">25 Years @ 4.49%</span>
@@ -244,7 +244,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
               <div>
                 <button
                   onClick={onBookConsultation}
-                  className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs uppercase tracking-wider hover:brightness-105 transition-all flex items-center justify-center gap-2 shadow-lg"
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0F172A] font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer"
                 >
                   <span>Request Bespoke Structuring Sheet</span>
                   <ArrowRight className="w-4 h-4" />

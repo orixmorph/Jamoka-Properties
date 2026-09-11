@@ -33,10 +33,10 @@ export const ProcessSection: React.FC = () => {
     <section className="py-20 bg-neutral-50 border-t border-neutral-200/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#D4AF37]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
             <span>THE JAMOKA METHOD</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
             Our 4-Step Acquisition Process
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed font-light">
@@ -50,14 +50,14 @@ export const ProcessSection: React.FC = () => {
             return (
               <div
                 key={step.num}
-                className="bg-white rounded-2xl p-7 border border-neutral-200/80 shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-xl hover:border-[#D4AF37]/50 transition-all"
+                className="bg-white rounded-2xl p-7 border border-neutral-200/80 shadow-sm relative overflow-hidden flex flex-col justify-between group hover:shadow-xl hover:border-[#CFA55A]/50 transition-all"
               >
                 <div className="absolute top-3 right-4 text-4xl font-black text-neutral-100 font-jakarta select-none group-hover:text-[#FAF5EC] transition-colors">
                   {step.num}
                 </div>
 
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-[#FAF5EC] text-[#D4AF37] border border-[#D4AF37]/20 flex items-center justify-center mb-5 group-hover:bg-[#0F172A] transition-colors">
+                  <div className="w-12 h-12 rounded-xl bg-[#FAF5EC] text-[#CFA55A] border border-[#CFA55A]/20 flex items-center justify-center mb-5 group-hover:bg-black transition-colors">
                     <Icon className="w-6 h-6" />
                   </div>
                   <h3 className="text-base font-bold text-slate-900 mb-2 leading-tight">

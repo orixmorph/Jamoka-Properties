@@ -98,24 +98,24 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
   const getBadgeInfo = (project: OffPlanProject) => {
     const plan = project.paymentPlan || '';
     if (plan.includes('40 / 60') || project.developer === 'Select Group') {
-      return { text: '40 / 60 Payment Plan', tone: 'coral' };
+      return { text: '40 / 60 Payment Plan', tone: 'gold' };
     }
     if (plan.includes('60 / 40')) {
-      return { text: '60 / 40 Payment Plan', tone: 'coral' };
+      return { text: '60 / 40 Payment Plan', tone: 'gold' };
     }
     if (plan.includes('70 / 30')) {
-      return { text: '70 / 30 Payment Plan', tone: 'coral' };
+      return { text: '70 / 30 Payment Plan', tone: 'gold' };
     }
     if (plan.includes('80 / 20')) {
-      return { text: '80 / 20 Payment Plan', tone: 'coral' };
+      return { text: '80 / 20 Payment Plan', tone: 'gold' };
     }
     if (plan.includes('50 / 50')) {
-      return { text: '50 / 50 Payment Plan', tone: 'coral' };
+      return { text: '50 / 50 Payment Plan', tone: 'gold' };
     }
     if (project.badge === 'PRE-COMPLETION' || project.handover.includes('2026')) {
       return { text: 'Ready Soon', tone: 'gold' };
     }
-    return { text: plan, tone: 'coral' };
+    return { text: plan, tone: 'gold' };
   };
 
   // Prominent price display
@@ -283,19 +283,19 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
       }}
     >
       {/* Refined light ambient background glows */}
-      <div className="absolute top-0 right-10 w-[550px] h-[550px] bg-[#D4AF37]/8 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute top-0 right-10 w-[550px] h-[550px] bg-[#CFA55A]/8 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-[550px] h-[550px] bg-[#E8DFCE]/60 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Light Themed Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F3ECE0] border border-[#D4AF37]/35 text-[#9A7326] text-[11px] font-bold tracking-[0.2em] uppercase shadow-xs">
-              <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F3ECE0] border border-[#CFA55A]/35 text-[#9A7326] text-[11px] font-bold tracking-[0.2em] uppercase shadow-xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#CFA55A]" />
               <span>MOST TRENDING DEVELOPMENTS</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight font-caughe">
               Most Trending Projects in Dubai
             </h2>
 
@@ -348,14 +348,14 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
             <button
               onClick={handleScrollLeft}
               aria-label="Previous Projects"
-              className="w-12 h-12 rounded-full border border-neutral-300 bg-white hover:bg-[#D4AF37] hover:border-[#D4AF37] hover:text-slate-950 text-slate-700 flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 cursor-pointer"
+              className="w-12 h-12 rounded-full border border-neutral-300 bg-white hover:bg-[#CFA55A] hover:border-[#CFA55A] hover:text-slate-950 text-slate-700 flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 cursor-pointer"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
             <button
               onClick={handleScrollRight}
               aria-label="Next Projects"
-              className="w-12 h-12 rounded-full border border-neutral-300 bg-white hover:bg-[#D4AF37] hover:border-[#D4AF37] hover:text-slate-950 text-slate-700 flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 cursor-pointer"
+              className="w-12 h-12 rounded-full border border-neutral-300 bg-white hover:bg-[#CFA55A] hover:border-[#CFA55A] hover:text-slate-950 text-slate-700 flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md active:scale-95 cursor-pointer"
             >
               <ArrowRight className="w-5 h-5" />
             </button>
@@ -385,7 +385,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
               <div
                 key={`${project.id}-${index}`}
                 onClick={() => openProjectModal(project)}
-                className="group shrink-0 w-[295px] sm:w-[325px] md:w-[350px] bg-white rounded-[28px] border border-neutral-200/90 hover:border-[#D4AF37]/60 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(212,175,55,0.18)] transition-all duration-500 hover:-translate-y-2 flex flex-col cursor-pointer overflow-hidden relative"
+                className="group shrink-0 w-[295px] sm:w-[325px] md:w-[350px] bg-white rounded-[28px] border border-neutral-200/90 hover:border-[#CFA55A]/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(207,165,90,0.18)] transition-all duration-500 hover:-translate-y-2 flex flex-col cursor-pointer overflow-hidden relative"
               >
                 {/* Image Container with Elegant Zoom Effect */}
                 <div className="relative h-[300px] sm:h-[330px] w-full overflow-hidden bg-slate-100">
@@ -399,9 +399,9 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
                   {/* Gradient overlay for text legibility */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-black/10 to-black/20 group-hover:from-slate-950/80 transition-colors duration-500" />
 
-                  {/* Top-Left Badge (Payment plan pill with rich ruby-coral styling) */}
+                  {/* Top-Left Badge (Payment plan pill with champagne gold branding CFA55A) */}
                   <div className="absolute top-4 left-4 z-10">
-                    <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#E11D48] text-white text-[11px] sm:text-xs font-bold tracking-wide shadow-md backdrop-blur-sm">
+                    <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#CFA55A] text-[#0F172A] text-[11px] sm:text-xs font-bold tracking-wide shadow-md backdrop-blur-sm">
                       {badge.text}
                     </span>
                   </div>
@@ -414,9 +414,9 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
                   </div>
 
                   {/* Hover Prompt on Image: "Learn More" with subtle bounce arrow */}
-                  <div className="absolute bottom-3 right-4 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 flex items-center gap-1.5 text-xs font-bold text-slate-950 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-lg border border-[#D4AF37]/50">
+                  <div className="absolute bottom-3 right-4 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 flex items-center gap-1.5 text-xs font-bold text-slate-950 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-lg border border-[#CFA55A]/50">
                     <span>Explore Details</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-[#A6833D] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[#CFA55A] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>
                 </div>
 
@@ -439,7 +439,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
                     </div>
 
                     {/* Projected ROI / Status pill */}
-                    <div className="px-2.5 py-1 rounded-lg bg-[#FAF5EC] border border-[#D4AF37]/35 text-[#9A7326] text-[10px] font-bold tracking-wide">
+                    <div className="px-2.5 py-1 rounded-lg bg-[#FAF5EC] border border-[#CFA55A]/35 text-[#9A7326] text-[10px] font-bold tracking-wide">
                       {project.roi ? project.roi.split(' ')[0] + ' Yield' : 'Prime Tier'}
                     </div>
                   </div>
@@ -477,7 +477,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
                     <span className="text-xs font-bold text-slate-700 group-hover:text-[#9A7326] transition-colors flex items-center gap-1.5">
                       <span>View Project Plans & Details</span>
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-neutral-100 group-hover:bg-[#D4AF37] group-hover:text-slate-950 text-slate-600 flex items-center justify-center transition-all duration-300 shadow-xs">
+                    <div className="w-8 h-8 rounded-full bg-neutral-100 group-hover:bg-[#CFA55A] group-hover:text-slate-950 text-slate-600 flex items-center justify-center transition-all duration-300 shadow-xs">
                       <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
                   </div>

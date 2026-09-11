@@ -83,8 +83,8 @@ export const AgentSlider: React.FC<AgentSliderProps> = ({ onContactAgent }) => {
     <div className="w-full mt-16 pt-12 border-t border-neutral-200/80">
       <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto mb-8 px-4 gap-4">
         <div className="text-center sm:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#D4AF37]/30 text-[#A6833D] text-[10px] font-bold tracking-[0.2em] uppercase mb-2">
-            <Sparkles className="w-3 h-3 text-[#D4AF37]" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[10px] font-bold tracking-[0.2em] uppercase mb-2">
+            <Sparkles className="w-3 h-3 text-[#CFA55A]" />
             <span>OUR GLOBAL ADVISORY NETWORK</span>
           </div>
           <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 font-serif-luxury">
@@ -98,20 +98,20 @@ export const AgentSlider: React.FC<AgentSliderProps> = ({ onContactAgent }) => {
         {/* Manual navigation controls */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-400 mr-2 font-medium">
-            <Hand className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <Hand className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>Drag or scroll</span>
           </div>
           <button
             onClick={() => handleScrollBy(-360)}
             aria-label="Previous agents"
-            className="w-10 h-10 rounded-full border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-[#D4AF37] flex items-center justify-center text-slate-700 transition-all shadow-sm cursor-pointer"
+            className="w-10 h-10 rounded-full border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-[#CFA55A] flex items-center justify-center text-slate-700 transition-all shadow-sm cursor-pointer"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => handleScrollBy(360)}
             aria-label="Next agents"
-            className="w-10 h-10 rounded-full border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-[#D4AF37] flex items-center justify-center text-slate-700 transition-all shadow-sm cursor-pointer"
+            className="w-10 h-10 rounded-full border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-[#CFA55A] flex items-center justify-center text-slate-700 transition-all shadow-sm cursor-pointer"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -151,10 +151,10 @@ export const AgentSlider: React.FC<AgentSliderProps> = ({ onContactAgent }) => {
                   onContactAgent?.(agent);
                 }
               }}
-              className="w-72 sm:w-80 bg-[#FAF9F6] hover:bg-white border border-neutral-200/90 hover:border-[#D4AF37] rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex items-center gap-4 shrink-0 group/card cursor-pointer relative overflow-hidden"
+              className="w-72 sm:w-80 bg-[#FAF9F6] hover:bg-white border border-neutral-200/90 hover:border-[#CFA55A] rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex items-center gap-4 shrink-0 group/card cursor-pointer relative overflow-hidden"
             >
               {/* Subtle gold glow on hover */}
-              <div className="absolute top-0 right-0 w-28 h-28 bg-[#D4AF37]/5 rounded-full blur-xl pointer-events-none group-hover/card:bg-[#D4AF37]/15 transition-all" />
+              <div className="absolute top-0 right-0 w-28 h-28 bg-[#CFA55A]/5 rounded-full blur-xl pointer-events-none group-hover/card:bg-[#CFA55A]/15 transition-all" />
 
               {/* Agent Photo - Sized bigger with graceful fallback */}
               <div className="relative w-20 h-20 sm:w-22 sm:h-22 rounded-2xl overflow-hidden shrink-0 border border-neutral-200/80 shadow-sm bg-neutral-100">
@@ -172,7 +172,7 @@ export const AgentSlider: React.FC<AgentSliderProps> = ({ onContactAgent }) => {
                   }}
                   className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300 pointer-events-none"
                 />
-                <div className="absolute bottom-0 right-0 bg-[#0F172A] text-[#D4AF37] p-1 rounded-tl-lg">
+                <div className="absolute bottom-0 right-0 bg-[#0F172A] text-[#CFA55A] p-1 rounded-tl-lg">
                   <Shield className="w-3 h-3" />
                 </div>
               </div>
@@ -188,7 +188,7 @@ export const AgentSlider: React.FC<AgentSliderProps> = ({ onContactAgent }) => {
                 </p>
 
                 <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-1.5 truncate">
-                  <MapPin className="w-3 h-3 text-[#D4AF37] shrink-0" />
+                  <MapPin className="w-3 h-3 text-[#CFA55A] shrink-0" />
                   <span className="truncate">{agent.specialty}</span>
                 </div>
 

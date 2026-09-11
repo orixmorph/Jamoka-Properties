@@ -21,8 +21,8 @@ export const createDeveloperLogoPlaceholder = (name: string): string => {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="80" viewBox="0 0 240 80">
     <defs>
       <linearGradient id="goldGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#ECC86A" />
-        <stop offset="50%" stop-color="#D4AF37" />
+        <stop offset="0%" stop-color="#CFA55A" />
+        <stop offset="50%" stop-color="#CFA55A" />
         <stop offset="100%" stop-color="#AA822A" />
       </linearGradient>
     </defs>
@@ -37,7 +37,7 @@ export const createDeveloperLogoPlaceholder = (name: string): string => {
       ${name}
     </text>
     <!-- Sub-label -->
-    <text x="120" y="66" fill="#ECC86A" font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7.5" font-weight="600" letter-spacing="2.5" text-anchor="middle" opacity="0.75">
+    <text x="120" y="66" fill="#CFA55A" font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7.5" font-weight="600" letter-spacing="2.5" text-anchor="middle" opacity="0.75">
       DEVELOPER LOGO
     </text>
   </svg>`;
@@ -80,14 +80,14 @@ export const DeveloperWheel: React.FC<DeveloperWheelProps> = ({ customLogos }) =
   return (
     <section className="py-16 bg-[#0A0E17] text-white overflow-hidden relative border-y border-white/10">
       {/* Background Ambience */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-40 bg-[#D4AF37]/5 blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-40 bg-[#CFA55A]/5 blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 relative z-10 font-jakarta">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-[#D4AF37]/35 text-[#ECC86A] text-[10px] font-bold tracking-[0.2em] uppercase mb-3">
-          <Sparkles className="w-3 h-3 text-[#D4AF37]" />
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-[#CFA55A]/35 text-[#CFA55A] text-[10px] font-bold tracking-[0.2em] uppercase mb-3">
+          <Sparkles className="w-3 h-3 text-[#CFA55A]" />
           <span>TRUSTED PARTNERS</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-jakarta">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-caughe">
           {t.wheel.title}
         </h2>
         <p className="text-neutral-400 text-xs sm:text-sm mt-2 max-w-xl mx-auto font-light leading-relaxed font-jakarta">
@@ -110,11 +110,11 @@ export const DeveloperWheel: React.FC<DeveloperWheelProps> = ({ customLogos }) =
             return (
               <div
                 key={`${dev.name}-${idx}`}
-                className="h-20 sm:h-24 w-44 sm:w-56 bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#D4AF37]/50 rounded-xl px-4 py-3 backdrop-blur-sm transition-all duration-300 flex items-center justify-center shrink-0 group relative overflow-hidden"
+                className="h-20 sm:h-24 w-44 sm:w-56 bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#CFA55A]/50 rounded-xl px-4 py-3 backdrop-blur-sm transition-all duration-300 flex items-center justify-center shrink-0 group relative overflow-hidden"
                 title={`${dev.name} - Dubai Master Developer`}
               >
                 {/* Subtle hover backlight */}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/0 via-[#D4AF37]/5 to-[#D4AF37]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                <div className="absolute inset-0 bg-[#CFA55A]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
                 {/* Image Holder - Renders Cloudinary logo image or SVG image placeholder */}
                 <img

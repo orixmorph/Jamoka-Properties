@@ -81,11 +81,11 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] pb-24">
       {/* Header Banner */}
-      <section className="relative py-20 bg-[#0A0E17] text-white overflow-hidden">
+      <section className="relative pt-36 sm:pt-40 pb-20 bg-[#0A0E17] text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0E17] via-[#0A0E17]/90 to-transparent" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#D4AF37]/40 text-[#ECC86A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#CFA55A]/40 text-[#CFA55A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>OFF-PLAN CATALOG</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-bold font-serif-luxury text-white mb-3">
@@ -110,7 +110,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
               placeholder="Search by development name, enclave, or developer (e.g. Emaar, Palm Jumeirah)..."
               className={`w-full py-3.5 ${
                 isRTL ? 'pr-12 pl-10' : 'pl-12 pr-10'
-              } rounded-2xl bg-neutral-50 border border-neutral-200 focus:bg-white focus:border-[#D4AF37] text-sm text-slate-800 outline-none transition-all`}
+              } rounded-2xl bg-neutral-50 border border-neutral-200 focus:bg-white focus:border-[#CFA55A] text-sm text-slate-800 outline-none transition-all`}
             />
             {searchQuery && (
               <button
@@ -132,7 +132,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
               <select
                 value={selectedEnclave}
                 onChange={(e) => setSelectedEnclave(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold text-slate-700 bg-white focus:border-[#D4AF37] outline-none"
+                className="w-full px-3 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold text-slate-700 bg-white focus:border-[#CFA55A] outline-none"
               >
                 {enclaves.map((e) => (
                   <option key={e} value={e}>
@@ -149,7 +149,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
               <select
                 value={selectedDeveloper}
                 onChange={(e) => setSelectedDeveloper(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold text-slate-700 bg-white focus:border-[#D4AF37] outline-none"
+                className="w-full px-3 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold text-slate-700 bg-white focus:border-[#CFA55A] outline-none"
               >
                 {developers.map((d) => (
                   <option key={d} value={d}>
@@ -166,7 +166,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
               <select
                 value={selectedHandover}
                 onChange={(e) => setSelectedHandover(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold text-slate-700 bg-white focus:border-[#D4AF37] outline-none"
+                className="w-full px-3 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold text-slate-700 bg-white focus:border-[#CFA55A] outline-none"
               >
                 {handovers.map((h) => (
                   <option key={h} value={h}>
@@ -183,7 +183,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
               <select
                 value={selectedPriceBracket}
                 onChange={(e) => setSelectedPriceBracket(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold text-slate-700 bg-white focus:border-[#D4AF37] outline-none"
+                className="w-full px-3 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold text-slate-700 bg-white focus:border-[#CFA55A] outline-none"
               >
                 <option value="All">All Budgets</option>
                 <option value="<3M">Under AED 3 Million</option>
@@ -229,7 +229,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
             </p>
             <button
               onClick={handleResetFilters}
-              className="px-5 py-2.5 rounded-xl bg-[#0F172A] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#1E293B]"
+              className="px-5 py-2.5 rounded-xl bg-black text-white font-bold text-xs uppercase tracking-wider hover:bg-neutral-900 transition-colors cursor-pointer"
             >
               Reset Filters
             </button>
@@ -239,7 +239,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className="group bg-white rounded-3xl overflow-hidden border border-neutral-200/80 hover:border-[#D4AF37]/50 hover:shadow-2xl transition-all duration-300 flex flex-col"
+                className="group bg-white rounded-3xl overflow-hidden border border-neutral-200/80 hover:border-[#CFA55A]/50 hover:shadow-2xl transition-all duration-300 flex flex-col"
               >
                 {/* Image & Badges */}
                 <div
@@ -255,7 +255,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
 
                   {/* Top Badges */}
                   <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#D4AF37]/40 text-[#ECC86A] text-[10px] font-bold tracking-wider uppercase">
+                    <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#CFA55A]/40 text-[#CFA55A] text-[10px] font-bold tracking-wider uppercase">
                       {project.badge}
                     </span>
                     <span className="px-2.5 py-1 rounded-full bg-white/95 text-slate-900 text-[10px] font-extrabold uppercase shadow-sm">
@@ -265,11 +265,11 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
 
                   {/* Bottom Image Info */}
                   <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <span className="text-[11px] text-[#D4AF37] font-semibold flex items-center gap-1 uppercase tracking-wider">
+                    <span className="text-[11px] text-[#CFA55A] font-semibold flex items-center gap-1 uppercase tracking-wider">
                       <MapPin className="w-3.5 h-3.5" />
                       {project.enclave}
                     </span>
-                    <h3 className="text-xl font-bold font-serif-luxury mt-0.5 group-hover:text-[#ECC86A] transition-colors">
+                    <h3 className="text-xl font-bold font-serif-luxury mt-0.5 group-hover:text-[#CFA55A] transition-colors">
                       {project.name}
                     </h3>
                   </div>
@@ -289,7 +289,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
                           {t.projects.handover}
                         </span>
                         <span className="font-semibold text-slate-800 text-xs flex items-center gap-1 mt-0.5">
-                          <Calendar className="w-3 h-3 text-[#D4AF37]" />
+                          <Calendar className="w-3 h-3 text-[#CFA55A]" />
                           {project.handover}
                         </span>
                       </div>
@@ -298,7 +298,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
                           {t.projects.paymentPlan}
                         </span>
                         <span className="font-semibold text-slate-800 text-xs flex items-center gap-1 mt-0.5">
-                          <Percent className="w-3 h-3 text-[#D4AF37]" />
+                          <Percent className="w-3 h-3 text-[#CFA55A]" />
                           {project.paymentPlan}
                         </span>
                       </div>
@@ -324,7 +324,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setActiveModalProject(project)}
-                        className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-black font-bold text-xs tracking-wider uppercase hover:brightness-105 transition-all shadow-sm flex items-center justify-center gap-1.5"
+                        className="flex-1 py-3 px-4 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0F172A] font-bold text-xs tracking-wider uppercase transition-all shadow-sm flex items-center justify-center gap-1.5"
                       >
                         <span>{t.projects.learnMore}</span>
                         <ArrowUpRight className="w-3.5 h-3.5" />

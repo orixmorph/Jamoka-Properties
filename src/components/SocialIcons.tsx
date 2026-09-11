@@ -50,10 +50,20 @@ export const FacebookIcon: React.FC<SocialIconProps> = ({ className = 'w-5 h-5' 
   </svg>
 );
 
+export const TikTokIcon: React.FC<SocialIconProps> = ({ className = 'w-5 h-5' }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={className}
+  >
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.89 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.3 0 .59.05.86.13V9.4a6.34 6.34 0 0 0-.86-.06 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.58a8.28 8.28 0 0 0 4.96 1.63V6.76c-.4 0-.8-.02-1.2-.07z" />
+  </svg>
+);
+
 export const SOCIAL_LINKS = [
   {
     name: 'Instagram',
-    url: 'https://www.instagram.com/jamokaproperties/',
+    url: 'https://www.instagram.com/jamoka.properties/?hl=en',
     icon: InstagramIcon,
     hoverBg: 'hover:bg-[#E4405F] hover:border-[#E4405F]',
     hoverColor: 'hover:text-[#E4405F]',
@@ -69,7 +79,7 @@ export const SOCIAL_LINKS = [
   },
   {
     name: 'YouTube',
-    url: 'https://www.youtube.com/@jamokaproperties',
+    url: 'https://www.youtube.com/@Jamokaproperties',
     icon: YouTubeIcon,
     hoverBg: 'hover:bg-[#FF0000] hover:border-[#FF0000]',
     hoverColor: 'hover:text-[#FF0000]',
@@ -77,10 +87,18 @@ export const SOCIAL_LINKS = [
   },
   {
     name: 'Facebook',
-    url: 'https://www.facebook.com/jamokaproperties/',
+    url: 'https://www.facebook.com/p/Jamoka-Properties-61576727052602/',
     icon: FacebookIcon,
     hoverBg: 'hover:bg-[#1877F2] hover:border-[#1877F2]',
     hoverColor: 'hover:text-[#1877F2]',
     color: '#1877F2',
+  },
+  {
+    name: 'TikTok',
+    url: 'https://www.tiktok.com/@jamokaproperties',
+    icon: TikTokIcon,
+    hoverBg: 'hover:bg-black hover:border-[#FE2C55]',
+    hoverColor: 'hover:text-[#FE2C55]',
+    color: '#000000',
   },
 ];

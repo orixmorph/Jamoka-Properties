@@ -19,11 +19,11 @@ export const BlogsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] pb-24">
       {/* Header Banner */}
-      <section className="relative py-20 bg-[#0A0E17] text-white overflow-hidden">
+      <section className="relative pt-36 sm:pt-40 pb-20 bg-[#0A0E17] text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0E17] via-[#0A0E17]/90 to-transparent" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#D4AF37]/40 text-[#ECC86A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
-            <BookOpen className="w-3.5 h-3.5 text-[#D4AF37]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#CFA55A]/40 text-[#CFA55A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
+            <BookOpen className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>MARKET INTELLIGENCE</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-bold font-serif-luxury text-white mb-3">
@@ -44,7 +44,7 @@ export const BlogsPage: React.FC = () => {
               onClick={() => setSelectedCategory(cat)}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 selectedCategory === cat
-                  ? 'bg-[#0F172A] text-white shadow-xs'
+                  ? 'bg-black text-white shadow-xs'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-neutral-100'
               }`}
             >
@@ -60,7 +60,7 @@ export const BlogsPage: React.FC = () => {
           {filteredBlogs.map((blog) => (
             <div
               key={blog.id}
-              className="group bg-white rounded-3xl overflow-hidden border border-neutral-200/80 hover:border-[#D4AF37]/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+              className="group bg-white rounded-3xl overflow-hidden border border-neutral-200/80 hover:border-[#CFA55A]/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
             >
               <div>
                 <div
@@ -75,18 +75,18 @@ export const BlogsPage: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                   <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-[#ECC86A] text-[10px] font-bold uppercase tracking-wider">
+                    <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-[#CFA55A] text-[10px] font-bold uppercase tracking-wider">
                       {blog.category}
                     </span>
                   </div>
 
                   <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-neutral-300 text-[11px]">
                     <span className="flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-[#D4AF37]" />
+                      <Calendar className="w-3 h-3 text-[#CFA55A]" />
                       {blog.date}
                     </span>
                     <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-[#D4AF37]" />
+                      <Clock className="w-3 h-3 text-[#CFA55A]" />
                       {blog.readTime}
                     </span>
                   </div>
@@ -108,10 +108,10 @@ export const BlogsPage: React.FC = () => {
               <div className="p-6 pt-0">
                 <button
                   onClick={() => setActiveArticle(blog)}
-                  className="w-full py-2.5 px-4 rounded-xl bg-neutral-50 hover:bg-[#0F172A] hover:text-white border border-neutral-200/80 text-slate-800 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-4 rounded-xl bg-neutral-50 hover:bg-black hover:text-white border border-neutral-200/80 text-slate-800 font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>{t.blogsPage.readBriefing}</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <ArrowRight className="w-3.5 h-3.5 text-[#CFA55A]" />
                 </button>
               </div>
             </div>
@@ -129,7 +129,7 @@ export const BlogsPage: React.FC = () => {
               exit={{ opacity: 0, scale: 0.95 }}
               className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden my-6 border border-neutral-200"
             >
-              <div className="relative h-56 sm:h-64 w-full bg-slate-900">
+              <div className="relative h-56 sm:h-64 w-full bg-black">
                 <img
                   src={activeArticle.image}
                   alt={activeArticle.title}
@@ -139,13 +139,13 @@ export const BlogsPage: React.FC = () => {
 
                 <button
                   onClick={() => setActiveArticle(null)}
-                  className={`absolute top-4 ${isRTL ? 'left-4' : 'right-4'} w-10 h-10 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition-colors z-10`}
+                  className={`absolute top-4 ${isRTL ? 'left-4' : 'right-4'} w-10 h-10 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition-colors z-10 cursor-pointer`}
                 >
                   <X className="w-5 h-5" />
                 </button>
 
                 <div className="absolute bottom-4 left-6 right-6 text-white">
-                  <span className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-widest block mb-1">
+                  <span className="text-[10px] font-bold text-[#CFA55A] uppercase tracking-widest block mb-1">
                     {activeArticle.category} • {activeArticle.readTime}
                   </span>
                   <h2 className="text-xl sm:text-2xl font-bold font-serif-luxury">
@@ -170,7 +170,7 @@ export const BlogsPage: React.FC = () => {
                   </span>
                   <button
                     onClick={() => setActiveArticle(null)}
-                    className="px-5 py-2.5 rounded-xl bg-[#0F172A] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#1E293B]"
+                    className="px-5 py-2.5 rounded-xl bg-black hover:bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer"
                   >
                     {t.blogsPage.closeBriefing}
                   </button>

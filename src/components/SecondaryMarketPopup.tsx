@@ -53,12 +53,12 @@ export const SecondaryMarketPopup: React.FC<SecondaryMarketPopupProps> = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-5 right-4 sm:right-6 z-50 w-[90vw] sm:w-[350px] max-w-[360px] bg-white/98 backdrop-blur-xl rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.18)] border border-[#D4AF37]/30 p-4.5 sm:p-5 overflow-hidden font-jakarta"
+            className="fixed bottom-5 right-4 sm:right-6 z-50 w-[90vw] sm:w-[350px] max-w-[360px] bg-white/98 backdrop-blur-xl rounded-2xl shadow-[0_20px_45px_rgba(0,0,0,0.18)] border border-[#CFA55A]/30 p-4.5 sm:p-5 overflow-hidden font-jakarta"
           >
             {/* Top Row: SQFT DXB Icon with Animated Border + Header + Close Button */}
             <div className="flex items-start justify-between gap-3 mb-3.5 relative z-10">
               <div className="flex items-center gap-3">
-                {/* SQ Logo with Animated Gradient Border Only (No background glow) */}
+                {/* SQ Logo with Premium Rotating Gold Accent Border */}
                 <div className="relative p-[2px] rounded-xl overflow-hidden shadow-xs shrink-0">
                   <div className="absolute inset-[-150%] animate-rotate-gradient bg-[conic-gradient(from_0deg,#D4AF37_0%,#F59E0B_25%,#FFFFFF_45%,#ECC86A_65%,#C5A059_85%,#D4AF37_100%)] opacity-100" />
 
@@ -76,7 +76,7 @@ export const SecondaryMarketPopup: React.FC<SecondaryMarketPopupProps> = ({
                       />
                       <path
                         d="M62 65L78 80H68L55 68L62 65Z"
-                        fill="#ECC86A"
+                        fill="#D4AF37"
                       />
                     </svg>
                   </div>
@@ -117,10 +117,10 @@ export const SecondaryMarketPopup: React.FC<SecondaryMarketPopupProps> = ({
 
             <div className="h-px w-full bg-neutral-100 mb-3.5" />
 
-            {/* Gold CTA Action Button */}
+            {/* Gold CTA Action Button - solid standard branding color CFA55A */}
             <button
               onClick={handleExplore}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] hover:brightness-105 active:scale-[0.99] text-[#0A0E17] font-bold text-xs tracking-[0.1em] uppercase py-3 px-3.5 rounded-xl shadow-[0_4px_16px_rgba(212,175,55,0.28)] transition-all group font-jakarta cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 bg-[#CFA55A] hover:bg-[#b8914b] active:scale-[0.99] text-[#0A0E17] font-bold text-xs tracking-[0.1em] uppercase py-3 px-3.5 rounded-xl shadow-[0_4px_16px_rgba(207,165,90,0.28)] transition-all group font-jakarta cursor-pointer"
             >
               <span>EXPLORE SECONDARY MARKET</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -129,21 +129,18 @@ export const SecondaryMarketPopup: React.FC<SecondaryMarketPopupProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Floating Pill when dismissed or before 10 seconds */}
+      {/* Floating Pill on the side when dismissed or before 10 seconds - solid standard color CFA55A */}
       {hasDismissed && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-5 right-4 sm:right-6 z-40 flex items-center gap-2.5 bg-[#0F172A] text-white px-4 py-2.5 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.3)] border border-[#D4AF37]/50 hover:border-[#D4AF37] hover:scale-105 transition-all text-xs font-bold font-jakarta"
+          className="fixed bottom-5 right-4 sm:right-6 z-40 flex items-center gap-2.5 bg-[#CFA55A] hover:bg-[#b8914b] text-[#0A0E17] px-4 py-2.5 rounded-full shadow-[0_10px_30px_rgba(207,165,90,0.4)] border border-[#CFA55A] hover:scale-105 transition-all text-xs font-bold font-jakarta cursor-pointer"
           title="SQFT DXB • We Find, You Move In"
         >
-          <div className="relative p-[1.5px] rounded-lg overflow-hidden shrink-0">
-            <div className="absolute inset-[-100%] animate-rotate-gradient bg-[conic-gradient(from_0deg,#D4AF37_0%,#F59E0B_50%,#D4AF37_100%)]" />
-            <div className="relative w-5 h-5 rounded-[6px] bg-[#0A0E17] flex items-center justify-center text-[9px] font-bold text-[#ECC86A]">
-              SQ
-            </div>
+          <div className="w-5 h-5 rounded-[6px] bg-[#0A0E17] flex items-center justify-center text-[9px] font-bold text-[#CFA55A] shrink-0">
+            SQ
           </div>
           <span className="tracking-wide">SQFT DXB • We Find, You Move In</span>
-          <ExternalLink className="w-3.5 h-3.5 text-[#D4AF37]" />
+          <ExternalLink className="w-3.5 h-3.5 text-[#0A0E17]" />
         </button>
       )}
     </>

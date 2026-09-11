@@ -10,8 +10,8 @@ export const DevelopersSection: React.FC<{ onInquireDeveloper?: (name: string) =
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#D4AF37]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#D4AF37]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
+            <ShieldCheck className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>DIRECT INSTITUTIONAL APPOINTMENTS</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
@@ -27,20 +27,20 @@ export const DevelopersSection: React.FC<{ onInquireDeveloper?: (name: string) =
           {DEVELOPERS_DATA.map((dev) => (
             <div
               key={dev.name}
-              className="bg-white rounded-2xl p-6 border border-neutral-200/80 shadow-sm hover:shadow-xl hover:border-[#D4AF37]/60 transition-all duration-300 flex flex-col justify-between group"
+              className="bg-white rounded-2xl p-6 border border-neutral-200/80 shadow-sm hover:shadow-xl hover:border-[#CFA55A]/60 transition-all duration-300 flex flex-col justify-between group"
             >
               <div>
                 {/* Developer Logo Monogram Header */}
                 <div className="flex items-center justify-between mb-4">
-                  <div className="h-10 px-3 bg-neutral-900 text-white rounded-lg flex items-center justify-center font-black tracking-widest text-xs font-jakarta uppercase group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
+                  <div className="h-10 px-3 bg-neutral-900 text-white rounded-lg flex items-center justify-center font-black tracking-widest text-xs font-jakarta uppercase group-hover:bg-[#CFA55A] group-hover:text-black transition-colors">
                     {dev.logoText}
                   </div>
-                  <span className="text-[10px] font-bold text-[#A6833D] bg-[#FAF5EC] px-2 py-0.5 rounded-full border border-[#D4AF37]/20">
+                  <span className="text-[10px] font-bold text-[#A6833D] bg-[#FAF5EC] px-2 py-0.5 rounded-full border border-[#CFA55A]/20">
                     VIP ALLOCATION
                   </span>
                 </div>
 
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#D4AF37] transition-colors leading-tight">
+                <h3 className="text-lg font-bold text-slate-900 group-hover:text-[#CFA55A] transition-colors leading-tight">
                   {dev.name}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">{dev.tagline}</p>
@@ -62,7 +62,7 @@ export const DevelopersSection: React.FC<{ onInquireDeveloper?: (name: string) =
                 className="w-full mt-2 py-2.5 px-3 rounded-xl border border-neutral-200 hover:border-slate-900 text-slate-800 hover:text-black text-xs font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5"
               >
                 <span>Request {dev.logoText} Quota</span>
-                <ArrowUpRight className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <ArrowUpRight className="w-3.5 h-3.5 text-[#CFA55A]" />
               </button>
             </div>
           ))}

@@ -24,7 +24,7 @@ export const JamokaMonogram: React.FC<{ className?: string; size?: number }> = (
 }) => {
   return (
     <div
-      className={`relative flex items-center justify-center rounded-sm overflow-hidden bg-black border border-[#D4AF37]/60 shadow-sm shrink-0 select-none ${className}`}
+      className={`relative flex items-center justify-center rounded-sm overflow-hidden bg-black border border-[#CFA55A]/60 shadow-sm shrink-0 select-none ${className}`}
       style={{ width: size, height: size }}
       title="Jamoka Properties"
     >
@@ -207,9 +207,13 @@ export const SqftDxbLogo: React.FC<{
           >
             SQFT DXB
           </span>
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse shrink-0"></span>
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#CFA55A] animate-pulse shrink-0"></span>
         </div>
-        <span className="text-[8px] sm:text-[9px] font-semibold tracking-[0.18em] uppercase text-slate-500 font-jakarta whitespace-nowrap">
+        <span
+          className={`text-[8px] sm:text-[9px] font-semibold tracking-[0.18em] uppercase font-jakarta whitespace-nowrap ${
+            lightMode ? 'text-neutral-400' : 'text-slate-500'
+          }`}
+        >
           We Find, You Move In
         </span>
       </div>
@@ -227,8 +231,8 @@ export const SqftPartnerLogo: React.FC<{ isDarkBackground?: boolean }> = ({
       rel="noopener noreferrer"
       className={`group relative flex items-center gap-2.5 px-2.5 py-1.5 rounded-md border transition-all shadow-2xs focus:outline-none whitespace-nowrap shrink-0 ${
         isDarkBackground
-          ? 'bg-white/5 border-neutral-700 hover:border-[#D4AF37]/80 text-white'
-          : 'bg-white/90 border-neutral-200/90 hover:border-[#D4AF37]/60 text-[#0F172A]'
+          ? 'bg-white/5 border-neutral-700 hover:border-[#CFA55A]/80 text-white'
+          : 'bg-white/90 border-neutral-200/90 hover:border-[#CFA55A]/60 text-[#0F172A]'
       }`}
       title="Visit Partner Site: SQFT DXB • We Find, You Move In"
     >
@@ -236,13 +240,13 @@ export const SqftPartnerLogo: React.FC<{ isDarkBackground?: boolean }> = ({
       <div className="flex flex-col text-left whitespace-nowrap">
         <div className="flex items-center gap-1 whitespace-nowrap">
           <span
-            className={`text-[11px] md:text-xs font-extrabold tracking-[0.14em] uppercase group-hover:text-[#D4AF37] transition-colors whitespace-nowrap ${
+            className={`text-[11px] md:text-xs font-extrabold tracking-[0.14em] uppercase group-hover:text-[#CFA55A] transition-colors whitespace-nowrap ${
               isDarkBackground ? 'text-white' : 'text-[#0F172A]'
             }`}
           >
             SQFT DXB
           </span>
-          <span className="material-symbols-outlined text-[12px] text-[#D4AF37] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
+          <span className="material-symbols-outlined text-[12px] text-[#CFA55A] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0">
             north_east
           </span>
         </div>

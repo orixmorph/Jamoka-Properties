@@ -17,11 +17,11 @@ export const ServicesAndBlogs: React.FC<ServicesAndBlogsProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <div className="inline-flex items-center gap-2 mb-2">
-              <span className="w-2.5 h-0.5 bg-[#D4AF37]"></span>
-              <span className="text-[11px] font-bold text-[#D4AF37] uppercase tracking-[0.24em]">
+              <span className="w-2.5 h-0.5 bg-[#CFA55A]"></span>
+              <span className="text-[11px] font-bold text-[#CFA55A] uppercase tracking-[0.24em]">
                 CLIENT FIDUCIARY SERVICES
               </span>
-              <span className="w-2.5 h-0.5 bg-[#D4AF37]"></span>
+              <span className="w-2.5 h-0.5 bg-[#CFA55A]"></span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-serif-luxury text-[#0F172A] tracking-tight">
               Bespoke Off-Plan Advisory
@@ -35,16 +35,16 @@ export const ServicesAndBlogs: React.FC<ServicesAndBlogsProps> = ({
             {JAMOKA_SERVICES.map((srv) => (
               <div
                 key={srv.id}
-                className="bg-white p-6 rounded-2xl border border-neutral-200/90 hover:border-[#D4AF37]/70 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+                className="bg-white p-6 rounded-2xl border border-neutral-200/90 hover:border-[#CFA55A]/70 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-[#0F172A] text-[#D4AF37] flex items-center justify-center mb-5 border border-[#D4AF37]/30">
+                  <div className="w-12 h-12 rounded-xl bg-[#0F172A] text-[#CFA55A] flex items-center justify-center mb-5 border border-[#CFA55A]/30">
                     <span className="material-symbols-outlined text-[24px]">
                       {srv.icon}
                     </span>
                   </div>
 
-                  <span className="text-[10px] font-bold text-[#D4AF37] tracking-[0.16em] uppercase block mb-1">
+                  <span className="text-[10px] font-bold text-[#CFA55A] tracking-[0.16em] uppercase block mb-1">
                     {srv.tag}
                   </span>
 
@@ -59,7 +59,7 @@ export const ServicesAndBlogs: React.FC<ServicesAndBlogsProps> = ({
                   <div className="space-y-1.5 pt-3 border-t border-neutral-100 text-neutral-700 text-xs">
                     {srv.scope.map((item, idx) => (
                       <div key={idx} className="flex items-start gap-1.5">
-                        <span className="material-symbols-outlined text-[14px] text-[#D4AF37] shrink-0 mt-0.5">
+                        <span className="material-symbols-outlined text-[14px] text-[#CFA55A] shrink-0 mt-0.5">
                           done
                         </span>
                         <span className="text-[11px]">{item}</span>
@@ -88,8 +88,8 @@ export const ServicesAndBlogs: React.FC<ServicesAndBlogsProps> = ({
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="w-2.5 h-0.5 bg-[#D4AF37]"></span>
-                <span className="text-[11px] font-bold text-[#D4AF37] uppercase tracking-[0.24em]">
+                <span className="w-2.5 h-0.5 bg-[#CFA55A]"></span>
+                <span className="text-[11px] font-bold text-[#CFA55A] uppercase tracking-[0.24em]">
                   MARKET BRIEFINGS & RESEARCH
                 </span>
               </div>
@@ -106,7 +106,7 @@ export const ServicesAndBlogs: React.FC<ServicesAndBlogsProps> = ({
             {REAL_ESTATE_BLOGS.map((article) => (
               <article
                 key={article.id}
-                className="bg-[#FAF9F6] rounded-2xl overflow-hidden border border-neutral-200 hover:border-[#D4AF37]/60 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col group cursor-pointer"
+                className="bg-[#FAF9F6] rounded-2xl overflow-hidden border border-neutral-200 hover:border-[#CFA55A]/60 shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col group cursor-pointer"
                 onClick={() => setSelectedArticle(article)}
               >
                 <div className="relative h-48 overflow-hidden">
@@ -128,7 +128,7 @@ export const ServicesAndBlogs: React.FC<ServicesAndBlogsProps> = ({
                       <span>{article.readTime}</span>
                     </div>
 
-                    <h3 className="text-lg font-bold font-serif-luxury text-[#0F172A] group-hover:text-[#D4AF37] transition-colors leading-snug mb-2">
+                    <h3 className="text-lg font-bold font-serif-luxury text-[#0F172A] group-hover:text-[#CFA55A] transition-colors leading-snug mb-2">
                       {article.title}
                     </h3>
 
@@ -141,7 +141,7 @@ export const ServicesAndBlogs: React.FC<ServicesAndBlogsProps> = ({
                     <span className="text-[11px] font-medium text-neutral-500">
                       {article.author}
                     </span>
-                    <span className="font-bold text-[#D4AF37] flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
+                    <span className="font-bold text-[#CFA55A] flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
                       Read Briefing →
                     </span>
                   </div>
@@ -170,7 +170,7 @@ export const ServicesAndBlogs: React.FC<ServicesAndBlogsProps> = ({
                 <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
               <div className="absolute bottom-4 left-6 right-6 text-white">
-                <span className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-widest block mb-1">
+                <span className="text-[10px] font-bold text-[#CFA55A] uppercase tracking-widest block mb-1">
                   {selectedArticle.category} • {selectedArticle.date}
                 </span>
                 <h2 className="text-xl sm:text-2xl font-bold font-serif-luxury text-white">
@@ -180,7 +180,7 @@ export const ServicesAndBlogs: React.FC<ServicesAndBlogsProps> = ({
             </div>
 
             <div className="p-6 overflow-y-auto space-y-4 text-neutral-700 text-sm leading-relaxed">
-              <p className="font-semibold text-neutral-900 border-l-2 border-[#D4AF37] pl-3 italic">
+              <p className="font-semibold text-neutral-900 border-l-2 border-[#CFA55A] pl-3 italic">
                 {selectedArticle.summary}
               </p>
               <p>

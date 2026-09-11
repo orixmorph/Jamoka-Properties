@@ -1,36 +1,9 @@
 @import "tailwindcss";
-
-/* 1. Custom Font Definition for Caughe (with fallbacks to /fonts/ folder or local installed font) */
-@font-face {
-  font-family: 'Caughe';
-  src: url('/fonts/Caughe-Regular.woff2') format('woff2'),
-       url('/fonts/Caughe-Regular.woff') format('woff'),
-       url('/fonts/Caughe-Regular.ttf') format('truetype'),
-       url('/fonts/Caughe.otf') format('opentype'),
-       url('/fonts/Caughe.ttf') format('truetype'),
-       local('Caughe'),
-       local('Caughe-Regular'),
-       local('Caughe Regular');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Caughe';
-  src: url('/fonts/Caughe-Bold.woff2') format('woff2'),
-       url('/fonts/Caughe-Bold.woff') format('woff'),
-       url('/fonts/Caughe-Bold.ttf') format('truetype'),
-       local('Caughe-Bold'),
-       local('Caughe Bold');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import "./fonts.css";
 
 @layer base {
   :root {
-    --font-heading: 'Caughe', 'Cinzel', 'Playfair Display', Georgia, serif;
+    --font-heading: 'Caughe', Georgia, serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
   }
 
@@ -44,18 +17,18 @@
 
   /* All headings (h1 through h6) across the entire site default to Caughe */
   h1, h2, h3, h4, h5, h6, .font-heading {
-    font-family: 'Caughe', 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    font-family: 'Caughe', Georgia, serif;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
 }
 
 .font-caughe {
-  font-family: 'Caughe', 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Caughe', Georgia, serif;
 }
 
 .font-serif-luxury {
-  font-family: 'Caughe', 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Caughe', Georgia, serif;
 }
 
 .font-jakarta {
@@ -66,13 +39,13 @@
   font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
 }
 
-/* Custom Gold Gradients & Accents */
+/* Custom Gold Branding Accents */
 .bg-gold-gradient {
-  background: linear-gradient(135deg, #D4AF37 0%, #DFBD4B 50%, #C5A059 100%);
+  background: #CFA55A;
 }
 
 .bg-gold-metallic {
-  background: linear-gradient(135deg, #ECC86A 0%, #D4AF37 50%, #B89047 100%);
+  background: #CFA55A;
 }
 
 .text-gold-gradient {

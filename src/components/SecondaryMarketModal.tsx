@@ -49,7 +49,7 @@ export const SecondaryMarketModal: React.FC<SecondaryMarketModalProps> = ({
         className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden my-8"
       >
         {/* Header Ribbon */}
-        <div className="bg-[#0F172A] text-white p-6 sm:p-8 flex items-start justify-between gap-4">
+        <div className="bg-black text-white p-6 sm:p-8 flex items-start justify-between gap-4 border-b border-neutral-800">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-black border border-white/20 flex items-center justify-center p-2.5 shrink-0">
               <svg viewBox="0 0 100 100" className="w-full h-full" fill="none">
@@ -59,14 +59,14 @@ export const SecondaryMarketModal: React.FC<SecondaryMarketModalProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-extrabold text-[#D4AF37] tracking-widest uppercase">
+                <span className="text-[11px] font-extrabold text-[#CFA55A] tracking-widest uppercase">
                   PARTNERED SECONDARY MARKET SPECIALIST
                 </span>
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               </div>
               <h3 className="text-2xl sm:text-3xl font-bold font-jakarta tracking-tight text-white flex items-center gap-2.5">
                 <span>SQFT DXB</span>
-                <span className="text-sm sm:text-base font-semibold text-[#ECC86A] tracking-normal font-jakarta">
+                <span className="text-sm sm:text-base font-semibold text-[#CFA55A] tracking-normal font-jakarta">
                   • We Find, You Move In
                 </span>
               </h3>
@@ -172,7 +172,7 @@ export const SecondaryMarketModal: React.FC<SecondaryMarketModalProps> = ({
               href="https://sqftdxb.ae"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg hover:brightness-105 transition-all"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0A0E17] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all"
             >
               <span>Launch SQFT DXB Portal</span>
               <ExternalLink className="w-4 h-4" />

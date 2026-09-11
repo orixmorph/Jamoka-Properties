@@ -102,9 +102,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <motion.h1
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight uppercase font-caughe text-white leading-tight mb-3 select-none"
-          style={{ fontFamily: "'Caughe', 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif" }}
+          style={{ fontFamily: "'Caughe', serif" }}
         >
           {t.hero.title}
         </motion.h1>
@@ -129,7 +129,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Primary CTA: Explore Off-Plan */}
           <button
             onClick={onExploreOffPlan}
-            className="w-full sm:w-auto px-5 py-2.5 sm:px-6 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] text-[#0A0E17] font-bold text-xs tracking-[0.12em] uppercase shadow-[0_8px_20px_rgba(212,175,55,0.25)] hover:shadow-[0_12px_28px_rgba(212,175,55,0.4)] hover:scale-102 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group cursor-pointer"
+            className="w-full sm:w-auto px-5 py-2.5 sm:px-6 sm:py-2.5 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0A0E17] font-bold text-xs tracking-[0.12em] uppercase shadow-[0_8px_20px_rgba(207,165,90,0.3)] hover:scale-102 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group cursor-pointer"
           >
             <span>{t.hero.exploreBtn}</span>
             <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -138,12 +138,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Secondary CTA: Ready Properties (SQFT DXB) */}
           <button
             onClick={onOpenSecondarySite}
-            className="w-full sm:w-auto px-5 py-2.5 sm:px-6 sm:py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/25 hover:border-[#D4AF37] text-xs font-medium tracking-[0.12em] uppercase backdrop-blur-md transition-all flex items-center justify-center gap-2 group cursor-pointer"
+            className="w-full sm:w-auto px-5 py-2.5 sm:px-6 sm:py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/25 hover:border-[#CFA55A] text-xs font-medium tracking-[0.12em] uppercase backdrop-blur-md transition-all flex items-center justify-center gap-2 group cursor-pointer"
             title="Explore Ready & Secondary Market properties on SQFT DXB"
           >
-            <span className="w-1.5 h-1.5 rounded-sm bg-[#D4AF37]"></span>
+            <span className="w-1.5 h-1.5 rounded-sm bg-[#CFA55A]"></span>
             <span>{t.hero.readyBtn}</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-[#D4AF37] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-[#CFA55A] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </button>
         </motion.div>
 
@@ -177,7 +177,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             )}
             <button
               type="submit"
-              className="px-4 py-1.5 bg-[#D4AF37] hover:bg-[#ECC86A] text-black font-bold text-[11px] tracking-wider uppercase rounded-lg sm:rounded-xl transition-colors shrink-0 shadow-sm cursor-pointer"
+              className="px-4 py-1.5 bg-[#CFA55A] hover:bg-[#b8914b] text-[#0A0E17] font-bold text-[11px] tracking-wider uppercase rounded-lg sm:rounded-xl transition-colors shrink-0 shadow-sm cursor-pointer"
             >
               {t.hero.searchBtn}
             </button>
@@ -186,14 +186,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Trending Community Tags - Sleek Single-Line Strip */}
           <div className="flex items-center flex-wrap gap-1 sm:gap-1.5 mt-1.5 pt-1.5 border-t border-white/10 px-0.5 text-left">
             <span className="text-[10px] text-neutral-400 flex items-center gap-1 font-medium mr-1 shrink-0">
-              <Sparkles className="w-2.5 h-2.5 text-[#D4AF37]" /> {t.hero.trending}:
+              <Sparkles className="w-2.5 h-2.5 text-[#CFA55A]" /> {t.hero.trending}:
             </span>
             {trendingTags.map((tag) => (
               <button
                 key={tag}
                 type="button"
                 onClick={() => handleTagClick(tag)}
-                className="text-[10px] text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2 py-0.5 rounded-md transition-colors border border-white/5 hover:border-[#D4AF37]/50 font-light cursor-pointer"
+                className="text-[10px] text-neutral-300 hover:text-white bg-white/5 hover:bg-white/15 px-2 py-0.5 rounded-md transition-colors border border-white/5 hover:border-[#CFA55A]/50 font-light cursor-pointer"
               >
                 {tag}
               </button>

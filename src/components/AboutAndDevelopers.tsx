@@ -17,8 +17,8 @@ export const AboutAndDevelopers: React.FC<AboutAndDevelopersProps> = ({
             {/* Left Column: Narrative */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="w-2.5 h-0.5 bg-[#D4AF37]"></span>
-                <span className="text-[11px] font-bold text-[#D4AF37] uppercase tracking-[0.24em]">
+                <span className="w-2.5 h-0.5 bg-[#CFA55A]"></span>
+                <span className="text-[11px] font-bold text-[#CFA55A] uppercase tracking-[0.24em]">
                   ABOUT JAMOKA PROPERTIES
                 </span>
               </div>
@@ -76,7 +76,7 @@ export const AboutAndDevelopers: React.FC<AboutAndDevelopersProps> = ({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B0F19]/80 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <span className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-widest block mb-1">
+                  <span className="text-[10px] font-bold text-[#CFA55A] uppercase tracking-widest block mb-1">
                     HEADQUARTERS • DUBAI
                   </span>
                   <p className="text-lg font-bold font-serif-luxury">
@@ -107,11 +107,11 @@ export const AboutAndDevelopers: React.FC<AboutAndDevelopersProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <div className="inline-flex items-center gap-2 mb-2">
-              <span className="w-2.5 h-0.5 bg-[#D4AF37]"></span>
-              <span className="text-[11px] font-bold text-[#D4AF37] uppercase tracking-[0.24em]">
+              <span className="w-2.5 h-0.5 bg-[#CFA55A]"></span>
+              <span className="text-[11px] font-bold text-[#CFA55A] uppercase tracking-[0.24em]">
                 AUTHORIZED MASTER DEVELOPERS
               </span>
-              <span className="w-2.5 h-0.5 bg-[#D4AF37]"></span>
+              <span className="w-2.5 h-0.5 bg-[#CFA55A]"></span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-serif-luxury text-[#0F172A] tracking-tight">
               Dubai's Preeminent Developers
@@ -125,7 +125,7 @@ export const AboutAndDevelopers: React.FC<AboutAndDevelopersProps> = ({
             {MASTER_DEVELOPERS.map((dev) => (
               <div
                 key={dev.name}
-                className="bg-[#FAF9F6] p-6 rounded-2xl border border-neutral-200/90 hover:border-[#D4AF37]/60 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+                className="bg-[#FAF9F6] p-6 rounded-2xl border border-neutral-200/90 hover:border-[#CFA55A]/60 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-start justify-between mb-4">
@@ -137,7 +137,7 @@ export const AboutAndDevelopers: React.FC<AboutAndDevelopersProps> = ({
                         {dev.fullName}
                       </span>
                     </div>
-                    <span className="text-[10px] font-bold text-[#D4AF37] bg-white px-2.5 py-1 rounded-full border border-neutral-200 uppercase">
+                    <span className="text-[10px] font-bold text-[#CFA55A] bg-white px-2.5 py-1 rounded-full border border-neutral-200 uppercase">
                       {dev.rating}
                     </span>
                   </div>
@@ -169,7 +169,7 @@ export const AboutAndDevelopers: React.FC<AboutAndDevelopersProps> = ({
                   </span>
                   <button
                     onClick={() => onInquireDeveloper(dev.name)}
-                    className="text-xs font-bold text-[#D4AF37] hover:underline flex items-center gap-1 cursor-pointer"
+                    className="text-xs font-bold text-[#CFA55A] hover:underline flex items-center gap-1 cursor-pointer"
                   >
                     <span>Request Allocations</span>
                     <span className="material-symbols-outlined text-[14px]">arrow_forward</span>

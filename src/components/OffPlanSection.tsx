@@ -55,8 +55,8 @@ export const OffPlanSection: React.FC<OffPlanSectionProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="w-2.5 h-0.5 bg-[#D4AF37]"></span>
-              <span className="text-[11px] font-bold text-[#D4AF37] uppercase tracking-[0.24em]">
+              <span className="w-2.5 h-0.5 bg-[#CFA55A]"></span>
+              <span className="text-[11px] font-bold text-[#CFA55A] uppercase tracking-[0.24em]">
                 CURRENT ALLOCATIONS
               </span>
             </div>
@@ -108,7 +108,7 @@ export const OffPlanSection: React.FC<OffPlanSectionProps> = ({
                 <select
                   value={selectedHandover}
                   onChange={(e) => setSelectedHandover(e.target.value)}
-                  className="bg-white border border-neutral-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-neutral-700 focus:outline-none focus:border-[#D4AF37]"
+                  className="bg-white border border-neutral-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-neutral-700 focus:outline-none focus:border-[#CFA55A]"
                 >
                   <option value="all">All Timelines</option>
                   <option value="2026">2026 Ready</option>
@@ -124,7 +124,7 @@ export const OffPlanSection: React.FC<OffPlanSectionProps> = ({
                 <select
                   value={priceSort}
                   onChange={(e) => setPriceSort(e.target.value as any)}
-                  className="bg-white border border-neutral-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-neutral-700 focus:outline-none focus:border-[#D4AF37]"
+                  className="bg-white border border-neutral-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-neutral-700 focus:outline-none focus:border-[#CFA55A]"
                 >
                   <option value="default">Curated Featured</option>
                   <option value="asc">Price: Low to High</option>
@@ -161,7 +161,7 @@ export const OffPlanSection: React.FC<OffPlanSectionProps> = ({
               return (
                 <div
                   key={prop.id}
-                  className="group bg-white rounded-2xl overflow-hidden border border-neutral-200/90 hover:border-[#D4AF37]/60 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col"
+                  className="group bg-white rounded-2xl overflow-hidden border border-neutral-200/90 hover:border-[#CFA55A]/60 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col"
                 >
                   {/* Image Container with Zoom-In Hover Effect */}
                   <div className="relative h-64 overflow-hidden bg-neutral-100">
@@ -177,7 +177,7 @@ export const OffPlanSection: React.FC<OffPlanSectionProps> = ({
                       <span className="px-2.5 py-1 rounded bg-[#0B0F19]/90 backdrop-blur-xs text-white text-[10px] font-extrabold tracking-[0.14em] uppercase border border-white/20">
                         {prop.developer}
                       </span>
-                      <span className="px-2 py-0.5 rounded bg-[#D4AF37] text-[#0F172A] text-[9px] font-bold tracking-wider uppercase">
+                      <span className="px-2 py-0.5 rounded bg-[#CFA55A] text-[#0F172A] text-[9px] font-bold tracking-wider uppercase">
                         {prop.tag}
                       </span>
                     </div>
@@ -191,10 +191,10 @@ export const OffPlanSection: React.FC<OffPlanSectionProps> = ({
 
                     {/* Overlay Title & Enclave */}
                     <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <span className="text-[11px] font-semibold text-[#D4AF37] tracking-wider uppercase block">
+                      <span className="text-[11px] font-semibold text-[#CFA55A] tracking-wider uppercase block">
                         {prop.enclave}
                       </span>
-                      <h3 className="text-xl font-bold font-serif-luxury leading-tight text-white group-hover:text-[#D4AF37] transition-colors">
+                      <h3 className="text-xl font-bold font-serif-luxury leading-tight text-white group-hover:text-[#CFA55A] transition-colors">
                         {prop.name}
                       </h3>
                       <span className="text-xs text-neutral-300 block mt-0.5">
@@ -222,7 +222,7 @@ export const OffPlanSection: React.FC<OffPlanSectionProps> = ({
                         </div>
                         <div className="bg-white py-1 rounded border border-neutral-100">
                           <span className="text-[9px] text-neutral-400 block uppercase">Build</span>
-                          <span className="font-bold text-[#D4AF37]">{prop.constructionPercent}</span>
+                          <span className="font-bold text-[#CFA55A]">{prop.constructionPercent}</span>
                         </div>
                         <div className="bg-white py-1 rounded border border-neutral-100">
                           <span className="text-[9px] text-neutral-400 block uppercase">Handover</span>
@@ -248,7 +248,7 @@ export const OffPlanSection: React.FC<OffPlanSectionProps> = ({
                       <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => onOpenMortgage(priceNumber)}
-                          className="p-2 rounded-lg border border-neutral-200 text-neutral-600 hover:text-[#D4AF37] hover:border-[#D4AF37] transition-all cursor-pointer"
+                          className="p-2 rounded-lg border border-neutral-200 text-neutral-600 hover:text-[#CFA55A] hover:border-[#CFA55A] transition-all cursor-pointer"
                           title="Calculate Handover Mortgage"
                         >
                           <span className="material-symbols-outlined text-[18px]">calculate</span>

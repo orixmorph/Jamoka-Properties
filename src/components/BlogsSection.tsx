@@ -11,11 +11,11 @@ export const BlogsSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#D4AF37]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-3">
-              <BookOpen className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-3">
+              <BookOpen className="w-3.5 h-3.5 text-[#CFA55A]" />
               <span>MARKET INTELLIGENCE</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
               Dubai Real Estate Insights
             </h2>
             <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-2xl font-light">
@@ -30,7 +30,7 @@ export const BlogsSection: React.FC = () => {
             <article
               key={article.id}
               onClick={() => setActiveArticle(article)}
-              className="group bg-white rounded-2xl border border-neutral-200/80 overflow-hidden shadow-sm hover:shadow-xl hover:border-[#D4AF37]/50 transition-all duration-300 flex flex-col justify-between cursor-pointer"
+              className="group bg-white rounded-2xl border border-neutral-200/80 overflow-hidden shadow-sm hover:shadow-xl hover:border-[#CFA55A]/50 transition-all duration-300 flex flex-col justify-between cursor-pointer"
             >
               <div>
                 <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-900">
@@ -40,7 +40,7 @@ export const BlogsSection: React.FC = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute top-3 left-3">
-                    <span className="px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md text-[#ECC86A] text-[10px] font-bold tracking-wider uppercase border border-[#D4AF37]/30">
+                    <span className="px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md text-[#CFA55A] text-[10px] font-bold tracking-wider uppercase border border-[#CFA55A]/30">
                       {article.category}
                     </span>
                   </div>
@@ -57,7 +57,7 @@ export const BlogsSection: React.FC = () => {
                     </span>
                   </div>
 
-                  <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#D4AF37] transition-colors leading-snug">
+                  <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#CFA55A] transition-colors leading-snug">
                     {article.title}
                   </h3>
 
@@ -67,7 +67,7 @@ export const BlogsSection: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-6 pt-0 flex items-center justify-between border-t border-neutral-100 text-xs font-bold text-[#D4AF37] group-hover:text-[#0F172A] transition-colors">
+              <div className="p-6 pt-0 flex items-center justify-between border-t border-neutral-100 text-xs font-bold text-[#CFA55A] group-hover:text-[#0F172A] transition-colors">
                 <span>Read Full Briefing</span>
                 <ArrowUpRight className="w-4 h-4" />
               </div>
@@ -100,7 +100,7 @@ export const BlogsSection: React.FC = () => {
                   <X className="w-5 h-5" />
                 </button>
                 <div className="absolute bottom-4 left-6 right-6 text-white">
-                  <span className="text-xs text-[#D4AF37] font-bold uppercase tracking-widest block">
+                  <span className="text-xs text-[#CFA55A] font-bold uppercase tracking-widest block">
                     {activeArticle.category} • {activeArticle.readTime}
                   </span>
                   <h3 className="text-xl sm:text-2xl font-bold font-serif-luxury leading-tight">

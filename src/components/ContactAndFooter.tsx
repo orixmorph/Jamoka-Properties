@@ -39,7 +39,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
   return (
     <>
       {/* Dark Luxury Section: Sovereign Client Desk & Private Consultation */}
-      <section id="vip-inquiry" className="py-24 bg-[#0B0F19] text-white relative overflow-hidden border-t border-[#D4AF37]/20">
+      <section id="vip-inquiry" className="py-24 bg-[#0B0F19] text-white relative overflow-hidden border-t border-[#CFA55A]/20">
         {/* Subtle Luxury Gold Sheen & Grid */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(212,175,55,0.08),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_80%,rgba(212,175,55,0.05),transparent_50%)]" />
@@ -49,8 +49,8 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
             
             {/* Left Column: Context & Guarantees */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-[#D4AF37]/40 text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.2em]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-ping" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-[#CFA55A]/40 text-[#CFA55A] text-[10px] font-bold uppercase tracking-[0.2em]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#CFA55A] animate-ping" />
                 SOVEREIGN ADVISORY MANDATE
               </div>
 
@@ -67,7 +67,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
 
               <div className="space-y-4 pt-4 border-t border-white/10 text-xs text-neutral-300">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37]">
+                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-[#CFA55A]/30 flex items-center justify-center text-[#CFA55A]">
                     <span className="material-symbols-outlined text-[18px]">verified</span>
                   </div>
                   <div>
@@ -77,7 +77,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37]">
+                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-[#CFA55A]/30 flex items-center justify-center text-[#CFA55A]">
                     <span className="material-symbols-outlined text-[18px]">lock</span>
                   </div>
                   <div>
@@ -87,7 +87,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37]">
+                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-[#CFA55A]/30 flex items-center justify-center text-[#CFA55A]">
                     <span className="material-symbols-outlined text-[18px]">schedule</span>
                   </div>
                   <div>
@@ -102,7 +102,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
             <div className="lg:col-span-7 bg-white/5 backdrop-blur-xl border border-white/15 rounded-3xl p-6 sm:p-8 shadow-2xl">
               {isSubmitted ? (
                 <div className="text-center py-12 space-y-4 animate-in zoom-in-95 duration-300">
-                  <div className="w-16 h-16 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37] flex items-center justify-center mx-auto text-[#D4AF37]">
+                  <div className="w-16 h-16 rounded-full bg-[#CFA55A]/20 border border-[#CFA55A] flex items-center justify-center mx-auto text-[#CFA55A]">
                     <span className="material-symbols-outlined text-[36px]">check_circle</span>
                   </div>
                   <h3 className="text-2xl font-bold font-serif-luxury text-white">
@@ -122,7 +122,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                 <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleSubmit} className="space-y-4">
                   <input type="hidden" name="source" value="VIP Sovereign Advisory Desk" />
                   <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#D4AF37]">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#CFA55A]">
                       Confidential Advisory Form
                     </span>
                     <span className="text-[10px] text-neutral-400">
@@ -142,7 +142,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="e.g. Alexander Vance"
-                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#D4AF37]"
+                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#CFA55A]"
                       />
                     </div>
 
@@ -157,7 +157,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="investor@example.com"
-                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#D4AF37]"
+                        className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#CFA55A]"
                       />
                     </div>
                   </div>
@@ -173,7 +173,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="+971 50 123 4567"
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#D4AF37]"
+                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#CFA55A]"
                     />
                   </div>
 
@@ -187,14 +187,14 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Specify preferred bedroom counts, payment milestones, or property requirements..."
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#D4AF37]"
+                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs text-white placeholder-neutral-400 focus:outline-none focus:border-[#CFA55A]"
                     ></textarea>
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#DFBD4B] to-[#C5A059] hover:brightness-105 active:scale-[0.99] text-[#0F172A] font-bold text-xs uppercase tracking-[0.16em] shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
+                    className="w-full py-4 rounded-xl bg-[#CFA55A] hover:brightness-105 active:scale-[0.99] text-[#0F172A] font-bold text-xs uppercase tracking-[0.16em] shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
                   >
                     {isSubmitting ? (
                       <>
@@ -232,7 +232,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
 
               {/* Secondary Market Partner Integration */}
               <div className="p-3.5 rounded-xl bg-white/5 border border-neutral-800 space-y-2">
-                <span className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-wider block">
+                <span className="text-[10px] font-bold text-[#CFA55A] uppercase tracking-wider block">
                   Secondary Market Partner:
                 </span>
                 <SqftPartnerLogo isDarkBackground={true} />
@@ -256,7 +256,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                   </button>
                 </li>
                 <li>
-                  <button onClick={onOpenMortgage} className="hover:text-[#D4AF37] transition-colors flex items-center gap-1">
+                  <button onClick={onOpenMortgage} className="hover:text-[#CFA55A] transition-colors flex items-center gap-1">
                     <span>Mortgage Calculator</span>
                     <span className="material-symbols-outlined text-[13px]">calculate</span>
                   </button>

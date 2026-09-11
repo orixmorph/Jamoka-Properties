@@ -18,11 +18,11 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({
   return (
     <div className="min-h-screen bg-[#FAF9F6] pb-24">
       {/* Header Banner */}
-      <section className="relative py-20 bg-[#0A0E17] text-white overflow-hidden">
+      <section className="relative pt-36 sm:pt-40 pb-20 bg-[#0A0E17] text-white overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0E17] via-[#0A0E17]/90 to-transparent" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#D4AF37]/40 text-[#ECC86A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
-            <Building2 className="w-3.5 h-3.5 text-[#D4AF37]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#CFA55A]/40 text-[#CFA55A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
+            <Building2 className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>ACCREDITED BUILDERS</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-bold font-serif-luxury text-white mb-3">
@@ -46,7 +46,7 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({
             return (
               <div
                 key={dev.name}
-                className="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-neutral-200/80 hover:border-[#D4AF37]/60 hover:shadow-xl transition-all flex flex-col justify-between"
+                className="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-neutral-200/80 hover:border-[#CFA55A]/60 hover:shadow-xl transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-start justify-between gap-4 mb-4">
@@ -100,7 +100,7 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({
                     </button>
                     <button
                       onClick={onNavigateContact}
-                      className="px-4 py-2.5 rounded-xl bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-sm"
+                      className="px-4 py-2.5 rounded-xl bg-black hover:bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
                     >
                       <span>Inquire</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -115,22 +115,22 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({
 
       {/* Direct Developer Access Guarantee */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <div className="p-8 rounded-3xl bg-[#0F172A] text-white border border-neutral-800">
+        <div className="p-8 rounded-3xl bg-neutral-950 text-white border border-neutral-800">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-neutral-300 font-light leading-relaxed">
             <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-              <span className="font-bold text-[#ECC86A] block text-sm mb-1">
+              <span className="font-bold text-[#CFA55A] block text-sm mb-1">
                 Zero Buyer Brokerage Commission
               </span>
               In off-plan developer purchases in Dubai, buyers pay 0% agency fees. Agency commission is compensated directly by the master developer.
             </div>
             <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-              <span className="font-bold text-[#ECC86A] block text-sm mb-1">
+              <span className="font-bold text-[#CFA55A] block text-sm mb-1">
                 Pre-Launch Priority Units
               </span>
               Our accredited partner status allows clients to submit Letters of Intent (EOI) for high-demand units prior to public launch days.
             </div>
             <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-              <span className="font-bold text-[#ECC86A] block text-sm mb-1">
+              <span className="font-bold text-[#CFA55A] block text-sm mb-1">
                 Escrow Account Verification
               </span>
               Every contract is validated against RERA statutory accounts under Law No. 8 to verify project registration and construction milestones.

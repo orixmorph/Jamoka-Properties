@@ -72,44 +72,44 @@ export const Navbar: React.FC<NavbarProps> = ({
           <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             <button
               onClick={() => handleLinkClick('about')}
-              className="text-xs font-bold text-neutral-700 hover:text-[#D4AF37] uppercase tracking-[0.14em] transition-colors cursor-pointer"
+              className="text-xs font-bold text-neutral-700 hover:text-[#CFA55A] uppercase tracking-[0.14em] transition-colors cursor-pointer"
             >
               About Us
             </button>
             <button
               onClick={() => handleLinkClick('off-plan')}
-              className="text-xs font-bold text-neutral-700 hover:text-[#D4AF37] uppercase tracking-[0.14em] transition-colors cursor-pointer"
+              className="text-xs font-bold text-neutral-700 hover:text-[#CFA55A] uppercase tracking-[0.14em] transition-colors cursor-pointer"
             >
               Off Plan
             </button>
             <button
               onClick={() => handleLinkClick('mortgage')}
-              className="text-xs font-bold text-[#D4AF37] hover:brightness-110 uppercase tracking-[0.14em] transition-colors cursor-pointer flex items-center gap-1"
+              className="text-xs font-bold text-[#CFA55A] hover:brightness-110 uppercase tracking-[0.14em] transition-colors cursor-pointer flex items-center gap-1"
             >
               <span>Mortgage</span>
               <span className="material-symbols-outlined text-[14px]">calculate</span>
             </button>
             <button
               onClick={() => handleLinkClick('developers')}
-              className="text-xs font-bold text-neutral-700 hover:text-[#D4AF37] uppercase tracking-[0.14em] transition-colors cursor-pointer"
+              className="text-xs font-bold text-neutral-700 hover:text-[#CFA55A] uppercase tracking-[0.14em] transition-colors cursor-pointer"
             >
               Developers
             </button>
             <button
               onClick={() => handleLinkClick('services')}
-              className="text-xs font-bold text-neutral-700 hover:text-[#D4AF37] uppercase tracking-[0.14em] transition-colors cursor-pointer"
+              className="text-xs font-bold text-neutral-700 hover:text-[#CFA55A] uppercase tracking-[0.14em] transition-colors cursor-pointer"
             >
               Services
             </button>
             <button
               onClick={() => handleLinkClick('blogs')}
-              className="text-xs font-bold text-neutral-700 hover:text-[#D4AF37] uppercase tracking-[0.14em] transition-colors cursor-pointer"
+              className="text-xs font-bold text-neutral-700 hover:text-[#CFA55A] uppercase tracking-[0.14em] transition-colors cursor-pointer"
             >
               Blogs
             </button>
             <button
               onClick={() => handleLinkClick('contact')}
-              className="text-xs font-bold text-neutral-700 hover:text-[#D4AF37] uppercase tracking-[0.14em] transition-colors cursor-pointer"
+              className="text-xs font-bold text-neutral-700 hover:text-[#CFA55A] uppercase tracking-[0.14em] transition-colors cursor-pointer"
             >
               Contact Us
             </button>
@@ -119,9 +119,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={() => handleLinkClick('vip-inquiry')}
-              className="hidden sm:inline-flex items-center gap-2 bg-[#0F172A] hover:bg-[#1E293B] text-white px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-[0.15em] border border-[#D4AF37]/40 shadow-xs transition-all cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-2 bg-[#0F172A] hover:bg-[#1E293B] text-white px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-[0.15em] border border-[#CFA55A]/40 shadow-xs transition-all cursor-pointer"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#CFA55A] animate-pulse"></span>
               <span>Sovereign Desk</span>
             </button>
 
@@ -152,44 +152,44 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => handleLinkClick('about')}
-              className="text-left text-sm font-bold text-neutral-800 hover:text-[#D4AF37] uppercase tracking-wider py-1"
+              className="text-left text-sm font-bold text-neutral-800 hover:text-[#CFA55A] uppercase tracking-wider py-1"
             >
               About Us
             </button>
             <button
               onClick={() => handleLinkClick('off-plan')}
-              className="text-left text-sm font-bold text-neutral-800 hover:text-[#D4AF37] uppercase tracking-wider py-1"
+              className="text-left text-sm font-bold text-neutral-800 hover:text-[#CFA55A] uppercase tracking-wider py-1"
             >
               Off Plan
             </button>
             <button
               onClick={() => handleLinkClick('mortgage')}
-              className="text-left text-sm font-bold text-[#D4AF37] uppercase tracking-wider py-1 flex items-center justify-between"
+              className="text-left text-sm font-bold text-[#CFA55A] uppercase tracking-wider py-1 flex items-center justify-between"
             >
               <span>Mortgage Calculator</span>
               <span className="material-symbols-outlined text-[18px]">calculate</span>
             </button>
             <button
               onClick={() => handleLinkClick('developers')}
-              className="text-left text-sm font-bold text-neutral-800 hover:text-[#D4AF37] uppercase tracking-wider py-1"
+              className="text-left text-sm font-bold text-neutral-800 hover:text-[#CFA55A] uppercase tracking-wider py-1"
             >
               Developers
             </button>
             <button
               onClick={() => handleLinkClick('services')}
-              className="text-left text-sm font-bold text-neutral-800 hover:text-[#D4AF37] uppercase tracking-wider py-1"
+              className="text-left text-sm font-bold text-neutral-800 hover:text-[#CFA55A] uppercase tracking-wider py-1"
             >
               Services
             </button>
             <button
               onClick={() => handleLinkClick('blogs')}
-              className="text-left text-sm font-bold text-neutral-800 hover:text-[#D4AF37] uppercase tracking-wider py-1"
+              className="text-left text-sm font-bold text-neutral-800 hover:text-[#CFA55A] uppercase tracking-wider py-1"
             >
               Blogs
             </button>
             <button
               onClick={() => handleLinkClick('contact')}
-              className="text-left text-sm font-bold text-neutral-800 hover:text-[#D4AF37] uppercase tracking-wider py-1"
+              className="text-left text-sm font-bold text-neutral-800 hover:text-[#CFA55A] uppercase tracking-wider py-1"
             >
               Contact Us
             </button>
@@ -197,7 +197,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="pt-4 border-t border-neutral-100">
               <button
                 onClick={() => handleLinkClick('vip-inquiry')}
-                className="w-full py-3 rounded-lg bg-[#0F172A] text-white text-xs font-bold uppercase tracking-widest text-center border border-[#D4AF37]/50"
+                className="w-full py-3 rounded-lg bg-[#0F172A] text-white text-xs font-bold uppercase tracking-widest text-center border border-[#CFA55A]/50"
               >
                 Inquire With Sovereign Desk
               </button>
