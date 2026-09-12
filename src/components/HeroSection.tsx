@@ -8,7 +8,7 @@ import { useLanguage } from '../context/LanguageContext';
 // You can replace these URLs with your cloud video and logo links (Cloudinary, S3, etc.)
 // ---------------------------------------------------------------------------------
 export const DEFAULT_BACKGROUND_VIDEO_URL =
-  'https://res.cloudinary.com/dy6km7beb/video/upload/v1788751184/Dubai___Cinematic_Video___Sony_A7SIII_1080p_sqx0kn.mp4';
+  'https://res.cloudinary.com/dy6km7beb/video/upload/v1789207982/HOME_VIDEOX_aufwtt.mov';
 
 export const DEFAULT_HERO_LOGO_URL =
   'https://res.cloudinary.com/dy6km7beb/image/upload/v1789203807/Copy_of_JP_NEW_TEAM_PICTURES_b3ehua.png';
@@ -91,7 +91,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           className="w-full h-full object-cover"
           src={videoSource}
         >
+          <source src={videoSource} type="video/quicktime" />
           <source src={videoSource} type="video/mp4" />
+          <source src={videoSource} />
         </video>
 
         {/* Luxury Cinematic Overlays */}

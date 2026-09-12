@@ -6,6 +6,10 @@ import { ShieldCheck, Award, Building, Users, MapPin, CheckCircle2, ArrowRight, 
 
 const CEO_PHOTO_URL = '/basil-al-naimi.jpg';
 
+// Toggle to show or hide the team members sections (6-member grid and scrolling slider)
+// Set to false for now per user request; change to true whenever ready to restore them.
+export const SHOW_TEAM_MEMBERS_SECTIONS = false;
+
 interface AboutPageProps {
   onNavigateContact: () => void;
   onNavigateOffPlan: () => void;
@@ -128,21 +132,23 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
       {/* Team Info & Portraits */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-widest uppercase mb-3">
               <Users className="w-3.5 h-3.5 text-[#CFA55A]" />
-              <span>THE TEAM BEHIND JAMOKA</span>
+              <span>{SHOW_TEAM_MEMBERS_SECTIONS ? 'THE TEAM BEHIND JAMOKA' : 'EXECUTIVE LEADERSHIP'}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 font-serif-luxury">
-              {t.about.teamTitle}
+              {SHOW_TEAM_MEMBERS_SECTIONS ? t.about.teamTitle : 'Leadership & Advisory Vision'}
             </h2>
             <p className="text-slate-500 text-sm sm:text-base mt-3 font-light leading-relaxed">
-              {t.about.teamSubtitle}
+              {SHOW_TEAM_MEMBERS_SECTIONS
+                ? t.about.teamSubtitle
+                : 'Direct counsel, strategic governance, and client-first commitment from Jamoka Properties executive management.'}
             </p>
           </div>
 
           {/* CEO Message & Executive Portrait */}
-          <div id="ceo-message" className="mb-20 bg-gradient-to-br from-[#FAF9F6] via-white to-[#F7F4EC] rounded-3xl border border-[#CFA55A]/30 p-6 sm:p-8 lg:p-12 shadow-xl shadow-slate-900/5 relative overflow-hidden">
+          <div id="ceo-message" className={`${SHOW_TEAM_MEMBERS_SECTIONS ? 'mb-20' : 'mb-0'} bg-gradient-to-br from-[#FAF9F6] via-white to-[#F7F4EC] rounded-3xl border border-[#CFA55A]/30 p-6 sm:p-8 lg:p-12 shadow-xl shadow-slate-900/5 relative overflow-hidden`}>
             {/* Subtle luxury ambient glow */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-[radial-gradient(circle_at_top_right,rgba(207,165,90,0.09)_0%,transparent_70%)] pointer-events-none" />
 
@@ -234,65 +240,70 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
             </div>
           </div>
 
-          {/* Team Members Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {TEAM_MEMBERS.map((member) => (
-              <div
-                key={member.name}
-                className="group bg-[#FAF9F6] rounded-2xl overflow-hidden border border-neutral-200/80 hover:border-[#CFA55A]/60 hover:shadow-xl transition-all duration-300 flex flex-col"
-              >
-                <div className="relative h-72 w-full overflow-hidden bg-slate-900">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    referrerPolicy="no-referrer"
-                    onError={(e) => {
-                      const fallback = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop';
-                      const target = e.target as HTMLImageElement;
-                      if (target.src !== fallback) {
-                        target.src = fallback;
-                      }
-                    }}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <span className="text-[10px] font-bold text-[#CFA55A] uppercase tracking-wider block">
-                      {member.experience}
-                    </span>
-                    <h3 className="text-xl font-bold text-white font-serif-luxury">
-                      {member.name}
-                    </h3>
-                  </div>
-                </div>
+          {/* Team Members Grid & Scrolling Profiles (Temporarily hidden per request, re-enable by setting SHOW_TEAM_MEMBERS_SECTIONS to true) */}
+          {SHOW_TEAM_MEMBERS_SECTIONS && (
+            <>
+              {/* Team Members Grid (6 members) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {TEAM_MEMBERS.map((member) => (
+                  <div
+                    key={member.name}
+                    className="group bg-[#FAF9F6] rounded-2xl overflow-hidden border border-neutral-200/80 hover:border-[#CFA55A]/60 hover:shadow-xl transition-all duration-300 flex flex-col"
+                  >
+                    <div className="relative h-72 w-full overflow-hidden bg-slate-900">
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          const fallback = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop';
+                          const target = e.target as HTMLImageElement;
+                          if (target.src !== fallback) {
+                            target.src = fallback;
+                          }
+                        }}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <span className="text-[10px] font-bold text-[#CFA55A] uppercase tracking-wider block">
+                          {member.experience}
+                        </span>
+                        <h3 className="text-xl font-bold text-white font-serif-luxury">
+                          {member.name}
+                        </h3>
+                      </div>
+                    </div>
 
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div>
-                    <span className="text-xs font-bold text-slate-800 uppercase tracking-wide block">
-                      {member.role}
-                    </span>
-                    <span className="text-xs font-semibold text-[#A6833D] block mt-1.5 leading-snug">
-                      {member.specialty}
-                    </span>
-                  </div>
+                    <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                      <div>
+                        <span className="text-xs font-bold text-slate-800 uppercase tracking-wide block">
+                          {member.role}
+                        </span>
+                        <span className="text-xs font-semibold text-[#A6833D] block mt-1.5 leading-snug">
+                          {member.specialty}
+                        </span>
+                      </div>
 
-                  <div className="pt-3 border-t border-neutral-200 flex items-center justify-between text-xs">
-                    <span className="text-slate-500 font-medium">Jamoka Executive Desk</span>
-                    <button
-                      onClick={onNavigateContact}
-                      className="font-bold text-[#A6833D] hover:text-slate-900 flex items-center gap-1 transition-colors"
-                    >
-                      <span>Connect</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                      <div className="pt-3 border-t border-neutral-200 flex items-center justify-between text-xs">
+                        <span className="text-slate-500 font-medium">Jamoka Executive Desk</span>
+                        <button
+                          onClick={onNavigateContact}
+                          className="font-bold text-[#A6833D] hover:text-slate-900 flex items-center gap-1 transition-colors"
+                        >
+                          <span>Connect</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          {/* Horizontal Sliding Team Profiles (20 Specialized Advisors) */}
-          <AgentSlider onContactAgent={() => onNavigateContact()} />
+              {/* Horizontal Sliding Team Profiles (20 Specialized Advisors) */}
+              <AgentSlider onContactAgent={() => onNavigateContact()} />
+            </>
+          )}
         </div>
       </section>
 
