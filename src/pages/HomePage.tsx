@@ -25,6 +25,7 @@ interface HomePageProps {
   onResetFilters: () => void;
   onNavigateContact: () => void;
   cloudVideoUrl?: string;
+  cloudLogoUrl?: string;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
@@ -38,6 +39,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   onResetFilters,
   onNavigateContact,
   cloudVideoUrl,
+  cloudLogoUrl,
 }) => {
   return (
     <div className="font-jakarta">
@@ -47,6 +49,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         onOpenSecondarySite={onOpenSecondarySite}
         onExploreOffPlan={onExploreOffPlan}
         cloudVideoUrl={cloudVideoUrl}
+        cloudLogoUrl={cloudLogoUrl}
       />
 
       {/* 2. Trust Metric Strip: Animated Growing Numbers (0 -> Target) */}

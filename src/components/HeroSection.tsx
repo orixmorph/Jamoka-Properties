@@ -4,18 +4,21 @@ import { Search, ArrowUpRight, ChevronDown, Sparkles, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 // ---------------------------------------------------------------------------------
-// BACKGROUND VIDEO CONFIGURATION
-// You can replace this URL with your cloud video link (AWS S3, Cloudflare, GCP, etc.)
-// The video plays continuously on loop, muted in the background.
+// BACKGROUND VIDEO & HERO LOGO CONFIGURATION
+// You can replace these URLs with your cloud video and logo links (Cloudinary, S3, etc.)
 // ---------------------------------------------------------------------------------
 export const DEFAULT_BACKGROUND_VIDEO_URL =
   'https://res.cloudinary.com/dy6km7beb/video/upload/v1788751184/Dubai___Cinematic_Video___Sony_A7SIII_1080p_sqx0kn.mp4';
+
+export const DEFAULT_HERO_LOGO_URL =
+  'https://res.cloudinary.com/dy6km7beb/image/upload/v1789203807/Copy_of_JP_NEW_TEAM_PICTURES_b3ehua.png';
 
 interface HeroSectionProps {
   onSearch: (term: string) => void;
   onOpenSecondarySite: () => void;
   onExploreOffPlan: () => void;
   cloudVideoUrl?: string;
+  cloudLogoUrl?: string;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -23,14 +26,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenSecondarySite,
   onExploreOffPlan,
   cloudVideoUrl,
+  cloudLogoUrl,
 }) => {
   const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [, setVideoLoaded] = useState(false);
+  const [logoError, setLogoError] = useState(false);
 
-  // Video source URL (supports custom cloud link provided via props or default fallback)
+  // Video and Logo source URLs (supports custom cloud links provided via props or default fallbacks)
   const videoSource = cloudVideoUrl || DEFAULT_BACKGROUND_VIDEO_URL;
+  const logoSource = cloudLogoUrl || DEFAULT_HERO_LOGO_URL;
 
   // Auto-play video on mount / source change
   useEffect(() => {
@@ -98,16 +104,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
       {/* Hero Content Elements - Fixed firmly over video, scrolls naturally with the page */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center justify-center py-24 sm:py-32 w-full">
-        {/* Main Hero Title - Caughe font */}
-        <motion.h1
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
+        {/* Main Hero Brand Logo - Replaces Jamoka Properties writing at the exact same position */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 15 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight uppercase font-caughe text-white leading-tight mb-3 select-none"
-          style={{ fontFamily: "'Caughe', serif" }}
+          className="mb-4 flex items-center justify-center select-none w-full"
         >
-          {t.hero.title}
-        </motion.h1>
+          <h1 className="sr-only">Jamoka Properties - Luxury Dubai Real Estate</h1>
+          <img
+            src={logoError ? '/jamoka-header-logo.png' : logoSource}
+            alt="Jamoka Properties"
+            onError={() => setLogoError(true)}
+            className="w-auto h-auto max-h-[85px] sm:max-h-[110px] md:max-h-[135px] lg:max-h-[160px] max-w-[290px] sm:max-w-[420px] md:max-w-[540px] lg:max-w-[620px] object-contain drop-shadow-[0_8px_30px_rgba(0,0,0,0.7)]"
+          />
+        </motion.div>
 
         {/* Tagline in Jakarta Sans below JAMOKA PROPERTIES */}
         <motion.p

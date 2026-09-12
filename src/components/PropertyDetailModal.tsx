@@ -119,29 +119,29 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
         <div className="p-6 sm:p-8 space-y-6 max-h-[62vh] overflow-y-auto">
           {/* Key Spec Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-neutral-50 border border-neutral-200/80 text-xs">
-            <div>
+            <div className="min-w-0">
               <span className="text-slate-400 block uppercase text-[10px]">{t.projects.handover}</span>
-              <span className="font-bold text-slate-900 text-sm mt-0.5 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-[#CFA55A]" />
-                {project.handover}
+              <span className="font-bold text-slate-900 text-xs sm:text-sm mt-0.5 flex items-center gap-1 min-w-0">
+                <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#CFA55A] shrink-0" />
+                <span className="truncate">{project.handover}</span>
               </span>
             </div>
-            <div>
+            <div className="min-w-0">
               <span className="text-slate-400 block uppercase text-[10px]">{t.projects.paymentPlan}</span>
-              <span className="font-bold text-slate-900 text-sm mt-0.5 flex items-center gap-1">
-                <Percent className="w-3.5 h-3.5 text-[#CFA55A]" />
-                {project.paymentPlan}
+              <span className="font-bold text-slate-900 text-xs sm:text-sm mt-0.5 flex items-center gap-1 min-w-0">
+                <Percent className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#CFA55A] shrink-0" />
+                <span className="truncate">{project.paymentPlan}</span>
               </span>
             </div>
-            <div>
+            <div className="min-w-0">
               <span className="text-slate-400 block uppercase text-[10px]">Projected ROI</span>
-              <span className="font-bold text-emerald-700 text-sm mt-0.5">
+              <span className="font-bold text-emerald-700 text-xs sm:text-sm mt-0.5 block truncate">
                 {project.roi}
               </span>
             </div>
-            <div>
+            <div className="min-w-0">
               <span className="text-slate-400 block uppercase text-[10px]">Property Type</span>
-              <span className="font-bold text-slate-900 text-sm mt-0.5">
+              <span className="font-bold text-slate-900 text-xs sm:text-sm mt-0.5 block truncate">
                 {project.type}
               </span>
             </div>

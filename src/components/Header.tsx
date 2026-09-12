@@ -41,11 +41,11 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-40 w-full bg-transparent transition-all">
+    <header className="absolute top-0 left-0 right-0 z-40 w-full max-w-full overflow-hidden bg-transparent transition-all">
       {/* Top Announcement Strip */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-1.5 bg-transparent text-white text-[10px] sm:text-[11px] font-medium tracking-wide flex items-center justify-between">
-        <div className="flex items-center gap-2 sm:gap-4 overflow-hidden text-ellipsis whitespace-nowrap">
-          <span className="flex items-center gap-1.5 text-neutral-300">
+      <div className="w-full max-w-full px-3 sm:px-6 lg:px-8 xl:px-12 py-1.5 bg-transparent text-white text-[10px] sm:text-[11px] font-medium tracking-wide flex items-center justify-between overflow-hidden">
+        <div className="flex items-center gap-2 sm:gap-4 overflow-hidden text-ellipsis whitespace-nowrap min-w-0 flex-1">
+          <span className="flex items-center gap-1.5 text-neutral-300 truncate">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
             <span className="truncate">BAYSWATER TOWER, 8TH & 11TH FLOOR, BUSINESS BAY</span>
           </span>
@@ -54,7 +54,7 @@ export const Header: React.FC<HeaderProps> = ({
             DUBAI LAND DEPARTMENT (DLD) ESCROW VERIFIED
           </span>
         </div>
-        <div className="flex items-center gap-3 sm:gap-6 shrink-0 ml-2">
+        <div className="flex items-center gap-2.5 sm:gap-6 shrink-0 ml-2">
           <div className="hidden sm:flex items-center gap-1 text-neutral-300 hover:text-white transition-colors">
             <ShieldCheck className="w-3.5 h-3.5 text-[#D4AF37]" />
             <span>RERA: 49679</span>
@@ -64,15 +64,15 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-1 text-[#D4AF37] hover:text-[#ECC86A] font-medium transition-colors"
           >
             <PhoneCall className="w-3 h-3" />
-            <span>+971 58 864 8093</span>
+            <span className="text-[10px] sm:text-xs">+971 58 864 8093</span>
           </a>
         </div>
       </div>
 
       {/* Main Navigation Bar */}
-      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 h-20 sm:h-24 flex items-center justify-between">
+      <div className="w-full max-w-full px-3 sm:px-6 lg:px-8 xl:px-12 h-16 sm:h-20 lg:h-24 flex items-center justify-between overflow-hidden">
         {/* Very Left Side: Dual Logos (Jamoka Properties & SQFT DXB) */}
-        <div className="flex items-center gap-3 sm:gap-5 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-5 shrink min-w-0">
           {/* Logo 1: Jamoka Properties (Linked Image navigating to Home) */}
           <a
             href="#home"
@@ -80,11 +80,11 @@ export const Header: React.FC<HeaderProps> = ({
               e.preventDefault();
               handleNavClick('home');
             }}
-            className="flex items-center group text-left cursor-pointer outline-none focus:ring-2 focus:ring-[#D4AF37]/40 rounded-sm shrink-0"
+            className="flex items-center group text-left cursor-pointer outline-none focus:ring-2 focus:ring-[#D4AF37]/40 rounded-sm shrink min-w-0"
             aria-label="Jamoka Properties Home"
             title="Jamoka Properties - Return to Home"
           >
-            <JamokaLogo lightMode={true} size="md" />
+            <JamokaLogo lightMode={true} size="md" className="max-w-[150px] sm:max-w-[240px] md:max-w-[320px]" />
           </a>
 
           {/* Elegant Divider */}
@@ -107,10 +107,10 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Space In The Middle (Elastic responsive spacer) */}
-        <div className="flex-1 min-w-[16px] sm:min-w-[24px] lg:min-w-[32px]" aria-hidden="true" />
+        <div className="flex-1 min-w-[8px] sm:min-w-[24px] lg:min-w-[32px]" aria-hidden="true" />
 
         {/* Very Right Side: Navigation menus, utility selectors & Contact Us */}
-        <div className="flex items-center justify-end gap-2.5 sm:gap-3 lg:gap-4 xl:gap-5 shrink-0">
+        <div className="flex items-center justify-end gap-1.5 sm:gap-3 lg:gap-4 xl:gap-5 shrink-0">
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-3 xl:gap-4.5 2xl:gap-6 text-xs xl:text-[13px] 2xl:text-sm font-medium text-neutral-200 tracking-[0.01em] whitespace-nowrap">
             {navLinks.map((link) => {
@@ -136,7 +136,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="h-6 w-px bg-white/15 hidden lg:block shrink-0" />
 
           {/* Right Controls: Currency Selector + Language Switcher + Contact Us Button */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             {/* Currency Switcher */}
             <div className="relative">
               <button
@@ -144,11 +144,11 @@ export const Header: React.FC<HeaderProps> = ({
                   setCurrencyDropdownOpen(!currencyDropdownOpen);
                   setLangDropdownOpen(false);
                 }}
-                className="flex items-center gap-1 text-xs font-bold text-neutral-200 bg-white/10 hover:bg-white/15 border border-white/15 px-2.5 py-2 rounded-xl transition-colors cursor-pointer backdrop-blur-sm"
+                className="flex items-center gap-0.5 sm:gap-1 text-[11px] sm:text-xs font-bold text-neutral-200 bg-white/10 hover:bg-white/15 border border-white/15 px-2 py-1.5 sm:px-2.5 sm:py-2 rounded-lg sm:rounded-xl transition-colors cursor-pointer backdrop-blur-sm"
                 title="Select Currency"
               >
                 <span>{currentCurrency}</span>
-                <ChevronDown className="w-3 h-3 text-neutral-400" />
+                <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-neutral-400" />
               </button>
 
               {currencyDropdownOpen && (
@@ -185,12 +185,13 @@ export const Header: React.FC<HeaderProps> = ({
                   setLangDropdownOpen(!langDropdownOpen);
                   setCurrencyDropdownOpen(false);
                 }}
-                className="flex items-center gap-1.5 text-xs font-bold text-neutral-200 bg-white/10 hover:bg-white/15 px-3 py-2 rounded-xl border border-white/15 transition-colors cursor-pointer backdrop-blur-sm"
+                className="flex items-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs font-bold text-neutral-200 bg-white/10 hover:bg-white/15 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border border-white/15 transition-colors cursor-pointer backdrop-blur-sm"
                 title="Change Language (English / العربية)"
               >
-                <Globe className="w-3.5 h-3.5 text-[#D4AF37]" />
-                <span>{language === 'en' ? 'English' : 'العربية'}</span>
-                <ChevronDown className="w-3 h-3 text-neutral-400" />
+                <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#D4AF37]" />
+                <span className="hidden sm:inline">{language === 'en' ? 'English' : 'العربية'}</span>
+                <span className="sm:hidden">{language === 'en' ? 'EN' : 'عر'}</span>
+                <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-neutral-400" />
               </button>
 
               {langDropdownOpen && (
@@ -244,10 +245,10 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Mobile / Tablet Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-neutral-200 hover:text-white rounded-lg hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
+            className="lg:hidden p-1.5 text-neutral-200 hover:text-white rounded-lg hover:bg-white/10 transition-colors shrink-0 cursor-pointer"
             aria-label="Toggle Navigation Menu"
           >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
           </button>
         </div>
       </div>

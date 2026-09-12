@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Landmark, Calculator, Percent, ShieldCheck, CheckCircle2, ArrowRight, MessageSquare, Mail, Phone, Send, Loader2, Clock, Building, Sparkles } from 'lucide-react';
 import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
+import { InquiryDesk } from '../components/InquiryDesk';
 
 interface MortgagePageProps {
   onNavigateContact: () => void;
@@ -610,6 +611,9 @@ export const MortgagePage: React.FC<MortgagePageProps> = ({ onNavigateContact })
           </div>
         </div>
       </section>
+
+      {/* Direct Contact & Inquiry Desk at Bottom */}
+      <InquiryDesk />
     </div>
   );
 };
