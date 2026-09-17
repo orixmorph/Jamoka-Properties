@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { Header, PageType } from './components/Header';
 import { HomePage } from './pages/HomePage';
@@ -8,6 +8,7 @@ import { MortgagePage } from './pages/MortgagePage';
 import { DevelopersPage } from './pages/DevelopersPage';
 import { ServicesPage } from './pages/ServicesPage';
 import { BlogsPage } from './pages/BlogsPage';
+import { CareersPage } from './pages/CareersPage';
 import { ContactPage } from './pages/ContactPage';
 import { Footer } from './components/Footer';
 import { SecondaryMarketPopup } from './components/SecondaryMarketPopup';
@@ -17,9 +18,45 @@ import { OFF_PLAN_PROJECTS } from './data/realEstateData';
 function MainApp() {
   const { isRTL } = useLanguage();
   const [activePage, setActivePage] = useState<PageType>('home');
+  const [careerSlug, setCareerSlug] = useState<string | null>(null);
   const [currency, setCurrency] = useState<'AED' | 'USD' | 'EUR' | 'GBP'>('AED');
   const [secondaryModalOpen, setSecondaryModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Synchronize browser URL on load and popstate
+  useEffect(() => {
+    const handleLocation = () => {
+      const path = window.location.pathname.toLowerCase();
+      if (path.startsWith('/careers/real-estate-agent')) {
+        setActivePage('careers');
+        setCareerSlug('real-estate-agent');
+      } else if (path.startsWith('/careers/social-media-content-creator')) {
+        setActivePage('careers');
+        setCareerSlug('social-media-content-creator');
+      } else if (path === '/careers' || path === '/careers/') {
+        setActivePage('careers');
+        setCareerSlug(null);
+      } else if (path === '/about') {
+        setActivePage('about');
+      } else if (path === '/offplan') {
+        setActivePage('offplan');
+      } else if (path === '/mortgage') {
+        setActivePage('mortgage');
+      } else if (path === '/developers') {
+        setActivePage('developers');
+      } else if (path === '/services') {
+        setActivePage('services');
+      } else if (path === '/blogs') {
+        setActivePage('blogs');
+      } else if (path === '/contact') {
+        setActivePage('contact');
+      }
+    };
+
+    handleLocation();
+    window.addEventListener('popstate', handleLocation);
+    return () => window.removeEventListener('popstate', handleLocation);
+  }, []);
 
   // Filters for Discovery Tool on Home Page
   const [filters, setFilters] = useState({
@@ -116,7 +153,24 @@ function MainApp() {
 
   const handleNavigate = (page: PageType) => {
     setActivePage(page);
+    if (page === 'careers') {
+      setCareerSlug(null);
+      window.history.pushState(null, '', '/careers');
+    } else if (page === 'home') {
+      window.history.pushState(null, '', '/');
+    } else {
+      window.history.pushState(null, '', `/${page}`);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleJobSelect = (slug: string | null) => {
+    setCareerSlug(slug);
+    if (slug) {
+      window.history.pushState(null, '', `/careers/${slug}`);
+    } else {
+      window.history.pushState(null, '', '/careers');
+    }
   };
 
   return (
@@ -185,6 +239,14 @@ function MainApp() {
         )}
 
         {activePage === 'blogs' && <BlogsPage />}
+
+        {activePage === 'careers' && (
+          <CareersPage
+            initialJobSlug={careerSlug}
+            onJobSelect={handleJobSelect}
+            onNavigateContact={() => handleNavigate('contact')}
+          />
+        )}
 
         {activePage === 'contact' && <ContactPage />}
       </main>

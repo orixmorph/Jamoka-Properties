@@ -133,6 +133,11 @@ export const Footer: React.FC<FooterProps> = ({
                   {t.nav.services}
                 </button>
               </li>
+              <li>
+                <button onClick={() => handleNav('careers')} className="hover:text-white transition-colors">
+                  {t.nav.careers}
+                </button>
+              </li>
             </ul>
           </div>
 

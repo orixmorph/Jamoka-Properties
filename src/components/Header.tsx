@@ -3,7 +3,7 @@ import { JamokaLogo, SqftDxbLogo } from './Logos';
 import { Menu, X, PhoneCall, ExternalLink, ChevronDown, ShieldCheck, Globe, Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
-export type PageType = 'home' | 'about' | 'offplan' | 'mortgage' | 'developers' | 'services' | 'blogs' | 'contact';
+export type PageType = 'home' | 'about' | 'offplan' | 'mortgage' | 'developers' | 'services' | 'blogs' | 'careers' | 'contact';
 
 interface HeaderProps {
   activePage: PageType;
@@ -32,6 +32,7 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'services', label: t.nav.services },
     { id: 'mortgage', label: t.nav.mortgage },
     { id: 'blogs', label: t.nav.blogs },
+    { id: 'careers', label: t.nav.careers },
   ];
 
   const handleNavClick = (page: PageType) => {

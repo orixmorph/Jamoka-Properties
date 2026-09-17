@@ -9,6 +9,7 @@ export interface Translations {
     developers: string;
     services: string;
     blogs: string;
+    careers: string;
     contact: string;
     contactBtn: string;
     secondaryMarket: string;
@@ -171,6 +172,7 @@ export const translations: Record<Language, Translations> = {
       developers: 'Developers',
       services: 'Services',
       blogs: 'Blogs',
+      careers: 'Careers',
       contact: 'Contact Us',
       contactBtn: 'Contact Us',
       secondaryMarket: 'Secondary Resale',
@@ -331,6 +333,7 @@ export const translations: Record<Language, Translations> = {
       developers: 'المطورون',
       services: 'خدماتنا',
       blogs: 'المقالات',
+      careers: 'الوظائف',
       contact: 'اتصل بنا',
       contactBtn: 'اتصل بنا',
       secondaryMarket: 'إعادة البيع الجاهز',
