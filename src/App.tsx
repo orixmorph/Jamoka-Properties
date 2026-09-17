@@ -15,10 +15,55 @@ import { SecondaryMarketPopup } from './components/SecondaryMarketPopup';
 import { SecondaryMarketModal } from './components/SecondaryMarketModal';
 import { OFF_PLAN_PROJECTS } from './data/realEstateData';
 
+const getInitialRoute = (): { page: PageType; careerSlug: string | null } => {
+  if (typeof window === 'undefined') {
+    return { page: 'home', careerSlug: null };
+  }
+  // Check both window.location.pathname and hash for deployment environments (e.g. Vercel, sub-domains)
+  const path = window.location.pathname.toLowerCase();
+  const hash = window.location.hash.toLowerCase().replace(/^#/, '');
+
+  const effectivePath = hash ? (hash.startsWith('/') ? hash : `/${hash}`) : path;
+
+  if (effectivePath.startsWith('/careers/real-estate-agent')) {
+    return { page: 'careers', careerSlug: 'real-estate-agent' };
+  }
+  if (effectivePath.startsWith('/careers/social-media-content-creator')) {
+    return { page: 'careers', careerSlug: 'social-media-content-creator' };
+  }
+  if (effectivePath.startsWith('/careers')) {
+    return { page: 'careers', careerSlug: null };
+  }
+  if (effectivePath.startsWith('/about')) {
+    return { page: 'about', careerSlug: null };
+  }
+  if (effectivePath.startsWith('/offplan')) {
+    return { page: 'offplan', careerSlug: null };
+  }
+  if (effectivePath.startsWith('/mortgage')) {
+    return { page: 'mortgage', careerSlug: null };
+  }
+  if (effectivePath.startsWith('/developers')) {
+    return { page: 'developers', careerSlug: null };
+  }
+  if (effectivePath.startsWith('/services')) {
+    return { page: 'services', careerSlug: null };
+  }
+  if (effectivePath.startsWith('/blogs')) {
+    return { page: 'blogs', careerSlug: null };
+  }
+  if (effectivePath.startsWith('/contact')) {
+    return { page: 'contact', careerSlug: null };
+  }
+
+  return { page: 'home', careerSlug: null };
+};
+
 function MainApp() {
   const { isRTL } = useLanguage();
-  const [activePage, setActivePage] = useState<PageType>('home');
-  const [careerSlug, setCareerSlug] = useState<string | null>(null);
+  const initialRoute = useMemo(() => getInitialRoute(), []);
+  const [activePage, setActivePage] = useState<PageType>(initialRoute.page);
+  const [careerSlug, setCareerSlug] = useState<string | null>(initialRoute.careerSlug);
   const [currency, setCurrency] = useState<'AED' | 'USD' | 'EUR' | 'GBP'>('AED');
   const [secondaryModalOpen, setSecondaryModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,36 +71,18 @@ function MainApp() {
   // Synchronize browser URL on load and popstate
   useEffect(() => {
     const handleLocation = () => {
-      const path = window.location.pathname.toLowerCase();
-      if (path.startsWith('/careers/real-estate-agent')) {
-        setActivePage('careers');
-        setCareerSlug('real-estate-agent');
-      } else if (path.startsWith('/careers/social-media-content-creator')) {
-        setActivePage('careers');
-        setCareerSlug('social-media-content-creator');
-      } else if (path === '/careers' || path === '/careers/') {
-        setActivePage('careers');
-        setCareerSlug(null);
-      } else if (path === '/about') {
-        setActivePage('about');
-      } else if (path === '/offplan') {
-        setActivePage('offplan');
-      } else if (path === '/mortgage') {
-        setActivePage('mortgage');
-      } else if (path === '/developers') {
-        setActivePage('developers');
-      } else if (path === '/services') {
-        setActivePage('services');
-      } else if (path === '/blogs') {
-        setActivePage('blogs');
-      } else if (path === '/contact') {
-        setActivePage('contact');
-      }
+      const route = getInitialRoute();
+      setActivePage(route.page);
+      setCareerSlug(route.careerSlug);
     };
 
     handleLocation();
     window.addEventListener('popstate', handleLocation);
-    return () => window.removeEventListener('popstate', handleLocation);
+    window.addEventListener('hashchange', handleLocation);
+    return () => {
+      window.removeEventListener('popstate', handleLocation);
+      window.removeEventListener('hashchange', handleLocation);
+    };
   }, []);
 
   // Filters for Discovery Tool on Home Page

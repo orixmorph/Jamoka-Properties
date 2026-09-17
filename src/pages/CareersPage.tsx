@@ -143,7 +143,8 @@ export const CareersPage: React.FC<CareersPageProps> = ({
                   <div
                     key={position.id}
                     id={`job-card-${position.slug}`}
-                    className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg border border-neutral-200/80 hover:border-[#CFA55A]/60 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                    onClick={() => handleSelectJob(position)}
+                    className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg border border-neutral-200/80 hover:border-[#CFA55A]/60 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group cursor-pointer"
                   >
                     <div className="space-y-5">
                       {/* Top Badges */}
@@ -198,19 +199,33 @@ export const CareersPage: React.FC<CareersPageProps> = ({
                       </div>
                     </div>
 
-                    {/* Action Button */}
-                    <div className="pt-6 mt-6 border-t border-neutral-100 flex items-center justify-between gap-3">
+                    {/* Action Buttons */}
+                    <div className="pt-6 mt-6 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-3">
                       <span className="text-[11px] text-slate-400 font-medium">
                         Jamoka Properties • Business Bay
                       </span>
 
-                      <button
-                        onClick={() => handleSelectJob(position)}
-                        className="px-6 py-3 rounded-xl bg-[#0A0E17] hover:bg-[#CFA55A] text-white hover:text-[#0A0E17] font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 shadow-sm group-hover:shadow-md cursor-pointer"
-                      >
-                        <span>View Position</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setApplicationModalJob(position);
+                          }}
+                          className="px-4 py-2.5 rounded-xl bg-[#FAF5EC] hover:bg-[#FAF0DC] border border-[#CFA55A]/40 text-[#A6833D] font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
+                        >
+                          Quick Apply
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleSelectJob(position)}
+                          className="px-5 py-2.5 rounded-xl bg-[#0A0E17] hover:bg-[#CFA55A] text-white hover:text-[#0A0E17] font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 shadow-sm group-hover:shadow-md cursor-pointer"
+                        >
+                          <span>View Role</span>
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );
