@@ -169,6 +169,29 @@ export const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Position Applied For (Clear distinction banner and input) */}
+              <div className="p-4 rounded-2xl bg-[#FAF9F6] border border-[#CFA55A]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-xs">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#CFA55A] block">
+                    Position Applied For
+                  </span>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <Briefcase className="w-4 h-4 text-[#CFA55A]" />
+                    <span className="text-sm font-serif font-bold text-slate-900">
+                      {position.title}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-semibold text-slate-600 bg-white px-3 py-1 rounded-lg border border-neutral-200">
+                    {position.department} Department
+                  </span>
+                  <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                    {position.type}
+                  </span>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1.5">
@@ -314,7 +337,7 @@ export const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-1/2 sm:w-auto px-7 py-3 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0A0E17] font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                    className="w-full sm:w-auto px-7 py-3 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0A0E17] font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       <>
@@ -323,7 +346,7 @@ export const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
                       </>
                     ) : (
                       <>
-                        <span>Submit Application</span>
+                        <span>Submit for {position.title}</span>
                         <Send className="w-4 h-4" />
                       </>
                     )}
