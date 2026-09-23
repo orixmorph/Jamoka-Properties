@@ -83,7 +83,7 @@ export const MortgagePage: React.FC<MortgagePageProps> = ({ onNavigateContact })
             <Landmark className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>MORTGAGE & FINANCIAL SOLUTIONS</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-bold font-serif-luxury text-white mb-3">
+          <h1 className="text-3xl sm:text-5xl font-bold font-caughe text-white mb-3">
             {t.mortgage.title}
           </h1>
           <p className="text-neutral-300 text-sm sm:text-base max-w-2xl mx-auto font-light leading-relaxed">

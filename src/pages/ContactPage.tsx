@@ -3,6 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { MapPin, Phone, Mail, Clock, MessageSquare, ShieldCheck, CheckCircle2, Send, Building, Loader2 } from 'lucide-react';
 import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
 import { SOCIAL_LINKS } from '../components/SocialIcons';
+import { trackMetaPixel } from '../utils/metaPixel';
 
 export const ContactPage: React.FC = () => {
   const { t, isRTL } = useLanguage();
@@ -26,6 +27,9 @@ export const ContactPage: React.FC = () => {
       source: 'Contact Page (Main Inquiry)',
       subject: 'New Inquiry from Contact Page',
     });
+    trackMetaPixel('Contact', {
+      source: 'Contact Page',
+    });
     setIsSubmitting(false);
     setSubmitted(true);
   };
@@ -40,7 +44,7 @@ export const ContactPage: React.FC = () => {
             <Mail className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>GET IN TOUCH</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-bold font-serif-luxury text-white mb-3">
+          <h1 className="text-3xl sm:text-5xl font-bold font-caughe text-white mb-3">
             {t.contactPage.title}
           </h1>
           <p className="text-neutral-300 text-sm sm:text-base max-w-2xl mx-auto font-light leading-relaxed">

@@ -54,7 +54,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                 SOVEREIGN ADVISORY MANDATE
               </div>
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-serif-luxury text-white tracking-tight leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-jakarta-bold text-white tracking-tight leading-tight">
                 Direct Developer Allocation <br />
                 <span className="text-gold-gradient italic font-normal">
                   Private Client Desk
@@ -105,7 +105,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                   <div className="w-16 h-16 rounded-full bg-[#CFA55A]/20 border border-[#CFA55A] flex items-center justify-center mx-auto text-[#CFA55A]">
                     <span className="material-symbols-outlined text-[36px]">check_circle</span>
                   </div>
-                  <h3 className="text-2xl font-bold font-serif-luxury text-white">
+                  <h3 className="text-2xl font-bold font-jakarta-bold text-white">
                     Mandate Received Successfully
                   </h3>
                   <p className="text-sm text-neutral-300 max-w-md mx-auto leading-relaxed">

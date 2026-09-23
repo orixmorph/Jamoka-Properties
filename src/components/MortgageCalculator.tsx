@@ -51,7 +51,7 @@ export const MortgageCalculator: React.FC<{ onBookConsultation: () => void }> = 
             <Calculator className="w-3.5 h-3.5 text-[#CFA55A]" />
             <span>FINANCIAL ARCHITECTURE</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta-bold tracking-tight">
             Off-Plan Milestone & Mortgage Advisory
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed font-light">

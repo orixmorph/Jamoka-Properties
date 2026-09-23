@@ -30,8 +30,8 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
       message: formData.message,
       office: selectedOffice,
       advisor: selectedAdvisor,
-      source: 'Team Section (Private Client Advisory Consultation)',
-      subject: `Advisory Session Request - ${selectedOffice}`,
+      source: 'Team Section (Consultation Booking)',
+      subject: `Team Consultation Request - ${selectedOffice}`,
     });
     setIsSubmitting(false);
     setBookingSubmitted(true);
@@ -56,23 +56,23 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
-          {/* Left Column: Collective Mastery Text & Metric Bullets */}
+          {/* Left Column: Team Text & Metric Bullets */}
           <div className="lg:col-span-6 space-y-7">
             {/* Eyebrow */}
             <div>
               <span className="text-[#CCA14C] text-[11px] sm:text-xs font-bold tracking-[0.22em] uppercase block mb-3">
-                COLLECTIVE MASTERY
+                OUR DUBAI TEAM
               </span>
               
               {/* Heading */}
-              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#0D1B2A] tracking-tight leading-[1.18] font-caughe">
+              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#0D1B2A] tracking-tight leading-[1.18] font-jakarta-bold">
                 Meet the People Behind JAMOKA
               </h2>
             </div>
 
             {/* Subtitle / Description */}
             <p className="text-slate-500 text-sm sm:text-[15px] font-light leading-relaxed max-w-xl font-jakarta">
-              A specialized collective of 70+ property advisors bringing local market intelligence, strategic insight, and international financial acumen to every Dubai off-plan acquisition.
+              A dedicated team of 70+ property consultants bringing local market insight and guidance to help you find the right off-plan home or investment in Dubai.
             </p>
 
             {/* Metric Items with Circular Badges */}
@@ -85,7 +85,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                   </span>
                 </div>
                 <span className="text-xs sm:text-[14px] text-slate-700 font-medium font-jakarta">
-                  Property Advisors across Dubai
+                  Property Consultants across Dubai
                 </span>
               </div>
 
@@ -114,35 +114,38 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
               </div>
             </div>
 
-            {/* Gold CTA Action Button matching user screenshot */}
+            {/* Gold CTA Action Button */}
             <div className="pt-2">
               <button
                 type="button"
                 onClick={handleOpenBooking}
                 className="inline-flex items-center justify-center px-7 py-4 rounded-xl bg-[#CCA14C] hover:bg-[#B88F3E] text-[#1F1600] font-bold text-xs sm:text-[13px] tracking-[0.1em] uppercase transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.99] font-jakarta cursor-pointer"
               >
-                <span>MEET OUR TEAM • BOOK ADVISOR</span>
+                <span>MEET OUR TEAM • BOOK A MEETING</span>
               </button>
             </div>
           </div>
 
-          {/* Right Column: Boardroom Meeting Image Card */}
+          {/* Right Column: Team Image Card */}
           <div className="lg:col-span-6">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-neutral-200/90 aspect-[4/3] sm:aspect-[16/11] bg-[#0A0E17] group">
-              {/* Background Team Meeting Photo */}
+              {/* Background Team Photo */}
               <img
-                src="/advisory-team.jpg"
-                alt="Jamoka Properties Private Client Advisory Council in Dubai Boardroom"
+                src="https://res.cloudinary.com/dy6km7beb/image/upload/v1790170823/4_Bedrooms_6_qo8wr1.png"
+                alt="Jamoka Properties Team in Dubai"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/advisory-team.jpg';
+                }}
                 className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-700"
               />
 
-              {/* Top Right Subtle Brand Stamp matching glass partition */}
+              {/* Top Right Subtle Brand Stamp */}
               <div className="absolute top-5 right-5 bg-white/15 backdrop-blur-md border border-white/25 rounded-xl px-3.5 py-1.5 text-right hidden sm:block shadow-sm">
                 <span className="text-[10px] font-extrabold tracking-[0.18em] text-white block uppercase">
                   JAMOKA
                 </span>
                 <span className="text-[8px] text-white/80 font-light tracking-wider block uppercase">
-                  Advisory Council
+                  Dubai Team
                 </span>
               </div>
 
@@ -150,17 +153,17 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-16 pb-6 px-6 sm:px-8 flex items-end justify-between">
                 <div>
                   <h4 className="text-base sm:text-lg font-bold text-white tracking-tight font-jakarta">
-                    Private Client Advisory Council
+                    Jamoka Properties Team
                   </h4>
                   <p className="text-xs text-[#CCA14C] font-medium tracking-wide font-jakarta mt-0.5">
                     Bayswater Tower, 8th & 11th Floor, Business Bay
                   </p>
                 </div>
 
-                {/* Scalloped Rosette Verified Seal Badge */}
+                {/* Verified Seal Badge */}
                 <div
                   className="w-9 h-9 rounded-full flex items-center justify-center text-[#CCA14C] shrink-0 drop-shadow-md"
-                  title="RERA Certified Escrow & Advisory Council"
+                  title="RERA Certified Property Consultants"
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -204,25 +207,25 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                   Appointment Request Received
                 </h3>
                 <p className="text-sm text-slate-600 max-w-md mx-auto font-light leading-relaxed">
-                  Thank you, <span className="font-semibold text-slate-900">{formData.name}</span>. A private client partner from our {selectedOffice} office will confirm your appointment for {formData.date || 'your selected date'}.
+                  Thank you, <span className="font-semibold text-slate-900">{formData.name}</span>. A property consultant from our {selectedOffice} office will confirm your appointment for {formData.date || 'your selected date'}.
                 </p>
               </div>
             ) : (
               <div>
                 <div className="mb-6">
                   <span className="text-[10px] font-bold text-[#CCA14C] tracking-[0.2em] uppercase block">
-                    JAMOKA ADVISORY DESK
+                    CONNECT WITH OUR TEAM
                   </span>
                   <h3 className="text-2xl font-bold text-slate-900 tracking-tight font-jakarta mt-1">
-                    Book a Private Client Advisory Session
+                    Book a Consultation with Our Team
                   </h3>
                   <p className="text-xs text-slate-500 font-light mt-1">
-                    Meet with a licensed Dubai off-plan specialist in-person or via secure video conference.
+                    Meet with a licensed Dubai property consultant in person or via video call.
                   </p>
                 </div>
 
                 <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleBookingSubmit} className="space-y-4">
-                  <input type="hidden" name="source" value="Team Section (Advisory Booking)" />
+                  <input type="hidden" name="source" value="Team Section (Booking)" />
                   <input type="hidden" name="office" value={selectedOffice} />
                   {/* Office Selection Tabs */}
                   <div>

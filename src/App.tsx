@@ -14,6 +14,7 @@ import { Footer } from './components/Footer';
 import { SecondaryMarketPopup } from './components/SecondaryMarketPopup';
 import { SecondaryMarketModal } from './components/SecondaryMarketModal';
 import { OFF_PLAN_PROJECTS } from './data/realEstateData';
+import { trackMetaPixel } from './utils/metaPixel';
 
 const getInitialRoute = (): { page: PageType; careerSlug: string | null } => {
   if (typeof window === 'undefined') {
@@ -189,6 +190,7 @@ function MainApp() {
       window.history.pushState(null, '', `/${page}`);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    trackMetaPixel('PageView');
   };
 
   const handleJobSelect = (slug: string | null) => {
@@ -198,6 +200,7 @@ function MainApp() {
     } else {
       window.history.pushState(null, '', '/careers');
     }
+    trackMetaPixel('PageView');
   };
 
   return (

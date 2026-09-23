@@ -15,9 +15,11 @@ import {
   Link2,
   AlertCircle,
   ExternalLink,
+  Coins,
 } from 'lucide-react';
 import { JobPosition } from '../data/careersData';
 import { submitCareerApplication } from '../utils/careersGoogleSheet';
+import { trackMetaPixel, trackMetaCustomEvent } from '../utils/metaPixel';
 
 interface JobApplicationModalProps {
   position: JobPosition;
@@ -68,6 +70,16 @@ export const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
       coverNote: formData.coverNote,
     });
 
+    trackMetaPixel('Lead', {
+      content_name: position.title,
+      content_category: 'Career Application',
+      department: position.department,
+    });
+    trackMetaCustomEvent('JobApplicationSubmitted', {
+      position: position.title,
+      department: position.department,
+    });
+
     setIsSubmitting(false);
     setIsSubmitted(true);
   };
@@ -104,7 +116,7 @@ export const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
             <span>Join Jamoka Properties</span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-serif text-white tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-jakarta-bold text-white tracking-tight">
             Apply: {position.title}
           </h2>
 
@@ -132,7 +144,7 @@ export const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
               </div>
 
               <div>
-                <h3 className="text-xl font-serif font-bold text-slate-900">
+                <h3 className="text-xl font-jakarta-bold text-slate-900">
                   Application Submitted Successfully
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 font-light mt-2 max-w-md mx-auto leading-relaxed">
@@ -170,26 +182,35 @@ export const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Position Applied For (Clear distinction banner and input) */}
-              <div className="p-4 rounded-2xl bg-[#FAF9F6] border border-[#CFA55A]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-xs">
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#CFA55A] block">
-                    Position Applied For
-                  </span>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <Briefcase className="w-4 h-4 text-[#CFA55A]" />
-                    <span className="text-sm font-serif font-bold text-slate-900">
-                      {position.title}
+              <div className="p-4 rounded-2xl bg-[#FAF9F6] border border-[#CFA55A]/40 space-y-2 shadow-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#CFA55A] block">
+                      Position Applied For
+                    </span>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <Briefcase className="w-4 h-4 text-[#CFA55A]" />
+                      <span className="text-sm font-jakarta-bold text-slate-900">
+                        {position.title}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-semibold text-slate-600 bg-white px-3 py-1 rounded-lg border border-neutral-200">
+                      {position.department}
+                    </span>
+                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+                      {position.type}
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-semibold text-slate-600 bg-white px-3 py-1 rounded-lg border border-neutral-200">
-                    {position.department} Department
-                  </span>
-                  <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
-                    {position.type}
-                  </span>
-                </div>
+
+                {position.compensationHighlight && (
+                  <div className="pt-2 border-t border-[#CFA55A]/20 flex items-center gap-2 text-xs text-emerald-800 font-semibold">
+                    <Coins className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>{position.compensationHighlight}</span>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -233,7 +254,7 @@ export const JobApplicationModal: React.FC<JobApplicationModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-1.5">
-                    Phone / WhatsApp *
+                    Phone / WhatsApp (Include Country Code) *
                   </label>
                   <div className="relative">
                     <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />

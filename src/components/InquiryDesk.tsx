@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ShieldCheck, PhoneCall, Mail, MapPin, Send, CheckCircle2, MessageSquare, Clock, Loader2 } from 'lucide-react';
 import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
+import { trackMetaPixel } from '../utils/metaPixel';
 
 export const InquiryDesk: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,9 @@ export const InquiryDesk: React.FC = () => {
       message: formData.message,
       source: 'Homepage Inquiry Desk (Contact Section)',
       subject: 'New Inquiry from Homepage Contact Section',
+    });
+    trackMetaPixel('Contact', {
+      source: 'Homepage Inquiry Desk',
     });
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -51,7 +55,7 @@ export const InquiryDesk: React.FC = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#CFA55A]"></span>
                 <span>CONTACT US</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight font-caughe">
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white leading-tight font-jakarta-bold">
                 Get in Touch with Our Team
               </h2>
               <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed mt-3 font-light font-jakarta">

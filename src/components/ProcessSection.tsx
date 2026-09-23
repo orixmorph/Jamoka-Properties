@@ -36,11 +36,11 @@ export const ProcessSection: React.FC = () => {
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-4">
             <span>THE JAMOKA METHOD</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta-bold tracking-tight">
             Our 4-Step Acquisition Process
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed font-light">
-            From initial sovereign thesis to final title deed handover, we safeguard your capital at every construction milestone.
+            From initial consultation to final title deed handover, we guide and protect your investment at every construction milestone.
           </p>
         </div>
 

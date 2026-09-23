@@ -15,11 +15,11 @@ export const BlogsSection: React.FC = () => {
               <BookOpen className="w-3.5 h-3.5 text-[#CFA55A]" />
               <span>MARKET INTELLIGENCE</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-caughe tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-jakarta-bold tracking-tight">
               Dubai Real Estate Insights
             </h2>
             <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-2xl font-light">
-              Executive research and regulatory briefings curated by Jamoka’s senior conveyancing and investment analysis desks.
+              Market research and property insights curated by Jamoka’s team in Dubai.
             </p>
           </div>
         </div>

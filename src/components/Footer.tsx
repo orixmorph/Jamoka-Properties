@@ -22,7 +22,7 @@ export const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer className="bg-black text-white border-t border-neutral-800">
+    <footer className="bg-black text-white border-t border-neutral-800 font-jakarta">
       {/* Secondary Market Ribbon (Highlighting Partner SQFT DXB) */}
       <div className="bg-black border-b border-neutral-800 py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
@@ -104,7 +104,7 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Column 1: Quick Navigation */}
           <div className="space-y-3 text-xs">
-            <h4 className="font-bold text-white uppercase tracking-wider text-xs">
+            <h4 className="font-jakarta-bold font-bold text-white uppercase tracking-wider text-xs">
               Explore
             </h4>
             <ul className="space-y-2 text-neutral-400">
@@ -143,7 +143,7 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Column 2: Master Developers */}
           <div className="space-y-3 text-xs">
-            <h4 className="font-bold text-white uppercase tracking-wider text-xs">
+            <h4 className="font-jakarta-bold font-bold text-white uppercase tracking-wider text-xs">
               Developers
             </h4>
             <ul className="space-y-2 text-neutral-400">
@@ -191,7 +191,7 @@ export const Footer: React.FC<FooterProps> = ({
 
           {/* Column 3: Contact & Insights */}
           <div className="space-y-3 text-xs">
-            <h4 className="font-bold text-white uppercase tracking-wider text-xs">
+            <h4 className="font-jakarta-bold font-bold text-white uppercase tracking-wider text-xs">
               Direct Access
             </h4>
             <ul className="space-y-2 text-neutral-400">

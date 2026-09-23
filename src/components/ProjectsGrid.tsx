@@ -338,7 +338,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
               <span>MOST TRENDING DEVELOPMENTS</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight font-caughe">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight font-jakarta-bold">
               Most Trending Projects in Dubai
             </h2>
 

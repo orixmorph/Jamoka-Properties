@@ -30,7 +30,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
             <span className="w-1.5 h-1.5 rounded-full bg-[#CFA55A]"></span>
             <span>JAMOKA PROPERTIES DUBAI</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold font-serif-luxury tracking-tight text-white mb-4">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold font-caughe tracking-tight text-white mb-4">
             {t.about.title}
           </h1>
           <p className="text-neutral-300 text-sm sm:text-base max-w-2xl mx-auto font-light leading-relaxed">

@@ -87,7 +87,7 @@ export const DeveloperWheel: React.FC<DeveloperWheelProps> = ({ customLogos }) =
           <Sparkles className="w-3 h-3 text-[#CFA55A]" />
           <span>TRUSTED PARTNERS</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-caughe">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-jakarta-bold">
           {t.wheel.title}
         </h2>
         <p className="text-neutral-400 text-xs sm:text-sm mt-2 max-w-xl mx-auto font-light leading-relaxed font-jakarta">
