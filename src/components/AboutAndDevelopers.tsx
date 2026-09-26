@@ -80,7 +80,7 @@ export const AboutAndDevelopers: React.FC<AboutAndDevelopersProps> = ({
                     HEADQUARTERS • DUBAI
                   </span>
                   <p className="text-lg font-bold font-serif-luxury">
-                    DIFC Gate Precinct & Downtown Advisory Galleries
+                    Bayswater Tower, 8th & 11th Floor, Business Bay
                   </p>
                 </div>
               </div>

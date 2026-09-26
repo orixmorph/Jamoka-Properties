@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
+import { ProjectsProvider, useProjects } from './context/ProjectsContext';
 import { Header, PageType } from './components/Header';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
@@ -62,6 +63,7 @@ const getInitialRoute = (): { page: PageType; careerSlug: string | null } => {
 
 function MainApp() {
   const { isRTL } = useLanguage();
+  const { projects: allProjects } = useProjects();
   const initialRoute = useMemo(() => getInitialRoute(), []);
   const [activePage, setActivePage] = useState<PageType>(initialRoute.page);
   const [careerSlug, setCareerSlug] = useState<string | null>(initialRoute.careerSlug);
@@ -115,7 +117,7 @@ function MainApp() {
 
   // Filtered projects for Home page
   const filteredProjects = useMemo(() => {
-    return OFF_PLAN_PROJECTS.filter((proj) => {
+    return allProjects.filter((proj) => {
       // Live search term
       if (searchQuery.trim() !== '') {
         const q = searchQuery.toLowerCase().trim();
@@ -160,7 +162,7 @@ function MainApp() {
 
       return true;
     });
-  }, [filters, searchQuery]);
+  }, [allProjects, filters, searchQuery]);
 
   const scrollToProjectsOnHome = () => {
     if (activePage !== 'home') {
@@ -304,7 +306,9 @@ function MainApp() {
 export default function App() {
   return (
     <LanguageProvider>
-      <MainApp />
+      <ProjectsProvider>
+        <MainApp />
+      </ProjectsProvider>
     </LanguageProvider>
   );
 }

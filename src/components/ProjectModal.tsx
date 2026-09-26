@@ -106,11 +106,11 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
         {/* Modal Body */}
         <div className="p-6 md:p-8 overflow-y-auto space-y-6">
           {/* Overview */}
-          <div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#CFA55A] block mb-1">
-              ARCHITECTURAL BRIEF
+          <div className="rounded-xl bg-neutral-50/80 border border-neutral-200/80 p-4 sm:p-5">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#CFA55A] block mb-1.5">
+              PROPERTY OVERVIEW
             </span>
-            <p className="text-sm text-neutral-600 leading-relaxed">
+            <p className="text-sm text-slate-700 leading-relaxed font-normal whitespace-pre-line">
               {property.description}
             </p>
           </div>

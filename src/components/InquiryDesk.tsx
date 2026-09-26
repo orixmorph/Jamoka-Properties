@@ -77,11 +77,12 @@ export const InquiryDesk: React.FC = () => {
 
               <div className="flex items-start gap-3.5 p-4 rounded-xl bg-white/5 border border-white/10">
                 <Clock className="w-5 h-5 text-[#CFA55A] shrink-0 mt-0.5" />
-                <div>
+                <div className="space-y-0.5">
                   <span className="text-white font-bold text-sm block">Working Hours</span>
-                  <span className="font-light text-neutral-300">
-                    Monday to Saturday: 9:00 AM – 7:00 PM (GST)
-                  </span>
+                  <div className="font-light text-neutral-300 text-xs space-y-0.5">
+                    <div>Monday to Friday: 10:00am – 6:00pm</div>
+                    <div>Saturday: 10:00am – 2:00pm</div>
+                  </div>
                 </div>
               </div>
 

@@ -69,7 +69,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
         {/* Modal Hero Banner */}
         <div className="relative h-64 sm:h-72 w-full bg-slate-900">
           <img
-            src={project.image}
+            src={project.heroImage || project.coverImage || project.image}
             alt={project.name}
             className="w-full h-full object-cover"
           />
@@ -78,7 +78,7 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
           {/* Close Button */}
           <button
             onClick={onClose}
-            className={`absolute top-4 ${isRTL ? 'left-4' : 'right-4'} w-10 h-10 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition-colors z-10`}
+            className={`absolute top-4 ${isRTL ? 'left-4' : 'right-4'} w-10 h-10 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition-colors z-10 cursor-pointer`}
             aria-label={t.projects.closeModal}
           >
             <X className="w-5 h-5" />
@@ -104,7 +104,12 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
               <h2 className="text-2xl sm:text-3xl font-bold font-serif-luxury mt-0.5">
                 {project.name}
               </h2>
-              <p className="text-xs text-neutral-300 font-light mt-0.5">{project.bedrooms}</p>
+              <p className="text-xs text-neutral-300 font-light mt-0.5">
+                {project.tagline ? (
+                  <span className="text-[#CFA55A] font-medium">{project.tagline} • </span>
+                ) : null}
+                {project.bedrooms}
+              </p>
             </div>
             <div className="text-left sm:text-right">
               <span className="text-[10px] text-neutral-300 uppercase block">{t.projects.starting}</span>
@@ -134,9 +139,9 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
               </span>
             </div>
             <div className="min-w-0">
-              <span className="text-slate-400 block uppercase text-[10px]">Projected ROI</span>
-              <span className="font-bold text-emerald-700 text-xs sm:text-sm mt-0.5 block truncate">
-                {project.roi}
+              <span className="text-slate-400 block uppercase text-[10px]">Total Area</span>
+              <span className="font-bold text-slate-900 text-xs sm:text-sm mt-0.5 block truncate">
+                {project.area || 'On Request'}
               </span>
             </div>
             <div className="min-w-0">
@@ -147,12 +152,15 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
             </div>
           </div>
 
-          {/* Description */}
-          <div>
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-2">
-              Property Overview
-            </h3>
-            <p className="text-sm text-slate-600 leading-relaxed font-light">
+          {/* Property Overview */}
+          <div className="rounded-2xl bg-neutral-50/90 border border-neutral-200/80 p-5 sm:p-6 shadow-xs">
+            <div className="flex items-center gap-2.5 mb-3">
+              <span className="w-1.5 h-4 bg-[#CFA55A] rounded-full" />
+              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                Property Overview
+              </h3>
+            </div>
+            <p className="text-sm text-slate-700 leading-relaxed font-normal whitespace-pre-line">
               {project.description}
             </p>
           </div>

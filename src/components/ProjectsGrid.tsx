@@ -12,12 +12,15 @@ import {
   Calendar,
   Percent,
   MapPin,
+  Database,
 } from 'lucide-react';
 import { PropertyDetailModal } from './PropertyDetailModal';
+import { BaserowModal } from './BaserowModal';
+import { useProjects } from '../context/ProjectsContext';
 import { useLanguage } from '../context/LanguageContext';
 
 interface ProjectsGridProps {
-  projects: OffPlanProject[];
+  projects?: OffPlanProject[];
   currency: 'AED' | 'USD' | 'EUR' | 'GBP';
   onSelectProjectForAdvisory?: (project: OffPlanProject) => void;
 }
@@ -30,10 +33,12 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
   onSelectProjectForAdvisory,
 }) => {
   const { t } = useLanguage();
+  const { isBaserowConnected, projects: contextProjects } = useProjects();
   const [activeModalProject, setActiveModalProject] = useState<OffPlanProject | null>(null);
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('All');
   const [isAutoScrolling, setIsAutoScrolling] = useState<boolean>(true);
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isBaserowModalOpen, setIsBaserowModalOpen] = useState<boolean>(false);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef<boolean>(false);
@@ -43,10 +48,12 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
   const isResettingScrollRef = useRef<boolean>(false);
   const touchResumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Use provided projects or fallback to all 9 OFF_PLAN_PROJECTS if empty
+  // Use provided projects or contextProjects or fallback to OFF_PLAN_PROJECTS
   const baseProjects = useMemo(() => {
-    return projects && projects.length > 0 ? projects : OFF_PLAN_PROJECTS;
-  }, [projects]);
+    if (projects !== undefined) return projects;
+    if (contextProjects && contextProjects.length > 0) return contextProjects;
+    return OFF_PLAN_PROJECTS;
+  }, [projects, contextProjects]);
 
   // Filter projects based on active category
   const filteredProjects = useMemo(() => {
@@ -57,15 +64,27 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
       const nameLower = (p.name || '').toLowerCase();
       const descLower = (p.description || '').toLowerCase();
       const enclaveLower = (p.enclave || '').toLowerCase();
+      const tagLower = (p.tagline || '').toLowerCase();
+      const bedLower = (p.bedrooms || '').toLowerCase();
 
       if (activeCategory === 'Villas') {
         return (
           typeLower.includes('villa') ||
           typeLower.includes('mansion') ||
           typeLower.includes('sanctuary') ||
+          typeLower.includes('valley') ||
+          typeLower.includes('green') ||
+          typeLower.includes('community') ||
           nameLower.includes('mansion') ||
           descLower.includes('mansion') ||
-          enclaveLower.includes('islands')
+          enclaveLower.includes('islands') ||
+          enclaveLower.includes('valley') ||
+          tagLower.includes('family') ||
+          tagLower.includes('green') ||
+          tagLower.includes('island') ||
+          bedLower.includes('3 bed') ||
+          bedLower.includes('4 bed') ||
+          p.priceAED >= 4000000
         );
       }
       if (activeCategory === 'Luxury') {
@@ -74,7 +93,11 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
           typeLower.includes('trophy') ||
           typeLower.includes('branded') ||
           typeLower.includes('maritime') ||
-          p.priceAED >= 3800000
+          tagLower.includes('luxury') ||
+          tagLower.includes('branded') ||
+          tagLower.includes('mercedese') ||
+          tagLower.includes('sea view') ||
+          p.priceAED >= 2000000
         );
       }
       if (activeCategory === 'Flats') {
@@ -84,7 +107,12 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
           typeLower.includes('sky') ||
           typeLower.includes('living') ||
           typeLower.includes('apt') ||
-          typeLower.includes('tower')
+          typeLower.includes('tower') ||
+          tagLower.includes('balcony') ||
+          tagLower.includes('amenities') ||
+          tagLower.includes('amminities') ||
+          bedLower.includes('studio') ||
+          bedLower.includes('1 bed')
         );
       }
       return true;
@@ -100,20 +128,23 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
   // Clean payment plan badge
   const getBadgeInfo = (project: OffPlanProject) => {
     const plan = project.paymentPlan || '';
-    if (plan.includes('40 / 60') || project.developer === 'Select Group') {
+    if (plan.includes('40 / 60') || plan.includes('40/60') || project.developer === 'Select Group') {
       return { text: '40 / 60 Plan', tone: 'gold' };
     }
-    if (plan.includes('60 / 40')) {
+    if (plan.includes('60 / 40') || plan.includes('60/40')) {
       return { text: '60 / 40 Plan', tone: 'gold' };
     }
-    if (plan.includes('70 / 30')) {
+    if (plan.includes('70 / 30') || plan.includes('70/30')) {
       return { text: '70 / 30 Plan', tone: 'gold' };
     }
-    if (plan.includes('80 / 20')) {
+    if (plan.includes('80 / 20') || plan.includes('80/20')) {
       return { text: '80 / 20 Plan', tone: 'gold' };
     }
-    if (plan.includes('50 / 50')) {
+    if (plan.includes('50 / 50') || plan.includes('50/50')) {
       return { text: '50 / 50 Plan', tone: 'gold' };
+    }
+    if (plan.includes('30 / 70') || plan.includes('30/70')) {
+      return { text: '30 / 70 Plan', tone: 'gold' };
     }
     if (project.badge === 'PRE-COMPLETION' || project.handover.includes('2026')) {
       return { text: 'Ready Soon', tone: 'gold' };
@@ -121,17 +152,26 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
     return { text: plan, tone: 'gold' };
   };
 
-  // Prominent price display
+  // Prominent price display (supports both Millions e.g. 4.3M and Thousands e.g. 696K)
   const getPriceDisplay = (priceAED: number) => {
     if (currency === 'AED') {
-      const millions = priceAED / 1000000;
-      const formattedNumber =
-        millions % 1 === 0 ? `${millions}M` : `${parseFloat(millions.toFixed(2))}M`;
-      return {
-        prefix: 'From',
-        currencyLabel: 'AED',
-        amount: formattedNumber,
-      };
+      if (priceAED >= 1000000) {
+        const millions = priceAED / 1000000;
+        const formattedNumber =
+          millions % 1 === 0 ? `${millions}M` : `${parseFloat(millions.toFixed(2))}M`;
+        return {
+          prefix: 'From',
+          currencyLabel: 'AED',
+          amount: formattedNumber,
+        };
+      } else {
+        const thousands = Math.round(priceAED / 1000);
+        return {
+          prefix: 'From',
+          currencyLabel: 'AED',
+          amount: `${thousands}K`,
+        };
+      }
     } else if (currency === 'USD') {
       const usd = priceAED / 3.6725;
       const millions = usd / 1000000;
@@ -335,18 +375,18 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
           <div className="space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F3ECE0] border border-[#CFA55A]/35 text-[#9A7326] text-[11px] font-bold tracking-[0.2em] uppercase shadow-xs">
               <Sparkles className="w-3.5 h-3.5 text-[#CFA55A]" />
-              <span>MOST TRENDING DEVELOPMENTS</span>
+              <span>JAMOKA CURATED SELECTION</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight font-jakarta-bold">
-              Most Trending Projects in Dubai
+              Jamoka Selected Projects
             </h2>
 
             <p className="text-slate-600 text-sm sm:text-base max-w-2xl font-light leading-relaxed">
-              Explore Dubai’s most distinguished off-plan master developments. Direct developer allocations, guaranteed escrow accounts, and investor-preferred payment plans.
+              Dubai’s most distinguished off-plan master developments curated directly by Jamoka Properties. Direct developer allocations, guaranteed escrow accounts, and investor-preferred payment plans.
             </p>
 
-            {/* Filter Buttons */}
+            {/* Filter Buttons & Baserow Status */}
             <div className="flex flex-wrap items-center gap-2 pt-2">
               {(['All', 'Villas', 'Luxury', 'Flats'] as CategoryFilter[]).map((category) => {
                 const isActive = activeCategory === category;
@@ -368,7 +408,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
               {/* Auto-scroll toggle indicator */}
               <button
                 onClick={() => setIsAutoScrolling(!isAutoScrolling)}
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-[11px] text-slate-600 hover:text-slate-900 bg-white hover:bg-neutral-100 border border-neutral-200/90 shadow-xs transition-colors ml-2 cursor-pointer"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-[11px] text-slate-600 hover:text-slate-900 bg-white hover:bg-neutral-100 border border-neutral-200/90 shadow-xs transition-colors ml-1 cursor-pointer"
                 title={isAutoScrolling ? 'Pause Auto Scroll' : 'Resume Auto Scroll'}
               >
                 {isAutoScrolling ? (
@@ -382,6 +422,16 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
                     <span>Paused</span>
                   </>
                 )}
+              </button>
+
+              {/* Baserow Database Connection Button */}
+              <button
+                onClick={() => setIsBaserowModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[11px] font-bold text-slate-700 hover:text-slate-950 bg-white hover:bg-[#FAF6EE] border border-neutral-200/90 hover:border-[#CFA55A]/70 shadow-xs transition-all cursor-pointer"
+                title="Connect live Baserow database or view schema guide"
+              >
+                <Database className={`w-3.5 h-3.5 ${isBaserowConnected ? 'text-emerald-600' : 'text-[#CFA55A]'}`} />
+                <span>{isBaserowConnected ? 'Baserow Live' : 'Connect Baserow'}</span>
               </button>
             </div>
           </div>
@@ -432,6 +482,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
           {carouselItems.map((project, index) => {
             const badge = getBadgeInfo(project);
             const price = getPriceDisplay(project.priceAED);
+            const cardCover = project.coverImage || project.image;
 
             return (
               <div
@@ -442,7 +493,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
                 {/* Image Container with Elegant Zoom Effect */}
                 <div className="relative h-[260px] sm:h-[310px] md:h-[330px] w-full overflow-hidden bg-slate-100">
                   <img
-                    src={project.image}
+                    src={cardCover}
                     alt={project.name}
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
@@ -475,7 +526,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
 
                 {/* Content Area Below Image */}
                 <div className="p-4 sm:p-5 md:p-6 flex-1 flex flex-col justify-between space-y-3 bg-white">
-                  {/* Price Row: Stacked "From AED" with Large Bold Price Number and Yield Badge */}
+                  {/* Price Row: Stacked "From AED" with Large Bold Price Number and Area/Tagline (Yield removed) */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
                       <div className="flex flex-col leading-none">
@@ -491,9 +542,9 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
                       </div>
                     </div>
 
-                    {/* Projected ROI / Status pill */}
-                    <div className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-[#FAF5EC] border border-[#CFA55A]/35 text-[#9A7326] text-[9px] sm:text-[10px] font-bold tracking-wide shrink-0">
-                      {project.roi ? project.roi.split(' ')[0] + ' Yield' : 'Prime Tier'}
+                    {/* Area or Tagline badge (Yield removed) */}
+                    <div className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-[#FAF5EC] border border-[#CFA55A]/35 text-[#9A7326] text-[10px] sm:text-[11px] font-bold tracking-tight shrink-0">
+                      {project.area || project.tagline || 'Prime Selection'}
                     </div>
                   </div>
 
@@ -516,13 +567,16 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
                     </div>
                   </div>
 
-                  {/* Quick Feature Pills */}
+                  {/* Quick Feature & Tagline Pills */}
                   <div className="flex items-center gap-1.5 pt-0.5 text-[10px] sm:text-[11px] text-slate-600 font-medium">
-                    <span className="px-2 py-0.5 rounded-md bg-neutral-100 text-slate-700 truncate max-w-[130px]">
+                    <span className="px-2 py-0.5 rounded-md bg-neutral-100 text-slate-700 truncate max-w-[120px]">
                       {project.bedrooms ? project.bedrooms.split(' ')[0] + ' Beds' : 'Residences'}
                     </span>
-                    <span className="px-2 py-0.5 rounded-md bg-neutral-100 text-slate-700 truncate">
-                      {project.type}
+                    <span
+                      className="px-2 py-0.5 rounded-md bg-neutral-100 text-slate-700 truncate max-w-[170px]"
+                      title={project.tagline || project.type}
+                    >
+                      {project.tagline || project.type}
                     </span>
                   </div>
 
@@ -547,6 +601,12 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
         project={activeModalProject}
         onClose={() => setActiveModalProject(null)}
         currency={currency}
+      />
+
+      {/* Baserow Database Modal */}
+      <BaserowModal
+        isOpen={isBaserowModalOpen}
+        onClose={() => setIsBaserowModalOpen(false)}
       />
     </section>
   );

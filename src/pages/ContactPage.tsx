@@ -211,20 +211,23 @@ export const ContactPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <Clock className="w-4 h-4 text-[#CFA55A] shrink-0" />
+                <div className="flex items-start gap-3">
+                  <Clock className="w-4 h-4 text-[#CFA55A] shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-neutral-400 block text-[10px] uppercase">
+                    <span className="text-neutral-400 block text-[10px] uppercase font-bold tracking-wider mb-0.5">
                       {t.contactPage.hoursTitle}
                     </span>
-                    <span className="font-medium text-white">{t.contactPage.hoursText}</span>
+                    <div className="font-medium text-white space-y-0.5 text-xs">
+                      <div>Monday to Friday: 10:00am – 6:00pm</div>
+                      <div>Saturday: 10:00am – 2:00pm</div>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
                 <a
-                  href="https://wa.me/97143999999?text=Hello%20Jamoka%20Properties,%20I%20would%20like%20to%20inquire%20about%20Dubai%20off-plan%20properties"
+                  href="https://wa.me/971588648093?text=Hello%20Jamoka%20Properties,%20I%20would%20like%20to%20inquire%20about%20Dubai%20off-plan%20properties"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 px-4 rounded-xl bg-[#25D366] hover:brightness-105 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all"

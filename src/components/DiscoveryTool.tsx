@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { SlidersHorizontal, Sparkles, MapPin, CreditCard, DollarSign, Calendar } from 'lucide-react';
+import { useProjects } from '../context/ProjectsContext';
 
 interface DiscoveryFilters {
   enclave: string;
@@ -21,10 +22,26 @@ export const DiscoveryTool: React.FC<DiscoveryToolProps> = ({
   onReset,
   matchCount,
 }) => {
-  const enclaves = ['All Enclaves', 'Palm Jumeirah', 'Downtown Dubai', 'Dubai Marina', 'Dubai Water Canal', 'Dubai Harbour'];
-  const paymentPlans = ['All Frameworks', '50 / 50 Milestones', '60 / 40 Handover', '70 / 30 On Handover', '80 / 20 Handover'];
-  const priceBrackets = ['All Brackets', 'Under AED 3M', 'AED 3M - AED 10M', 'Above AED 10M'];
-  const completionYears = ['All Horizons', '2026', '2027', '2028+'];
+  const { projects: allProjects } = useProjects();
+
+  const enclaves = useMemo(() => {
+    return ['All Enclaves', ...Array.from(new Set(allProjects.map((p) => p.enclave))).filter(Boolean)];
+  }, [allProjects]);
+
+  const paymentPlans = useMemo(() => {
+    return ['All Frameworks', ...Array.from(new Set(allProjects.map((p) => p.paymentPlan))).filter(Boolean)];
+  }, [allProjects]);
+
+  const priceBrackets = ['All Brackets', 'Under AED 2M', 'AED 2M - AED 4M', 'Above AED 4M'];
+
+  const completionYears = useMemo(() => {
+    const years = new Set<string>();
+    allProjects.forEach((p) => {
+      const match = p.handover.match(/\b(20\d{2})\b/);
+      if (match) years.add(match[1]);
+    });
+    return ['All Horizons', ...Array.from(years).sort()];
+  }, [allProjects]);
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 -mt-6 relative z-30">

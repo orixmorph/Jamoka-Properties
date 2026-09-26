@@ -62,7 +62,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
               </h2>
 
               <p className="text-neutral-300 text-sm md:text-base leading-relaxed font-light">
-                Submit an allocation request to receive confidential off-market inventory, Stage-0 pricing, and comprehensive payment schedule models from our DIFC fiduciary advisors.
+                Submit an allocation request to receive confidential off-market inventory, Stage-0 pricing, and comprehensive payment schedule models from our Business Bay fiduciary advisors.
               </p>
 
               <div className="space-y-4 pt-4 border-t border-white/10 text-xs text-neutral-300">
@@ -301,23 +301,24 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
               </span>
               <div className="text-xs space-y-2 text-neutral-400">
                 <p>
-                  <strong className="text-white">DIFC Advisory Desk:</strong><br />
-                  Gate Precinct 4, Level 5, DIFC, Dubai, United Arab Emirates
+                  <strong className="text-white">Business Bay Headquarters:</strong><br />
+                  Bayswater Tower, 8th and 11th floor, Business Bay, Dubai, United Arab Emirates
                 </p>
-                <p>
-                  <strong className="text-white">Downtown Gallery:</strong><br />
-                  Boulevard Plaza Tower 1, Sheikh Mohammed bin Rashid Blvd, Downtown Dubai
+                <p className="text-[11px] text-neutral-400">
+                  <strong className="text-white">Working Hours:</strong><br />
+                  Monday to Friday: 10:00am – 6:00pm<br />
+                  Saturday: 10:00am – 2:00pm
                 </p>
                 <p className="pt-2">
                   <span className="block text-white font-semibold">Direct Desk:</span>
-                  +971 4 248 8888
+                  +971 58 864 8093
                 </p>
                 <p>
-                  <span className="block text-white font-semibold">Private Advisory:</span>
-                  private.desk@jamokaproperties.ae
+                  <span className="block text-white font-semibold">Official Inquiries:</span>
+                  info@jamokaproperties.com
                 </p>
                 <p className="text-[10px] text-neutral-500 pt-1">
-                  RERA Registered Agency • ORN #29841
+                  RERA Registered Brokerage • ORN #49679
                 </p>
               </div>
             </div>

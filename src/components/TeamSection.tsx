@@ -9,7 +9,7 @@ interface TeamSectionProps {
 
 export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) => {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-  const [selectedOffice, setSelectedOffice] = useState<'Business Bay' | 'DIFC'>('Business Bay');
+  const [selectedOffice, setSelectedOffice] = useState<'Bayswater Tower (8th Floor)' | 'Bayswater Tower (11th Floor)'>('Bayswater Tower (8th Floor)');
   const [selectedAdvisor, setSelectedAdvisor] = useState('Senior Advisory Partner');
   const [bookingSubmitted, setBookingSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -227,37 +227,49 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                 <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleBookingSubmit} className="space-y-4">
                   <input type="hidden" name="source" value="Team Section (Booking)" />
                   <input type="hidden" name="office" value={selectedOffice} />
-                  {/* Office Selection Tabs */}
+                  {/* Office Selection Tabs (Bayswater Tower only) */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1.5 tracking-wider uppercase">
-                      Select Meeting Location
-                    </label>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-xs font-semibold text-slate-700 tracking-wider uppercase">
+                        Select Office (Bayswater Tower)
+                      </label>
+                      <span className="text-[10px] text-slate-500 font-medium">Business Bay, Dubai</span>
+                    </div>
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         type="button"
-                        onClick={() => setSelectedOffice('Business Bay')}
+                        onClick={() => setSelectedOffice('Bayswater Tower (8th Floor)')}
                         className={`py-2 px-3 rounded-xl text-xs font-semibold border flex items-center justify-center gap-1.5 transition-all ${
-                          selectedOffice === 'Business Bay'
+                          selectedOffice === 'Bayswater Tower (8th Floor)'
                             ? 'bg-slate-900 text-white border-slate-900'
                             : 'bg-neutral-50 text-slate-600 border-neutral-200 hover:bg-neutral-100'
                         }`}
                       >
                         <MapPin className="w-3.5 h-3.5 text-[#CCA14C]" />
-                        <span>Bayswater (8th & 11th Fl.)</span>
+                        <span>8th Floor (Bayswater)</span>
                       </button>
 
                       <button
                         type="button"
-                        onClick={() => setSelectedOffice('DIFC')}
+                        onClick={() => setSelectedOffice('Bayswater Tower (11th Floor)')}
                         className={`py-2 px-3 rounded-xl text-xs font-semibold border flex items-center justify-center gap-1.5 transition-all ${
-                          selectedOffice === 'DIFC'
+                          selectedOffice === 'Bayswater Tower (11th Floor)'
                             ? 'bg-slate-900 text-white border-slate-900'
                             : 'bg-neutral-50 text-slate-600 border-neutral-200 hover:bg-neutral-100'
                         }`}
                       >
                         <MapPin className="w-3.5 h-3.5 text-[#CCA14C]" />
-                        <span>DIFC Gate Precinct 4</span>
+                        <span>11th Floor (Bayswater)</span>
                       </button>
+                    </div>
+                  </div>
+
+                  {/* Office Working Hours Strip */}
+                  <div className="p-2.5 rounded-xl bg-[#FAF5EC]/70 border border-[#CCA14C]/30 text-[11px] text-slate-700 flex items-start gap-2">
+                    <Clock className="w-3.5 h-3.5 text-[#CCA14C] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-slate-900 block">Working Hours</span>
+                      <span>Mon–Fri: 10:00am – 6:00pm | Sat: 10:00am – 2:00pm</span>
                     </div>
                   </div>
 

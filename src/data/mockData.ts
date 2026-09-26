@@ -295,7 +295,7 @@ export const REAL_ESTATE_BLOGS: RealEstateArticle[] = [
     date: 'February 2026',
     summary: 'An exhaustive briefing on cross-border currency regulations, sovereign tax efficiencies, and the role of the Dubai Land Department in protecting global capital.',
     image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800&auto=format&fit=crop',
-    author: 'Tariq Al-Sabah, Senior DIFC Partner'
+    author: 'Tariq Al-Sabah, Senior Advisory Partner'
   },
   {
     id: 'escrow-payment-plans',

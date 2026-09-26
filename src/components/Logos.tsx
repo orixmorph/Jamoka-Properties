@@ -226,7 +226,7 @@ export const SqftPartnerLogo: React.FC<{ isDarkBackground?: boolean }> = ({
 }) => {
   return (
     <a
-      href="https://sqftdxb.ae"
+      href="https://sqftdxb.com"
       target="_blank"
       rel="noopener noreferrer"
       className={`group relative flex items-center gap-2.5 px-2.5 py-1.5 rounded-md border transition-all shadow-2xs focus:outline-none whitespace-nowrap shrink-0 ${

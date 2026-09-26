@@ -93,17 +93,16 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Logo 2: SQFT DXB (Partnered Site for Secondary Resale) */}
           <div className="hidden sm:flex items-center shrink-0">
-            <div
-              onClick={onOpenSecondarySite}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && onOpenSecondarySite()}
+            <a
+              href="https://sqftdxb.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center cursor-pointer p-1 rounded-lg hover:bg-white/10 transition-colors shrink-0 whitespace-nowrap group"
               title="SQFT DXB • We Find, You Move In"
             >
               <SqftDxbLogo lightMode={true} size="sm" />
               <ExternalLink className="w-3.5 h-3.5 text-neutral-400 ml-1.5 opacity-70 group-hover:opacity-100 group-hover:text-[#D4AF37] transition-all shrink-0" />
-            </div>
+            </a>
           </div>
         </div>
 
@@ -258,26 +257,18 @@ export const Header: React.FC<HeaderProps> = ({
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-[#0A0E17]/98 backdrop-blur-2xl border-b border-white/10 px-6 py-5 space-y-4 shadow-2xl">
           {/* SQFT DXB Mobile Link */}
-          <div
-            onClick={() => {
-              setIsMobileMenuOpen(false);
-              onOpenSecondarySite();
-            }}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                setIsMobileMenuOpen(false);
-                onOpenSecondarySite();
-              }
-            }}
+          <a
+            href="https://sqftdxb.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setIsMobileMenuOpen(false)}
             className="p-3 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 flex items-center justify-between cursor-pointer transition-colors"
           >
             <SqftDxbLogo lightMode={true} size="sm" />
             <span className="text-xs font-semibold text-[#D4AF37] flex items-center gap-1">
               Visit SQFT DXB <ExternalLink className="w-3.5 h-3.5" />
             </span>
-          </div>
+          </a>
 
           {/* Nav Links */}
           <div className="space-y-1 pt-1">

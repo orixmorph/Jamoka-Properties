@@ -126,7 +126,7 @@ export const SecondaryMarketModal: React.FC<SecondaryMarketModalProps> = ({
 
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <a
-                href="https://sqftdxb.ae"
+                href="https://sqftdxb.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0A0E17] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer whitespace-nowrap"

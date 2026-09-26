@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { DEVELOPERS_DATA, Developer, OFF_PLAN_PROJECTS } from '../data/realEstateData';
+import { DEVELOPERS_DATA, Developer } from '../data/realEstateData';
+import { useProjects } from '../context/ProjectsContext';
 import { Building2, Award, Calendar, ArrowRight, CheckCircle2, MessageSquare, Sparkles } from 'lucide-react';
 
 interface DevelopersPageProps {
@@ -13,6 +14,7 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({
   onNavigateContact,
 }) => {
   const { t, isRTL } = useLanguage();
+  const { projects: allProjects } = useProjects();
   const [selectedDeveloper, setSelectedDeveloper] = useState<Developer | null>(null);
 
   return (
@@ -39,7 +41,7 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {DEVELOPERS_DATA.map((dev) => {
             // Check active listings for this developer in our catalog
-            const devProjects = OFF_PLAN_PROJECTS.filter((p) =>
+            const devProjects = allProjects.filter((p) =>
               p.developer.toLowerCase().includes(dev.name.toLowerCase().split(' ')[0])
             );
 

@@ -173,13 +173,15 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
               While Jamoka Properties specializes exclusively in high-yield off-plan developer allocations, our partner brokerage SQFT DXB manages resale, ready villa acquisitions, and tenant leasing across prime Dubai communities.
             </p>
           </div>
-          <button
-            onClick={onOpenSecondaryModal}
+          <a
+            href="https://sqftdxb.com"
+            target="_blank"
+            rel="noopener noreferrer"
             className="shrink-0 px-6 py-3.5 rounded-xl bg-black hover:bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2 cursor-pointer"
           >
             <span>Visit SQFT DXB</span>
             <ExternalLink className="w-4 h-4 text-[#CFA55A]" />
-          </button>
+          </a>
         </div>
       </section>
     </div>

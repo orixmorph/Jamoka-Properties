@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { OFF_PLAN_PROJECTS, OffPlanProject } from '../data/realEstateData';
+import { OffPlanProject } from '../data/realEstateData';
+import { useProjects } from '../context/ProjectsContext';
 import { PropertyDetailModal } from '../components/PropertyDetailModal';
 import { Search, RotateCcw, Filter, MapPin, Calendar, Percent, ArrowUpRight, Download, Sparkles, Building2, X } from 'lucide-react';
 
@@ -11,6 +12,7 @@ interface OffPlanPageProps {
 
 export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
   const { t, isRTL } = useLanguage();
+  const { projects: allProjects } = useProjects();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEnclave, setSelectedEnclave] = useState('All');
   const [selectedDeveloper, setSelectedDeveloper] = useState('All');
@@ -31,14 +33,27 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
     }
   };
 
-  // Extract unique filter lists
-  const enclaves = ['All', ...Array.from(new Set(OFF_PLAN_PROJECTS.map((p) => p.enclave)))];
-  const developers = ['All', ...Array.from(new Set(OFF_PLAN_PROJECTS.map((p) => p.developer)))];
-  const handovers = ['All', '2026', '2027', '2028'];
+  // Extract unique filter lists dynamically from database projects
+  const enclaves = useMemo(
+    () => ['All', ...Array.from(new Set(allProjects.map((p) => p.enclave))).filter(Boolean)],
+    [allProjects]
+  );
+  const developers = useMemo(
+    () => ['All', ...Array.from(new Set(allProjects.map((p) => p.developer))).filter(Boolean)],
+    [allProjects]
+  );
+  const handovers = useMemo(() => {
+    const years = new Set<string>();
+    allProjects.forEach((p) => {
+      const match = p.handover.match(/\b(20\d{2})\b/);
+      if (match) years.add(match[1]);
+    });
+    return ['All', ...Array.from(years).sort()];
+  }, [allProjects]);
 
   // Filtered projects
   const filteredProjects = useMemo(() => {
-    return OFF_PLAN_PROJECTS.filter((project) => {
+    return allProjects.filter((project) => {
       // Search matching
       const query = searchQuery.trim().toLowerCase();
       const matchesSearch =
@@ -68,7 +83,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
 
       return matchesSearch && matchesEnclave && matchesDev && matchesHandover && matchesPrice;
     });
-  }, [searchQuery, selectedEnclave, selectedDeveloper, selectedHandover, selectedPriceBracket]);
+  }, [allProjects, searchQuery, selectedEnclave, selectedDeveloper, selectedHandover, selectedPriceBracket]);
 
   const handleResetFilters = () => {
     setSearchQuery('');
@@ -197,7 +212,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
           <div className="flex items-center justify-between pt-2 border-t border-neutral-100 text-xs text-slate-500">
             <span>
               Showing <strong className="text-slate-900">{filteredProjects.length}</strong> of{' '}
-              {OFF_PLAN_PROJECTS.length} verified developments
+              {allProjects.length} verified developments
             </span>
             {(searchQuery ||
               selectedEnclave !== 'All' ||
@@ -247,7 +262,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
                   className="relative h-64 sm:h-72 w-full overflow-hidden bg-slate-900 cursor-pointer"
                 >
                   <img
-                    src={project.image}
+                    src={project.coverImage || project.image}
                     alt={project.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
@@ -279,7 +294,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
                 <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                   <div>
                     <span className="text-xs text-slate-500 font-medium block">
-                      {project.bedrooms}
+                      {project.bedrooms} {project.tagline ? `• ${project.tagline}` : ''}
                     </span>
 
                     {/* Spec Chips */}
@@ -316,8 +331,8 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
                           {formatPrice(project.priceAED)}
                         </span>
                       </div>
-                      <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                        {project.roi}
+                      <span className="text-[11px] font-bold text-[#9A7326] bg-[#FAF5EC] px-2.5 py-1 rounded-lg border border-[#CFA55A]/35">
+                        {project.area || project.tagline || project.type}
                       </span>
                     </div>
 

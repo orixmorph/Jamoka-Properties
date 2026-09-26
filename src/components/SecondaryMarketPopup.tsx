@@ -39,7 +39,7 @@ export const SecondaryMarketPopup: React.FC<SecondaryMarketPopupProps> = ({
     if (onOpenSecondarySite) {
       onOpenSecondarySite();
     } else {
-      window.open('https://sqftdxb.ae', '_blank', 'noopener,noreferrer');
+      window.open('https://sqftdxb.com', '_blank', 'noopener,noreferrer');
     }
   };
 

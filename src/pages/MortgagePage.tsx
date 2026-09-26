@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Landmark, Calculator, Percent, ShieldCheck, CheckCircle2, ArrowRight, MessageSquare, Mail, Phone, Send, Loader2, Clock, Building, Sparkles } from 'lucide-react';
+import { Landmark, Calculator, Percent, ShieldCheck, CheckCircle2, ArrowRight, MessageSquare, Mail, Phone, Send, Loader2, Clock, Building, Sparkles, MapPin } from 'lucide-react';
 import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
 import { InquiryDesk } from '../components/InquiryDesk';
 
@@ -339,8 +339,8 @@ export const MortgagePage: React.FC<MortgagePageProps> = ({ onNavigateContact })
                   <Landmark className="w-3.5 h-3.5 text-[#CFA55A]" />
                   <span>PRE-APPROVAL CONSULTATION</span>
                 </div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 font-serif-luxury tracking-tight leading-tight">
-                  Speak with a Mortgage Specialist
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 font-jakarta-bold tracking-tight leading-tight">
+                  Get in Touch with Our Team
                 </h2>
                 <div className="w-16 h-0.5 bg-gradient-to-r from-[#CFA55A] to-transparent mt-3 mb-4" />
                 <p className="text-slate-600 text-xs sm:text-sm font-light leading-relaxed">
@@ -377,6 +377,29 @@ export const MortgagePage: React.FC<MortgagePageProps> = ({ onNavigateContact })
                   <div>
                     <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Non-Resident & Expat Solutions</h4>
                     <p className="text-[11px] text-slate-500 font-light mt-0.5">Tailored underwriting for international property investors, Golden Visa holders, and offshore income streams.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Office Location & Working Hours */}
+              <div className="p-4 rounded-2xl bg-neutral-50/90 border border-neutral-200/90 space-y-3 font-jakarta text-xs">
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-[#CFA55A] shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-slate-900 font-bold text-xs block">Business Bay Office</span>
+                    <span className="font-light text-slate-600">
+                      Bayswater Tower, 8th and 11th floor, Business Bay, Dubai, UAE
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 pt-2.5 border-t border-neutral-200/80">
+                  <Clock className="w-4 h-4 text-[#CFA55A] shrink-0 mt-0.5" />
+                  <div className="space-y-0.5">
+                    <span className="text-slate-900 font-bold text-xs block">Working Hours</span>
+                    <div className="font-light text-slate-600 text-[11px] space-y-0.5">
+                      <div>Monday to Friday: 10:00am – 6:00pm</div>
+                      <div>Saturday: 10:00am – 2:00pm</div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { JamokaLogo } from './Logos';
-import { ShieldCheck, ExternalLink, MapPin, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { ShieldCheck, ExternalLink, MapPin, ArrowUpRight, ArrowRight, Clock } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { PageType } from './Header';
 import { SOCIAL_LINKS } from './SocialIcons';
@@ -43,13 +43,15 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={onOpenSecondarySite}
+          <a
+            href="https://sqftdxb.com"
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-5 py-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-[#CFA55A]/40 text-white text-xs font-bold tracking-wider uppercase flex items-center gap-2 transition-all hover:scale-105 cursor-pointer"
           >
             <span>Visit SQFT DXB Partner Portal</span>
             <ExternalLink className="w-3.5 h-3.5 text-[#CFA55A]" />
-          </button>
+          </a>
         </div>
       </div>
 
@@ -71,9 +73,13 @@ export const Footer: React.FC<FooterProps> = ({
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 <span>RERA Registered Brokerage ORN: 49679</span>
               </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#CFA55A]" />
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-[#CFA55A] shrink-0 mt-0.5" />
                 <span>Bayswater Tower, 8th and 11th floor, Business Bay, Dubai, UAE</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-400">
+                <Clock className="w-4 h-4 text-[#CFA55A] shrink-0 mt-0.5" />
+                <span>Mon–Fri: 10:00am – 6:00pm | Sat: 10:00am – 2:00pm</span>
               </div>
             </div>
 
@@ -227,10 +233,15 @@ export const Footer: React.FC<FooterProps> = ({
             <span>•</span>
             <span className="text-neutral-400">DLD Escrow Protected</span>
             <span>•</span>
-            <button onClick={onOpenSecondarySite} className="hover:text-[#CFA55A] flex items-center gap-1 cursor-pointer">
+            <a
+              href="https://sqftdxb.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#CFA55A] flex items-center gap-1 cursor-pointer"
+            >
               <span>Partner: SQFT DXB • We Find, You Move In</span>
               <ArrowUpRight className="w-3 h-3" />
-            </button>
+            </a>
           </div>
         </div>
       </div>
