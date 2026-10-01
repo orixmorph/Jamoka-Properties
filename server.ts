@@ -1,5 +1,5 @@
-import express, { Request, Response } from 'express';
-import { createServer as createViteServer } from 'vite';
+import express from 'express';
+import type { Request, Response } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
@@ -30,12 +30,45 @@ const SECURE_KEY = process.env.CONFIDENTIAL_DB_KEY || process.env.UPSTREAM_KEY |
 
 // Secure media registry: maps internal IDs to upstream asset targets to conceal origin
 const mediaRegistry = new Map<string, string>();
+const MEDIA_XOR_KEY = 0x4b;
 
 function registerMedia(originalUrl: string): string {
   if (!originalUrl || !originalUrl.startsWith('http')) return originalUrl;
   const hash = 'img_' + crypto.createHash('md5').update(originalUrl).digest('hex').slice(0, 12);
   mediaRegistry.set(hash, originalUrl);
-  return `/api/media?id=${hash}`;
+
+  try {
+    const buf = Buffer.from(originalUrl, 'utf8');
+    for (let i = 0; i < buf.length; i++) {
+      buf[i] ^= MEDIA_XOR_KEY;
+    }
+    const token = buf.toString('base64url');
+    return `/api/media?id=${hash}&t=${token}`;
+  } catch {
+    return `/api/media?id=${hash}`;
+  }
+}
+
+function resolveMediaUrl(id: string, token?: string): string | null {
+  if (id && mediaRegistry.has(id)) {
+    return mediaRegistry.get(id)!;
+  }
+  if (token) {
+    try {
+      const buf = Buffer.from(token, 'base64url');
+      for (let i = 0; i < buf.length; i++) {
+        buf[i] ^= MEDIA_XOR_KEY;
+      }
+      const decoded = buf.toString('utf8');
+      if (decoded.startsWith('http')) {
+        if (id) mediaRegistry.set(id, decoded);
+        return decoded;
+      }
+    } catch {
+      // Fall through to null
+    }
+  }
+  return null;
 }
 
 function extractFileUrl(fieldVal: unknown): string | null {
@@ -308,7 +341,8 @@ async function startServer() {
   // Secure media streaming proxy that conceals upstream origin
   app.get('/api/media', async (req: Request, res: Response) => {
     const id = String(req.query.id || '');
-    const targetUrl = mediaRegistry.get(id);
+    const token = typeof req.query.t === 'string' ? req.query.t : undefined;
+    const targetUrl = resolveMediaUrl(id, token);
 
     if (!targetUrl) {
       res.status(404).send('Asset not found');
@@ -340,6 +374,7 @@ async function startServer() {
       res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
     });
   } else {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
@@ -349,6 +384,11 @@ async function startServer() {
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server ready on http://0.0.0.0:${PORT}`);
+    fetchFromConfidentialSource().then((listings) => {
+      console.log(`Listings pre-cached: ${listings.length} projects loaded from database`);
+    }).catch((err) => {
+      console.warn('Initial cache fetch deferred:', err);
+    });
   });
 }
 
