@@ -33,7 +33,7 @@ export const OffPlanPage: React.FC<OffPlanPageProps> = ({ currency }) => {
     }
   };
 
-  // Extract unique filter lists dynamically from database projects
+  // Extract unique filter lists dynamically from project listings
   const enclaves = useMemo(
     () => ['All', ...Array.from(new Set(allProjects.map((p) => p.enclave))).filter(Boolean)],
     [allProjects]

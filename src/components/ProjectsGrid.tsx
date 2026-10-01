@@ -12,10 +12,8 @@ import {
   Calendar,
   Percent,
   MapPin,
-  Database,
 } from 'lucide-react';
 import { PropertyDetailModal } from './PropertyDetailModal';
-import { BaserowModal } from './BaserowModal';
 import { useProjects } from '../context/ProjectsContext';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -33,12 +31,11 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
   onSelectProjectForAdvisory,
 }) => {
   const { t } = useLanguage();
-  const { isBaserowConnected, projects: contextProjects } = useProjects();
+  const { projects: contextProjects } = useProjects();
   const [activeModalProject, setActiveModalProject] = useState<OffPlanProject | null>(null);
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('All');
   const [isAutoScrolling, setIsAutoScrolling] = useState<boolean>(true);
   const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isBaserowModalOpen, setIsBaserowModalOpen] = useState<boolean>(false);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef<boolean>(false);
@@ -386,7 +383,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
               Dubai’s most distinguished off-plan master developments curated directly by Jamoka Properties. Direct developer allocations, guaranteed escrow accounts, and investor-preferred payment plans.
             </p>
 
-            {/* Filter Buttons & Baserow Status */}
+            {/* Category Filter Buttons */}
             <div className="flex flex-wrap items-center gap-2 pt-2">
               {(['All', 'Villas', 'Luxury', 'Flats'] as CategoryFilter[]).map((category) => {
                 const isActive = activeCategory === category;
@@ -422,16 +419,6 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
                     <span>Paused</span>
                   </>
                 )}
-              </button>
-
-              {/* Baserow Database Connection Button */}
-              <button
-                onClick={() => setIsBaserowModalOpen(true)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[11px] font-bold text-slate-700 hover:text-slate-950 bg-white hover:bg-[#FAF6EE] border border-neutral-200/90 hover:border-[#CFA55A]/70 shadow-xs transition-all cursor-pointer"
-                title="Connect live Baserow database or view schema guide"
-              >
-                <Database className={`w-3.5 h-3.5 ${isBaserowConnected ? 'text-emerald-600' : 'text-[#CFA55A]'}`} />
-                <span>{isBaserowConnected ? 'Baserow Live' : 'Connect Baserow'}</span>
               </button>
             </div>
           </div>
@@ -601,12 +588,6 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({
         project={activeModalProject}
         onClose={() => setActiveModalProject(null)}
         currency={currency}
-      />
-
-      {/* Baserow Database Modal */}
-      <BaserowModal
-        isOpen={isBaserowModalOpen}
-        onClose={() => setIsBaserowModalOpen(false)}
       />
     </section>
   );
