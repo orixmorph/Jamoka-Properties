@@ -264,8 +264,8 @@ async function fetchFromConfidentialSource(): Promise<NormalizedListing[]> {
       const rawHero = extractFileUrl(getField('Header', 'HeroImage', 'HeroPhoto', 'HeaderImage'));
 
       const fallbacks = getCuratedFallbacks(name);
-      const coverUrl = rawCover ? registerMedia(rawCover) : fallbacks.cover;
-      const heroUrl = rawHero ? registerMedia(rawHero) : rawCover ? registerMedia(rawCover) : fallbacks.hero;
+      const coverUrl = rawCover || fallbacks.cover;
+      const heroUrl = rawHero || rawCover || fallbacks.hero;
 
       const rawDesc = getField('Notes', 'Description', 'Overview', 'About', 'Details');
       const description =
@@ -349,22 +349,7 @@ async function startServer() {
       return;
     }
 
-    try {
-      const upstreamRes = await fetch(targetUrl);
-      if (!upstreamRes.ok) {
-        res.status(upstreamRes.status).send('Media unavailable');
-        return;
-      }
-
-      const contentType = upstreamRes.headers.get('content-type') || 'image/jpeg';
-      res.setHeader('Content-Type', contentType);
-      res.setHeader('Cache-Control', 'public, max-age=86400, immutable');
-
-      const arrayBuffer = await upstreamRes.arrayBuffer();
-      res.send(Buffer.from(arrayBuffer));
-    } catch {
-      res.status(502).send('Error streaming media');
-    }
+    res.redirect(302, targetUrl);
   });
 
   // Full-Stack: Vite middleware in dev, static build in production
