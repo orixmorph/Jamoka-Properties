@@ -55,14 +55,14 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* 2. Trust Metric Strip: Animated Growing Numbers (0 -> Target) */}
       <TrustStats />
 
-      {/* 3. Jamoka Selected Projects (Iconic Dubai Off-Plan Developments from live catalog) */}
+      {/* 3. Trusted Partners: Developer Brand Logos only (floating black logos with curved corners) */}
+      <DeveloperWheel />
+
+      {/* 4. Jamoka Selected Projects (Iconic Dubai Off-Plan Developments from live catalog) */}
       <ProjectsGrid
         projects={filteredProjects}
         currency={currency}
       />
-
-      {/* 4. Trusted Partners: Developer Brand Logos only (clean marquee with slots for cloud links) */}
-      <DeveloperWheel />
 
       {/* 5. Four-Step Acquisition Protocol */}
       <ProcessSection />

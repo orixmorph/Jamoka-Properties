@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { ShieldCheck, Star, Users, Building2, Globe, Award } from 'lucide-react';
+import { ShieldCheck, Star, Users, Building2, Globe, Award, Languages, ChevronDown, ChevronUp, MessageCircle } from 'lucide-react';
 import { useInView } from 'motion/react';
 
 interface AnimatedStatProps {
@@ -54,6 +54,8 @@ const AnimatedStat: React.FC<AnimatedStatProps> = ({
 };
 
 export const TrustStats: React.FC = () => {
+  const [showAllLanguages, setShowAllLanguages] = useState(false);
+
   const stats = [
     {
       icon: Users,
@@ -81,8 +83,32 @@ export const TrustStats: React.FC = () => {
       targetNumber: 15,
       suffix: '+',
       label: 'Nationalities',
-      detail: 'Multilingual investor advisory',
+      detail: 'Multilingual team (18+ languages spoken)',
     },
+  ];
+
+  const primaryLanguages = [
+    { name: 'English', native: 'English' },
+    { name: 'French', native: 'Français' },
+    { name: 'Urdu', native: 'اردو' },
+    { name: 'Arabic', native: 'العربية' },
+    { name: 'Hindi', native: 'हिन्दी' },
+    { name: 'Turkish', native: 'Türkçe' },
+    { name: 'Bulgarian', native: 'Български' },
+    { name: 'Swedish', native: 'Svenska' },
+    { name: 'German', native: 'Deutsch' },
+    { name: 'Russian', native: 'Русский' },
+  ];
+
+  const secondaryLanguages = [
+    { name: 'Albanian', native: 'Shqip' },
+    { name: 'Luxembourgish', native: 'Lëtzebuergesch' },
+    { name: 'Danish', native: 'Dansk' },
+    { name: 'Norwegian', native: 'Norsk' },
+    { name: 'Italian', native: 'Italiano' },
+    { name: 'Kurmanji', native: 'Kurdî' },
+    { name: 'Philippines', native: 'Tagalog' },
+    { name: 'Persian', native: 'فارسی' },
   ];
 
   return (
@@ -118,8 +144,116 @@ export const TrustStats: React.FC = () => {
           })}
         </div>
 
+        {/* Minimal Multilingual Advisory Element */}
+        <div className="mt-7 pt-6 border-t border-neutral-100">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-[#FAF5EC] border border-[#CFA55A]/30 flex items-center justify-center text-[#CFA55A] shrink-0">
+                <Languages className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-xs font-bold text-slate-900 tracking-wide font-jakarta">
+                Languages Spoken:
+              </span>
+              <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#FAF5EC] text-[#B8860B] border border-[#CFA55A]/30">
+                18+ Languages
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-500 font-light hidden sm:block">
+              Consult with an off-plan advisor fluent in your native language
+            </p>
+          </div>
+
+          {/* Line 1: Single line of languages + toggle button */}
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-1">
+            {primaryLanguages.map((lang) => (
+              <a
+                key={lang.name}
+                href={`https://wa.me/971588648093?text=${encodeURIComponent(
+                  `Hello Jamoka Properties, I would like to consult with an off-plan property advisor who speaks ${lang.name} (${lang.native}).`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Click to connect with a ${lang.name}-speaking advisor on WhatsApp`}
+                className="shrink-0 group inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-neutral-50/90 hover:bg-[#FAF5EC] border border-neutral-200 hover:border-[#CFA55A]/60 text-slate-700 hover:text-slate-900 text-[11px] font-medium transition-all shadow-2xs hover:shadow-xs cursor-pointer whitespace-nowrap"
+              >
+                <span className="text-slate-900 font-semibold group-hover:text-[#B8860B] transition-colors">
+                  {lang.native}
+                </span>
+                {lang.native !== lang.name && (
+                  <span className="text-slate-400 group-hover:text-slate-600 text-[10px]">
+                    {lang.name}
+                  </span>
+                )}
+              </a>
+            ))}
+
+            {/* +8 more / Show less toggle */}
+            <button
+              type="button"
+              onClick={() => setShowAllLanguages(!showAllLanguages)}
+              className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 hover:bg-[#FAF5EC] hover:border-[#CFA55A]/50 border border-slate-200 text-slate-700 hover:text-slate-900 text-[11px] font-semibold transition-all cursor-pointer whitespace-nowrap"
+            >
+              <span>{showAllLanguages ? 'Show less' : `+${secondaryLanguages.length} more`}</span>
+              {showAllLanguages ? (
+                <ChevronUp className="w-3 h-3 text-slate-500" />
+              ) : (
+                <ChevronDown className="w-3 h-3 text-slate-500" />
+              )}
+            </button>
+          </div>
+
+          {/* Line 2: Expandable secondary languages */}
+          {showAllLanguages && (
+            <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pt-2 pb-1 animate-fadeIn">
+              {secondaryLanguages.map((lang) => (
+                <a
+                  key={lang.name}
+                  href={`https://wa.me/971588648093?text=${encodeURIComponent(
+                    `Hello Jamoka Properties, I would like to consult with an off-plan property advisor who speaks ${lang.name} (${lang.native}).`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`Click to connect with a ${lang.name}-speaking advisor on WhatsApp`}
+                  className="shrink-0 group inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white hover:bg-[#FAF5EC] border border-neutral-200 hover:border-[#CFA55A]/60 text-slate-700 hover:text-slate-900 text-[11px] font-medium transition-all shadow-2xs hover:shadow-xs cursor-pointer whitespace-nowrap"
+                >
+                  <span className="text-slate-900 font-semibold group-hover:text-[#B8860B] transition-colors">
+                    {lang.native}
+                  </span>
+                  {lang.native !== lang.name && (
+                    <span className="text-slate-400 group-hover:text-slate-600 text-[10px]">
+                      {lang.name}
+                    </span>
+                  )}
+                </a>
+              ))}
+            </div>
+          )}
+
+          {/* Underneath Button: Centered "Chat with your language" sinking seamlessly into the design */}
+          <div className="flex justify-center pt-3 sm:pt-4">
+            <a
+              href="https://wa.me/971588648093?text=Hello%20Jamoka%20Properties,%20I%20would%20like%20to%20consult%20with%20an%20advisor%20in%20my%20native%20language."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2.5 px-4 sm:px-5 py-2 rounded-full bg-[#FAF5EC] hover:bg-[#F5EBD7] border border-[#CFA55A]/40 hover:border-[#CFA55A] text-slate-900 shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+            >
+              <div className="w-5 h-5 rounded-full bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center shrink-0">
+                <MessageCircle className="w-3 h-3 text-emerald-600 group-hover:scale-110 transition-transform" />
+              </div>
+              <span className="text-xs font-bold tracking-wide font-jakarta text-slate-900 group-hover:text-[#B8860B] transition-colors">
+                Chat with your language
+              </span>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white border border-[#CFA55A]/30 text-[#B8860B]">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                WhatsApp
+              </span>
+            </a>
+          </div>
+        </div>
+
         {/* Reputation & Google Review Bar */}
-        <div className="mt-8 pt-6 border-t border-neutral-100 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-jakarta">
+        <div className="mt-6 pt-5 border-t border-neutral-100 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-jakarta">
           <div className="flex items-center gap-3">
             <div className="flex items-center text-amber-400 gap-0.5">
               {[...Array(5)].map((_, i) => (

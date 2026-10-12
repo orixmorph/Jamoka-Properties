@@ -18,7 +18,8 @@ export interface DeveloperBrand {
  * even before replacing it with a Cloudinary image URL.
  */
 export const createDeveloperLogoPlaceholder = (name: string): string => {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="80" viewBox="0 0 240 80">
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="250" height="80" viewBox="0 0 250 80">
+    <rect width="250" height="80" rx="16" fill="#000000" />
     <defs>
       <linearGradient id="goldGlow" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#CFA55A" />
@@ -27,17 +28,17 @@ export const createDeveloperLogoPlaceholder = (name: string): string => {
       </linearGradient>
     </defs>
     <!-- Architectural Monogram Icon -->
-    <g transform="translate(120, 24)" text-anchor="middle">
+    <g transform="translate(125, 24)" text-anchor="middle">
       <path d="M-14 -6 L0 -14 L14 -6 L0 2 Z" fill="none" stroke="url(#goldGlow)" stroke-width="1.5" opacity="0.9" />
       <path d="M-9 -3 L0 -8 L9 -3 L0 2 Z" fill="url(#goldGlow)" opacity="0.3" />
       <circle cx="0" cy="-6" r="1.5" fill="#FFFFFF" />
     </g>
     <!-- Developer Name Display -->
-    <text x="120" y="52" fill="#FFFFFF" font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="800" letter-spacing="3.5" text-anchor="middle">
+    <text x="125" y="52" fill="#FFFFFF" font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="800" letter-spacing="3.5" text-anchor="middle">
       ${name}
     </text>
     <!-- Sub-label -->
-    <text x="120" y="66" fill="#CFA55A" font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7.5" font-weight="600" letter-spacing="2.5" text-anchor="middle" opacity="0.75">
+    <text x="125" y="66" fill="#CFA55A" font-family="'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7.5" font-weight="600" letter-spacing="2.5" text-anchor="middle" opacity="0.75">
       DEVELOPER LOGO
     </text>
   </svg>`;
@@ -46,24 +47,22 @@ export const createDeveloperLogoPlaceholder = (name: string): string => {
 
 /**
  * Default list of sliding master developers.
- *
- * HOW TO REPLACE WITH YOUR CLOUDINARY IMAGES:
- * Simply paste your Cloudinary logo URL into the `logoUrl` property for any developer below, e.g.:
- *   { name: 'EMAAR', logoUrl: 'https://res.cloudinary.com/your-account/image/upload/v1234/emaar.png' },
+ * Sourced from the ImageKit DEV LOGO SLIDER folder:
+ * https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/
  */
 export const DEVELOPER_LOGOS: DeveloperBrand[] = [
-  { name: 'EMAAR', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961882/Emaar_rnmems.png' },
-  { name: 'NAKHEEL', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961883/Nakheel_q2yx7u.png' },
-  { name: 'OMNIYAT', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961883/Omniyat_tql2hl.png' },
-  { name: 'DAMAC', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961882/Damac_cdliec.png' },
-  { name: 'SOBHA', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961883/Sobah_bf0khj.png' },
-  { name: 'MERAAS', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961882/Meraas_avhtyt.png' },
-  { name: 'SELECT GROUP', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961883/Select_Group_ewxn2s.png' },
-  { name: 'ELLINGTON', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961882/Ellington_p8xhho.png' },
-  { name: 'ALDAR', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961929/Aldar_b3jbha.png' },
-  { name: 'BINGHATTI', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961882/Binghatti_bjaqpl.png' },
-  { name: 'DANUBE', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961882/Danube_fsw8z1.png' },
-  { name: 'DEYAAR', logoUrl: 'https://res.cloudinary.com/dy6km7beb/image/upload/v1788961882/Deyaar_dr3nsc.png' },
+  { name: 'EMAAR', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Emaar.png' },
+  { name: 'NAKHEEL', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Nakheel.png' },
+  { name: 'OMNIYAT', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Omniyat.png' },
+  { name: 'DAMAC', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Damac.png' },
+  { name: 'SOBHA', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Sobah.png' },
+  { name: 'MERAAS', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Meraas.png' },
+  { name: 'SELECT GROUP', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Select%20Group.png' },
+  { name: 'ELLINGTON', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Ellington.png' },
+  { name: 'ALDAR', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Aldar.png' },
+  { name: 'BINGHATTI', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Binghatti.png' },
+  { name: 'DANUBE', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Danube.png' },
+  { name: 'DEYAAR', logoUrl: 'https://ik.imagekit.io/zb5ih81ig/DEV%20LOGO%20SLIDER/Deyaar.png' },
 ];
 
 interface DeveloperWheelProps {
@@ -101,7 +100,7 @@ export const DeveloperWheel: React.FC<DeveloperWheelProps> = ({ customLogos }) =
         <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-r from-[#0A0E17] to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-l from-[#0A0E17] to-transparent z-10 pointer-events-none" />
 
-        <div className="flex gap-5 sm:gap-8 py-3 animate-marquee hover:[animation-play-state:paused] w-max select-none items-center">
+        <div className="flex gap-6 sm:gap-10 py-4 animate-marquee hover:[animation-play-state:paused] w-max select-none items-center">
           {duplicatedDevelopers.map((dev, idx) => {
             const imageSrc = dev.logoUrl?.trim()
               ? dev.logoUrl.trim()
@@ -110,13 +109,10 @@ export const DeveloperWheel: React.FC<DeveloperWheelProps> = ({ customLogos }) =
             return (
               <div
                 key={`${dev.name}-${idx}`}
-                className="h-20 sm:h-24 w-44 sm:w-56 bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#CFA55A]/50 rounded-xl px-4 py-3 backdrop-blur-sm transition-all duration-300 flex items-center justify-center shrink-0 group relative overflow-hidden"
+                className="shrink-0 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 select-none shadow-lg"
                 title={`${dev.name} - Dubai Master Developer`}
               >
-                {/* Subtle hover backlight */}
-                <div className="absolute inset-0 bg-[#CFA55A]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-                {/* Image Holder - Renders Cloudinary logo image or SVG image placeholder */}
+                {/* Floating black logo image with curved corners - no stroke around, no holder */}
                 <img
                   src={imageSrc}
                   alt={`${dev.name} Developer Logo`}
@@ -124,9 +120,9 @@ export const DeveloperWheel: React.FC<DeveloperWheelProps> = ({ customLogos }) =
                   decoding="async"
                   referrerPolicy="no-referrer"
                   draggable={false}
-                  className="max-h-12 sm:max-h-14 max-w-[140px] sm:max-w-[170px] w-auto h-auto object-contain filter grayscale brightness-125 contrast-125 group-hover:grayscale-0 group-hover:brightness-100 group-hover:scale-105 transition-all duration-300 select-none pointer-events-none"
+                  className="h-14 sm:h-16 md:h-20 w-auto rounded-2xl object-cover select-none pointer-events-none block"
                   onError={(e) => {
-                    // Fallback to placeholder image if Cloudinary URL is broken or misconfigured
+                    // Fallback to placeholder image if image URL fails to load
                     const target = e.currentTarget;
                     if (target.src !== createDeveloperLogoPlaceholder(dev.name)) {
                       target.src = createDeveloperLogoPlaceholder(dev.name);

@@ -8,7 +8,7 @@ import React, { useState } from 'react';
  */
 export const JAMOKA_HEADER_CLOUD_LOGOS: string[] = [
   // Primary Cloudinary link (configured with cloud name: dy6km7beb)
-  'https://res.cloudinary.com/dy6km7beb/image/upload/v1788770576/Untitled_design_8_wgqp5r.png',
+  'https://ik.imagekit.io/zb5ih81ig/SITE%20LOGOS.png?updatedAt=1791790631413',
   // Local high-resolution brand asset fallback
   '/jamoka-header-logo.png',
 ];

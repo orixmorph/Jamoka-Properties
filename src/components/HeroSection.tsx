@@ -8,10 +8,10 @@ import { useLanguage } from '../context/LanguageContext';
 // You can replace these URLs with your cloud video and logo links (Cloudinary, S3, etc.)
 // ---------------------------------------------------------------------------------
 export const DEFAULT_BACKGROUND_VIDEO_URL =
-  'https://res.cloudinary.com/dy6km7beb/video/upload/v1789207982/HOME_VIDEOX_aufwtt.mov';
+  'https://ik.imagekit.io/zb5ih81ig/HOME%20VIDEOX.mp4';
 
 export const DEFAULT_HERO_LOGO_URL =
-  'https://res.cloudinary.com/dy6km7beb/image/upload/v1789203807/Copy_of_JP_NEW_TEAM_PICTURES_b3ehua.png';
+  'https://ik.imagekit.io/zb5ih81ig/Add%20a%20heading%20(21).png?updatedAt=1791790631557';
 
 interface HeroSectionProps {
   onSearch: (term: string) => void;
