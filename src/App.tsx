@@ -12,16 +12,35 @@ import { BlogsPage } from './pages/BlogsPage';
 import { CareersPage } from './pages/CareersPage';
 import { ContactPage } from './pages/ContactPage';
 import { AdminPage } from './pages/AdminPage';
+import { LandingPageView } from './pages/LandingPageView';
 import { Footer } from './components/Footer';
 import { SecondaryMarketPopup } from './components/SecondaryMarketPopup';
 import { SecondaryMarketModal } from './components/SecondaryMarketModal';
 import { OFF_PLAN_PROJECTS } from './data/realEstateData';
 import { trackMetaPixel } from './utils/metaPixel';
 
-const getInitialRoute = (): { page: PageType; careerSlug: string | null } => {
+export interface RouteState {
+  page: PageType;
+  careerSlug: string | null;
+  landingSlug: string | null;
+}
+
+const getInitialRoute = (): RouteState => {
   if (typeof window === 'undefined') {
-    return { page: 'home', careerSlug: null };
+    return { page: 'home', careerSlug: null, landingSlug: null };
   }
+
+  // Check query parameters (e.g. ?landing=palm-residences-vip)
+  try {
+    const searchParams = new URLSearchParams(window.location.search);
+    const queryLp = searchParams.get('landing') || searchParams.get('lp');
+    if (queryLp) {
+      return { page: 'landing', careerSlug: null, landingSlug: queryLp };
+    }
+  } catch (e) {
+    // Ignore query parsing errors
+  }
+
   // Check both window.location.pathname and hash for deployment environments (e.g. Vercel, sub-domains)
   const path = window.location.pathname.toLowerCase();
   const hash = window.location.hash.toLowerCase().replace(/^#/, '');
@@ -29,40 +48,48 @@ const getInitialRoute = (): { page: PageType; careerSlug: string | null } => {
   const effectivePath = hash ? (hash.startsWith('/') ? hash : `/${hash}`) : path;
 
   if (effectivePath.startsWith('/admin') || effectivePath.startsWith('/secret-admin')) {
-    return { page: 'admin', careerSlug: null };
-  }
-  if (effectivePath.startsWith('/careers/real-estate-agent')) {
-    return { page: 'careers', careerSlug: 'real-estate-agent' };
-  }
-  if (effectivePath.startsWith('/careers/social-media-content-creator')) {
-    return { page: 'careers', careerSlug: 'social-media-content-creator' };
-  }
-  if (effectivePath.startsWith('/careers')) {
-    return { page: 'careers', careerSlug: null };
-  }
-  if (effectivePath.startsWith('/about')) {
-    return { page: 'about', careerSlug: null };
-  }
-  if (effectivePath.startsWith('/offplan')) {
-    return { page: 'offplan', careerSlug: null };
-  }
-  if (effectivePath.startsWith('/mortgage')) {
-    return { page: 'mortgage', careerSlug: null };
-  }
-  if (effectivePath.startsWith('/developers')) {
-    return { page: 'developers', careerSlug: null };
-  }
-  if (effectivePath.startsWith('/services')) {
-    return { page: 'services', careerSlug: null };
-  }
-  if (effectivePath.startsWith('/blogs')) {
-    return { page: 'blogs', careerSlug: null };
-  }
-  if (effectivePath.startsWith('/contact')) {
-    return { page: 'contact', careerSlug: null };
+    return { page: 'admin', careerSlug: null, landingSlug: null };
   }
 
-  return { page: 'home', careerSlug: null };
+  // Hidden campaign landing page routes (e.g. /landing/palm-residences-vip or /lp/downtown-sky)
+  if (effectivePath.startsWith('/landing') || effectivePath.startsWith('/lp')) {
+    const clean = effectivePath.replace(/^\/(landing|lp)\/?/, '');
+    const slug = clean.split(/[?#]/)[0] || 'palm-residences-vip';
+    return { page: 'landing', careerSlug: null, landingSlug: slug };
+  }
+
+  if (effectivePath.startsWith('/careers/real-estate-agent')) {
+    return { page: 'careers', careerSlug: 'real-estate-agent', landingSlug: null };
+  }
+  if (effectivePath.startsWith('/careers/social-media-content-creator')) {
+    return { page: 'careers', careerSlug: 'social-media-content-creator', landingSlug: null };
+  }
+  if (effectivePath.startsWith('/careers')) {
+    return { page: 'careers', careerSlug: null, landingSlug: null };
+  }
+  if (effectivePath.startsWith('/about')) {
+    return { page: 'about', careerSlug: null, landingSlug: null };
+  }
+  if (effectivePath.startsWith('/offplan')) {
+    return { page: 'offplan', careerSlug: null, landingSlug: null };
+  }
+  if (effectivePath.startsWith('/mortgage')) {
+    return { page: 'mortgage', careerSlug: null, landingSlug: null };
+  }
+  if (effectivePath.startsWith('/developers')) {
+    return { page: 'developers', careerSlug: null, landingSlug: null };
+  }
+  if (effectivePath.startsWith('/services')) {
+    return { page: 'services', careerSlug: null, landingSlug: null };
+  }
+  if (effectivePath.startsWith('/blogs')) {
+    return { page: 'blogs', careerSlug: null, landingSlug: null };
+  }
+  if (effectivePath.startsWith('/contact')) {
+    return { page: 'contact', careerSlug: null, landingSlug: null };
+  }
+
+  return { page: 'home', careerSlug: null, landingSlug: null };
 };
 
 function MainApp() {
@@ -71,6 +98,7 @@ function MainApp() {
   const initialRoute = useMemo(() => getInitialRoute(), []);
   const [activePage, setActivePage] = useState<PageType>(initialRoute.page);
   const [careerSlug, setCareerSlug] = useState<string | null>(initialRoute.careerSlug);
+  const [landingSlug, setLandingSlug] = useState<string | null>(initialRoute.landingSlug);
   const [currency, setCurrency] = useState<'AED' | 'USD' | 'EUR' | 'GBP'>('AED');
   const [secondaryModalOpen, setSecondaryModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -81,6 +109,7 @@ function MainApp() {
       const route = getInitialRoute();
       setActivePage(route.page);
       setCareerSlug(route.careerSlug);
+      setLandingSlug(route.landingSlug);
     };
 
     handleLocation();
@@ -225,6 +254,18 @@ function MainApp() {
   // Fullscreen isolated view for secure Admin Portal
   if (activePage === 'admin') {
     return <AdminPage onExit={() => handleNavigate('home')} />;
+  }
+
+  // Fullscreen isolated view for hidden campaign landing pages
+  if (activePage === 'landing') {
+    return (
+      <LandingPageView
+        slug={landingSlug || 'palm-residences-vip'}
+        onNavigateHome={() => handleNavigate('home')}
+        isAdmin={false}
+        onOpenAdmin={() => handleNavigate('admin')}
+      />
+    );
   }
 
   return (

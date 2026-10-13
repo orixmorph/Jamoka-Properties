@@ -28,5 +28,17 @@ service cloud.firestore {
     match /planning/{planId} {
       allow read, write: if isAuthenticated();
     }
+
+    // Hidden landing pages: public can read if published, authenticated admin has full access
+    match /landing_pages/{landingPageId} {
+      allow read: if resource == null || resource.data.status == 'published' || isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    // Inquiries submitted via hidden landing pages: public visitors can create (submit lead); authenticated admin can read/manage
+    match /landing_leads/{leadId} {
+      allow create: if true;
+      allow read, update, delete: if isAuthenticated();
+    }
   }
 }

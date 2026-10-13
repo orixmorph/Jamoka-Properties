@@ -61,6 +61,50 @@
         "updatedAt": { "type": "string" }
       },
       "required": ["title", "content"]
+    },
+    "LandingPage": {
+      "title": "LandingPage",
+      "description": "Hidden promotional or investor campaign landing page managed via Admin",
+      "type": "object",
+      "properties": {
+        "slug": { "type": "string" },
+        "title": { "type": "string" },
+        "badge": { "type": "string" },
+        "tagline": { "type": "string" },
+        "heroHeadline": { "type": "string" },
+        "heroSubheadline": { "type": "string" },
+        "heroImage": { "type": "string" },
+        "developer": { "type": "string" },
+        "location": { "type": "string" },
+        "priceAED": { "type": "number" },
+        "priceUSD": { "type": "number" },
+        "paymentPlan": { "type": "string" },
+        "handover": { "type": "string" },
+        "roiEstimate": { "type": "string" },
+        "status": { "type": "string", "enum": ["published", "draft"] },
+        "highlights": { "type": "array", "items": { "type": "string" } },
+        "description": { "type": "string" },
+        "ctaButtonText": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["slug", "title", "heroHeadline", "status"]
+    },
+    "LandingLead": {
+      "title": "LandingLead",
+      "description": "Investor inquiries generated via hidden landing pages",
+      "type": "object",
+      "properties": {
+        "landingPageSlug": { "type": "string" },
+        "landingPageTitle": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "budget": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["landingPageSlug", "name", "phone"]
     }
   },
   "firestore": {
@@ -75,6 +119,14 @@
     "/planning/{planId}": {
       "schema": { "$ref": "PlanningPage" },
       "description": "Confidential internal planning notes and roadmap items"
+    },
+    "/landing_pages/{landingPageId}": {
+      "schema": { "$ref": "LandingPage" },
+      "description": "Hidden campaign and investor landing pages"
+    },
+    "/landing_leads/{leadId}": {
+      "schema": { "$ref": "LandingLead" },
+      "description": "Inquiries received via hidden landing pages"
     }
   }
 }

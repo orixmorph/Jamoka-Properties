@@ -12,6 +12,8 @@ import {
   FirestoreBlogPost,
   FirestoreProject,
   PlanningItem,
+  LandingPageItem,
+  LandingLead,
   getAllAdminBlogs,
   saveBlogPost,
   deleteBlogPost,
@@ -23,6 +25,12 @@ import {
   getAllPlanningPages,
   savePlanningPage,
   deletePlanningPage,
+  getAllLandingPages,
+  saveLandingPage,
+  deleteLandingPage,
+  seedInitialLandingPages,
+  getAllLandingLeads,
+  deleteLandingLead,
 } from '../services/firestoreDataService';
 import { useProjects } from '../context/ProjectsContext';
 import {
@@ -49,6 +57,14 @@ import {
   Clock,
   Layers,
   ChevronRight,
+  Globe,
+  Copy,
+  CheckCheck,
+  MessageSquare,
+  Users,
+  Eye,
+  MapPin,
+  Tag,
 } from 'lucide-react';
 import { JamokaLogo } from '../components/Logos';
 
@@ -56,7 +72,7 @@ interface AdminPageProps {
   onExit: () => void;
 }
 
-type AdminTab = 'blogs' | 'projects' | 'planning' | 'system';
+type AdminTab = 'blogs' | 'projects' | 'landing' | 'planning' | 'system';
 
 const DUBAI_IMAGE_PRESETS = [
   {
@@ -117,6 +133,20 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
   const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
   const [planFeedback, setPlanFeedback] = useState<string | null>(null);
 
+  // Hidden Landing Pages State
+  const [landingPages, setLandingPages] = useState<LandingPageItem[]>([]);
+  const [loadingLanding, setLoadingLanding] = useState(false);
+  const [landingSearch, setLandingSearch] = useState('');
+  const [editingLanding, setEditingLanding] = useState<LandingPageItem | null>(null);
+  const [isLandingModalOpen, setIsLandingModalOpen] = useState(false);
+  const [landingFeedback, setLandingFeedback] = useState<string | null>(null);
+  const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
+
+  // Landing Leads State
+  const [landingLeads, setLandingLeads] = useState<LandingLead[]>([]);
+  const [loadingLeads, setLoadingLeads] = useState(false);
+  const [isLeadsModalOpen, setIsLeadsModalOpen] = useState(false);
+
   // Listen for Firebase Auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -134,6 +164,8 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
     fetchBlogs();
     fetchProjects();
     fetchPlanning();
+    fetchLandingPages();
+    fetchLandingLeads();
   };
 
   const fetchBlogs = async () => {
@@ -169,6 +201,30 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
       console.error('Error fetching planning items:', err);
     } finally {
       setLoadingPlanning(false);
+    }
+  };
+
+  const fetchLandingPages = async () => {
+    setLoadingLanding(true);
+    try {
+      const data = await getAllLandingPages();
+      setLandingPages(data);
+    } catch (err) {
+      console.error('Error fetching landing pages:', err);
+    } finally {
+      setLoadingLanding(false);
+    }
+  };
+
+  const fetchLandingLeads = async () => {
+    setLoadingLeads(true);
+    try {
+      const data = await getAllLandingLeads();
+      setLandingLeads(data);
+    } catch (err) {
+      console.error('Error fetching landing leads:', err);
+    } finally {
+      setLoadingLeads(false);
     }
   };
 
@@ -430,6 +486,126 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
     }
   };
 
+  // ==========================================
+  // HIDDEN LANDING PAGES OPERATIONS
+  // ==========================================
+  const handleOpenNewLanding = () => {
+    const timestamp = Date.now().toString().slice(-4);
+    setEditingLanding({
+      slug: `exclusive-launch-${timestamp}`,
+      title: 'Private Investor Allocation: Dubai Waterfront Residences',
+      badge: 'Private VIP Allocation',
+      tagline: 'Exclusive Off-Market Residences with Guaranteed Capital Appreciation',
+      heroHeadline: 'Direct Waterfront Residences in Prime Dubai Enclave',
+      heroSubheadline: 'Ultra-prime freehold residences starting from AED 8,500,000 ($2.31M). Bespoke 70/30 investor payment terms with 10-Year UAE Golden Visa Included.',
+      heroImage: DUBAI_IMAGE_PRESETS[1].url,
+      developer: 'Emaar Properties & Select Group',
+      location: 'Dubai Marina & Palm Gateway',
+      priceAED: 8500000,
+      priceUSD: 2315000,
+      paymentPlan: '70/30 (2 Years Post-Handover)',
+      handover: 'Q4 2027',
+      roiEstimate: '9.8% Projected Net Yield',
+      status: 'published',
+      highlights: [
+        'Private beach & private yacht mooring access',
+        '100% foreign freehold ownership & 0% tax framework',
+        'Complimentary 10-Year UAE Golden Visa investor advisory',
+        'Direct infinity pool and state-of-the-art wellness facility'
+      ],
+      description: 'An exceptional limited allocation of off-market residences situated in one of Dubai’s most desirable waterfront enclaves. Offered on a confidential basis to registered high-net-worth investors and family offices.',
+      ctaButtonText: 'Request VIP Allocation Dossier',
+      whatsAppNumber: '+971 4 000 0000',
+    });
+    setIsLandingModalOpen(true);
+  };
+
+  const handleSaveLanding = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingLanding || !editingLanding.title.trim() || !editingLanding.slug.trim()) return;
+
+    try {
+      setLandingFeedback('Saving landing page to Firestore...');
+      await saveLandingPage(editingLanding);
+      await fetchLandingPages();
+      setIsLandingModalOpen(false);
+      setEditingLanding(null);
+      setLandingFeedback('Landing page saved successfully.');
+      setTimeout(() => setLandingFeedback(null), 3000);
+    } catch (err: any) {
+      console.error('Save landing page error:', err);
+      setLandingFeedback(`Failed to save: ${err.message || 'Error'}`);
+    }
+  };
+
+  const handleDeleteLanding = async (id?: string) => {
+    if (!id) return;
+    if (!window.confirm('Delete this hidden landing page? Existing campaign links will stop working.')) return;
+    try {
+      setLandingFeedback('Deleting landing page...');
+      await deleteLandingPage(id);
+      await fetchLandingPages();
+      setLandingFeedback('Landing page removed.');
+      setTimeout(() => setLandingFeedback(null), 3000);
+    } catch (err: any) {
+      console.error('Delete landing page error:', err);
+      setLandingFeedback(`Failed to delete: ${err.message}`);
+    }
+  };
+
+  const handleToggleLandingStatus = async (page: LandingPageItem) => {
+    const updatedStatus = page.status === 'published' ? 'draft' : 'published';
+    try {
+      await saveLandingPage({ ...page, status: updatedStatus });
+      await fetchLandingPages();
+      setLandingFeedback(`Landing page status switched to ${updatedStatus}.`);
+      setTimeout(() => setLandingFeedback(null), 2500);
+    } catch (err: any) {
+      console.error('Status toggle error:', err);
+    }
+  };
+
+  const handleSeedLandingPages = async () => {
+    if (!window.confirm('Seed curated Dubai campaign landing page templates to Firestore?')) return;
+    try {
+      setLandingFeedback('Seeding landing pages...');
+      const count = await seedInitialLandingPages();
+      await fetchLandingPages();
+      setLandingFeedback(`Successfully seeded ${count} landing pages to Firestore.`);
+      setTimeout(() => setLandingFeedback(null), 3500);
+    } catch (err: any) {
+      console.error('Seed landing pages error:', err);
+      setLandingFeedback(`Seed failed: ${err.message}`);
+    }
+  };
+
+  const handleCopySecretLink = (slug: string) => {
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    const fullUrl = `${origin}/landing/${slug}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(fullUrl);
+      setCopiedSlug(slug);
+      setLandingFeedback(`Secret link copied to clipboard: ${fullUrl}`);
+      setTimeout(() => {
+        setCopiedSlug(null);
+        setLandingFeedback(null);
+      }, 3500);
+    }
+  };
+
+  const handleDeleteLead = async (leadId?: string) => {
+    if (!leadId) return;
+    if (!window.confirm('Delete this investor inquiry lead?')) return;
+    try {
+      await deleteLandingLead(leadId);
+      await fetchLandingLeads();
+      setLandingFeedback('Lead inquiry removed.');
+      setTimeout(() => setLandingFeedback(null), 2500);
+    } catch (err: any) {
+      console.error('Delete lead error:', err);
+    }
+  };
+
   // 1. Loading Authentication State
   if (authLoading) {
     return (
@@ -646,6 +822,15 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
       : true
   );
 
+  const filteredLanding = landingPages.filter((p) =>
+    landingSearch
+      ? p.title.toLowerCase().includes(landingSearch.toLowerCase()) ||
+        p.slug.toLowerCase().includes(landingSearch.toLowerCase()) ||
+        p.developer.toLowerCase().includes(landingSearch.toLowerCase()) ||
+        p.badge.toLowerCase().includes(landingSearch.toLowerCase())
+      : true
+  );
+
   // 3. Authenticated State: Full Luxury Admin Management Console
   return (
     <div className="min-h-screen bg-[#07090E] text-white flex flex-col font-jakarta selection:bg-[#CFA55A]/30 selection:text-white">
@@ -719,6 +904,18 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
           >
             <Building2 className="w-4 h-4" />
             <span>Projects & Listings ({projects.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('landing')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all shrink-0 cursor-pointer ${
+              activeTab === 'landing'
+                ? 'bg-[#CFA55A] text-black shadow-lg shadow-[#CFA55A]/20'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <Globe className="w-4 h-4" />
+            <span>Hidden Landing Pages ({landingPages.length})</span>
           </button>
 
           <button
@@ -1104,7 +1301,314 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
         )}
 
         {/* ========================================================
-            TAB 3: CONFIDENTIAL PLANNING PAGES
+            TAB: HIDDEN CAMPAIGN LANDING PAGES
+        ======================================================== */}
+        {activeTab === 'landing' && (
+          <div className="space-y-6">
+            {/* Top Overview Banner */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-[#0D111C] border border-white/5 p-5 rounded-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#CFA55A]/5 rounded-full blur-3xl pointer-events-none" />
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <h2 className="text-xl font-bold font-caughe text-white flex items-center gap-2">
+                    <Globe className="w-5 h-5 text-[#CFA55A]" />
+                    <span>Hidden Campaign Landing Pages</span>
+                  </h2>
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    Strictly Hidden from Public Menus
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 max-w-2xl leading-relaxed">
+                  Dedicated high-converting investor landing pages kept completely hidden from main website navigation and sitemaps. Create unlimited landing pages for private family offices, VIP allocations, or ad campaigns.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 flex-wrap relative z-10">
+                <button
+                  onClick={() => setIsLeadsModalOpen(true)}
+                  className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Users className="w-3.5 h-3.5 text-[#CFA55A]" />
+                  <span>View Leads ({landingLeads.length})</span>
+                </button>
+
+                <button
+                  onClick={handleSeedLandingPages}
+                  className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
+                  title="Import default curated templates into Firestore"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-[#CFA55A]" />
+                  <span>Seed Dubai Templates</span>
+                </button>
+
+                <button
+                  onClick={handleOpenNewLanding}
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#CFA55A] to-[#dfb86e] text-black text-xs font-bold tracking-wider uppercase flex items-center gap-1.5 shadow-lg shadow-[#CFA55A]/20 hover:opacity-95 transition-all cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>New Landing Page</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Metrics Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-4 rounded-xl bg-[#0D111C] border border-white/5">
+                <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold mb-1">
+                  Total Landers
+                </span>
+                <span className="text-xl font-bold text-white font-mono">{landingPages.length}</span>
+                <span className="text-[10px] text-slate-500 block mt-0.5">Campaigns</span>
+              </div>
+
+              <div className="p-4 rounded-xl bg-[#0D111C] border border-white/5">
+                <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold mb-1">
+                  Published & Active
+                </span>
+                <span className="text-xl font-bold text-emerald-400 font-mono">
+                  {landingPages.filter((p) => p.status === 'published').length}
+                </span>
+                <span className="text-[10px] text-emerald-500/80 block mt-0.5">Accessible via Link</span>
+              </div>
+
+              <div className="p-4 rounded-xl bg-[#0D111C] border border-white/5">
+                <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold mb-1">
+                  Draft / Private
+                </span>
+                <span className="text-xl font-bold text-amber-400 font-mono">
+                  {landingPages.filter((p) => p.status === 'draft').length}
+                </span>
+                <span className="text-[10px] text-amber-500/80 block mt-0.5">Admin Preview Only</span>
+              </div>
+
+              <div
+                onClick={() => setIsLeadsModalOpen(true)}
+                className="p-4 rounded-xl bg-[#0D111C] border border-white/5 hover:border-[#CFA55A]/30 cursor-pointer transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] uppercase tracking-wider text-[#CFA55A] block font-semibold mb-1">
+                    Leads Captured
+                  </span>
+                  <ChevronRight className="w-3.5 h-3.5 text-[#CFA55A]" />
+                </div>
+                <span className="text-xl font-bold text-[#CFA55A] font-mono">{landingLeads.length}</span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">Click to view inquiries</span>
+              </div>
+            </div>
+
+            {landingFeedback && (
+              <div className="p-3 rounded-xl bg-[#CFA55A]/10 border border-[#CFA55A]/30 text-[#CFA55A] text-xs flex items-center gap-2 animate-fadeIn">
+                <Sparkles className="w-4 h-4" />
+                <span>{landingFeedback}</span>
+              </div>
+            )}
+
+            {/* Search & Refresh Bar */}
+            <div className="flex items-center gap-3">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search landing pages by title, slug, developer, or badge..."
+                  value={landingSearch}
+                  onChange={(e) => setLandingSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 rounded-xl bg-[#0D111C] border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                />
+              </div>
+              <button
+                onClick={fetchLandingPages}
+                className="px-3 py-2 rounded-xl bg-[#0D111C] border border-white/10 hover:border-white/20 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                title="Refresh landing pages"
+              >
+                <RefreshCw className={`w-4 h-4 ${loadingLanding ? 'animate-spin' : ''}`} />
+              </button>
+            </div>
+
+            {/* Landing Pages List */}
+            {loadingLanding ? (
+              <div className="text-center py-16 text-slate-400 text-xs">
+                <div className="w-8 h-8 border-2 border-[#CFA55A] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                Loading landing pages from Firestore...
+              </div>
+            ) : filteredLanding.length === 0 ? (
+              <div className="text-center py-16 bg-[#0D111C] border border-white/5 rounded-2xl space-y-3">
+                <Globe className="w-10 h-10 text-slate-600 mx-auto" />
+                <p className="text-sm text-slate-300 font-semibold">No landing pages found</p>
+                <p className="text-xs text-slate-500 max-w-md mx-auto">
+                  Create a new hidden landing page for ad campaigns, or click below to seed curated templates.
+                </p>
+                <div className="pt-2 flex items-center justify-center gap-3">
+                  <button
+                    onClick={handleSeedLandingPages}
+                    className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-slate-300"
+                  >
+                    Seed Templates
+                  </button>
+                  <button
+                    onClick={handleOpenNewLanding}
+                    className="px-4 py-2 rounded-xl bg-[#CFA55A] text-black text-xs font-bold"
+                  >
+                    + Create First Landing Page
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {filteredLanding.map((page) => (
+                  <div
+                    key={page.id || page.slug}
+                    className="bg-[#0D111C] border border-white/5 hover:border-[#CFA55A]/30 rounded-2xl overflow-hidden transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* Image Preview & Header */}
+                      <div className="relative h-44 w-full overflow-hidden bg-black/40">
+                        <img
+                          src={page.heroImage}
+                          alt={page.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0D111C] via-black/40 to-transparent" />
+
+                        <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                          <span className="px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/10 text-[10px] font-bold tracking-wider uppercase text-[#CFA55A]">
+                            {page.badge || 'Private Allocation'}
+                          </span>
+
+                          <button
+                            onClick={() => handleToggleLandingStatus(page)}
+                            className={`px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider border cursor-pointer transition-colors ${
+                              page.status === 'published'
+                                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/30'
+                                : 'bg-amber-500/20 text-amber-300 border-amber-500/30 hover:bg-amber-500/30'
+                            }`}
+                            title="Click to toggle status"
+                          >
+                            {page.status === 'published' ? '● Published' : '○ Draft'}
+                          </button>
+                        </div>
+
+                        <div className="absolute bottom-3 left-3 right-3 text-xs text-slate-300 flex items-center justify-between">
+                          <span className="flex items-center gap-1 text-[11px] text-slate-300">
+                            <MapPin className="w-3 h-3 text-[#CFA55A]" />
+                            {page.location}
+                          </span>
+                          <span className="text-[11px] text-slate-400 font-medium">
+                            {page.developer}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Content Body */}
+                      <div className="p-5 space-y-3">
+                        <h3 className="text-base font-bold font-caughe text-white line-clamp-1">
+                          {page.title}
+                        </h3>
+
+                        <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                          {page.heroSubheadline || page.description}
+                        </p>
+
+                        {/* Secret Link Bar with 1-Click Copy */}
+                        <div className="p-2.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 overflow-hidden text-xs">
+                            <Lock className="w-3.5 h-3.5 text-[#CFA55A] shrink-0" />
+                            <span className="font-mono text-[11px] text-slate-300 truncate">
+                              /landing/{page.slug}
+                            </span>
+                          </div>
+
+                          <button
+                            onClick={() => handleCopySecretLink(page.slug)}
+                            className="px-2.5 py-1 rounded-md bg-[#CFA55A]/10 hover:bg-[#CFA55A]/20 border border-[#CFA55A]/30 text-[10px] font-bold text-[#CFA55A] flex items-center gap-1 transition-colors cursor-pointer shrink-0"
+                            title="Copy secret link for ads & private clients"
+                          >
+                            {copiedSlug === page.slug ? (
+                              <>
+                                <CheckCheck className="w-3 h-3 text-emerald-400" />
+                                <span className="text-emerald-400">Copied!</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3 h-3" />
+                                <span>Copy Link</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+
+                        {/* Key Indicators */}
+                        <div className="grid grid-cols-3 gap-2 pt-1 text-center">
+                          <div className="p-2 rounded-lg bg-black/40 border border-white/5">
+                            <span className="text-[9px] uppercase tracking-wider text-slate-500 block">
+                              From
+                            </span>
+                            <span className="text-xs font-bold text-white font-mono">
+                              AED {(page.priceAED / 1000000).toFixed(1)}M
+                            </span>
+                          </div>
+
+                          <div className="p-2 rounded-lg bg-black/40 border border-white/5">
+                            <span className="text-[9px] uppercase tracking-wider text-slate-500 block">
+                              Handover
+                            </span>
+                            <span className="text-xs font-bold text-slate-200">
+                              {page.handover || '2027'}
+                            </span>
+                          </div>
+
+                          <div className="p-2 rounded-lg bg-black/40 border border-white/5">
+                            <span className="text-[9px] uppercase tracking-wider text-slate-500 block">
+                              Target ROI
+                            </span>
+                            <span className="text-xs font-bold text-[#CFA55A]">
+                              {page.roiEstimate || '9.5%'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom Action Footer */}
+                    <div className="p-4 border-t border-white/5 flex items-center justify-between gap-2">
+                      <a
+                        href={`/landing/${page.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <Eye className="w-3.5 h-3.5 text-[#CFA55A]" />
+                        <span>Preview Page</span>
+                      </a>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => {
+                            setEditingLanding(page);
+                            setIsLandingModalOpen(true);
+                          }}
+                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-[#CFA55A]/20 border border-white/10 hover:border-[#CFA55A]/40 text-xs font-semibold text-slate-200 hover:text-white transition-colors cursor-pointer"
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          onClick={() => handleDeleteLanding(page.id)}
+                          className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 transition-colors cursor-pointer"
+                          title="Delete landing page"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ========================================================
+            TAB 4: CONFIDENTIAL PLANNING PAGES
         ======================================================== */}
         {activeTab === 'planning' && (
           <div className="space-y-6">
@@ -1844,6 +2348,507 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================
+          MODAL: EDIT / CREATE LANDING PAGE
+      ======================================================== */}
+      {isLandingModalOpen && editingLanding && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#0C101A] border border-[#CFA55A]/30 rounded-2xl w-full max-w-3xl max-h-[92vh] overflow-y-auto p-6 space-y-5 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-bold font-caughe text-white">
+                    {editingLanding.id ? 'Edit Landing Page' : 'Create New Hidden Landing Page'}
+                  </h3>
+                  <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#CFA55A]/20 text-[#CFA55A] border border-[#CFA55A]/30">
+                    Hidden Campaign
+                  </span>
+                </div>
+                <span className="text-xs text-slate-400">
+                  Custom conversion-optimized lander for private client allocation or targeted ads
+                </span>
+              </div>
+              <button
+                onClick={() => setIsLandingModalOpen(false)}
+                className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveLanding} className="space-y-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Internal Campaign Title *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editingLanding.title}
+                    onChange={(e) => setEditingLanding({ ...editingLanding, title: e.target.value })}
+                    placeholder="e.g. Palm Jumeirah Ultra-Luxury Waterfront Mansions"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Secret URL Slug * (e.g. /landing/palm-vip)
+                  </label>
+                  <div className="flex items-center">
+                    <span className="px-2.5 py-2.5 rounded-l-xl bg-black/80 border border-r-0 border-white/10 text-slate-500 font-mono text-[11px]">
+                      /landing/
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      value={editingLanding.slug}
+                      onChange={(e) =>
+                        setEditingLanding({
+                          ...editingLanding,
+                          slug: e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, '-'),
+                        })
+                      }
+                      placeholder="palm-residences-vip"
+                      className="w-full px-3 py-2.5 rounded-r-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs font-mono outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Publication Status
+                  </label>
+                  <select
+                    value={editingLanding.status}
+                    onChange={(e) =>
+                      setEditingLanding({
+                        ...editingLanding,
+                        status: e.target.value as 'published' | 'draft',
+                      })
+                    }
+                    className="w-full px-3 py-2.5 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                  >
+                    <option value="published">Published (Live via Secret Link)</option>
+                    <option value="draft">Draft (Restricted to Admin Preview)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Badge Callout
+                  </label>
+                  <input
+                    type="text"
+                    value={editingLanding.badge}
+                    onChange={(e) => setEditingLanding({ ...editingLanding, badge: e.target.value })}
+                    placeholder="e.g. Private VIP Allocation"
+                    className="w-full px-3 py-2.5 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Target Audience / Campaign
+                  </label>
+                  <input
+                    type="text"
+                    value={editingLanding.targetAudience || ''}
+                    onChange={(e) =>
+                      setEditingLanding({ ...editingLanding, targetAudience: e.target.value })
+                    }
+                    placeholder="e.g. UK Family Offices & Meta Ads"
+                    className="w-full px-3 py-2.5 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                  Hero Headline *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editingLanding.heroHeadline}
+                  onChange={(e) =>
+                    setEditingLanding({ ...editingLanding, heroHeadline: e.target.value })
+                  }
+                  placeholder="e.g. Direct Waterfront Mansions on Palm Jumeirah"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs font-semibold outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                  Hero Subheadline
+                </label>
+                <textarea
+                  rows={2}
+                  value={editingLanding.heroSubheadline}
+                  onChange={(e) =>
+                    setEditingLanding({ ...editingLanding, heroSubheadline: e.target.value })
+                  }
+                  placeholder="e.g. Ultra-prime residences starting from AED 18.5M ($5.03M). 60/40 Post-Handover Investor Framework with 10-Year UAE Golden Visa Included."
+                  className="w-full px-3.5 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none resize-none"
+                />
+              </div>
+
+              {/* Developer & Financials */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Developer *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editingLanding.developer}
+                    onChange={(e) =>
+                      setEditingLanding({ ...editingLanding, developer: e.target.value })
+                    }
+                    placeholder="e.g. Nakheel / Emaar"
+                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Location Enclave *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editingLanding.location}
+                    onChange={(e) =>
+                      setEditingLanding({ ...editingLanding, location: e.target.value })
+                    }
+                    placeholder="e.g. Palm Jumeirah, Dubai"
+                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Starting AED *
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    value={editingLanding.priceAED}
+                    onChange={(e) => {
+                      const aed = Number(e.target.value);
+                      setEditingLanding({
+                        ...editingLanding,
+                        priceAED: aed,
+                        priceUSD: Math.round(aed / 3.6725),
+                      });
+                    }}
+                    placeholder="18500000"
+                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Starting USD
+                  </label>
+                  <input
+                    type="number"
+                    value={editingLanding.priceUSD}
+                    onChange={(e) =>
+                      setEditingLanding({ ...editingLanding, priceUSD: Number(e.target.value) })
+                    }
+                    placeholder="5035000"
+                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Payment Plan
+                  </label>
+                  <input
+                    type="text"
+                    value={editingLanding.paymentPlan}
+                    onChange={(e) =>
+                      setEditingLanding({ ...editingLanding, paymentPlan: e.target.value })
+                    }
+                    placeholder="e.g. 60/40 Post-Handover (3 Yrs)"
+                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Handover Schedule
+                  </label>
+                  <input
+                    type="text"
+                    value={editingLanding.handover}
+                    onChange={(e) =>
+                      setEditingLanding({ ...editingLanding, handover: e.target.value })
+                    }
+                    placeholder="e.g. Q4 2027"
+                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Projected Net ROI
+                  </label>
+                  <input
+                    type="text"
+                    value={editingLanding.roiEstimate}
+                    onChange={(e) =>
+                      setEditingLanding({ ...editingLanding, roiEstimate: e.target.value })
+                    }
+                    placeholder="e.g. 10.4% Net Annual Yield"
+                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Cover Image */}
+              <div>
+                <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                  Hero Image URL
+                </label>
+                <input
+                  type="url"
+                  value={editingLanding.heroImage}
+                  onChange={(e) =>
+                    setEditingLanding({ ...editingLanding, heroImage: e.target.value })
+                  }
+                  placeholder="https://images.unsplash.com/..."
+                  className="w-full px-3.5 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none font-mono"
+                />
+
+                <div className="mt-2 flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[10px] text-slate-400">Quick Presets:</span>
+                  {DUBAI_IMAGE_PRESETS.map((preset) => (
+                    <button
+                      key={preset.name}
+                      type="button"
+                      onClick={() =>
+                        setEditingLanding({ ...editingLanding, heroImage: preset.url })
+                      }
+                      className="px-2 py-0.5 rounded bg-white/5 hover:bg-[#CFA55A]/20 border border-white/10 hover:border-[#CFA55A]/40 text-[10px] text-slate-300 transition-colors"
+                    >
+                      {preset.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Highlights List */}
+              <div>
+                <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                  Key Investment Highlights (One per line)
+                </label>
+                <textarea
+                  rows={3}
+                  value={editingLanding.highlights.join('\n')}
+                  onChange={(e) =>
+                    setEditingLanding({
+                      ...editingLanding,
+                      highlights: e.target.value.split('\n').filter((h) => h.trim().length > 0),
+                    })
+                  }
+                  placeholder="Private 40-meter beachfront access&#10;10-Year UAE Golden Visa Included&#10;0% Tax Haven Ownership"
+                  className="w-full px-3.5 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                />
+              </div>
+
+              {/* Full Description */}
+              <div>
+                <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                  Detailed Property Narrative & Investor Overview
+                </label>
+                <textarea
+                  rows={4}
+                  value={editingLanding.description}
+                  onChange={(e) =>
+                    setEditingLanding({ ...editingLanding, description: e.target.value })
+                  }
+                  placeholder="In-depth narrative describing the architecture, private amenities, and lifestyle privileges..."
+                  className="w-full px-3.5 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none leading-relaxed"
+                />
+              </div>
+
+              {/* CTA & Contact */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    Primary CTA Button Text
+                  </label>
+                  <input
+                    type="text"
+                    value={editingLanding.ctaButtonText}
+                    onChange={(e) =>
+                      setEditingLanding({ ...editingLanding, ctaButtonText: e.target.value })
+                    }
+                    placeholder="e.g. Request VIP Allocation Dossier"
+                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                    WhatsApp Desk Number
+                  </label>
+                  <input
+                    type="text"
+                    value={editingLanding.whatsAppNumber || ''}
+                    onChange={(e) =>
+                      setEditingLanding({ ...editingLanding, whatsAppNumber: e.target.value })
+                    }
+                    placeholder="+971 4 000 0000"
+                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsLandingModalOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#CFA55A] to-[#dfb86e] text-black font-bold tracking-wider uppercase shadow-lg shadow-[#CFA55A]/20 hover:opacity-95 transition-all cursor-pointer"
+                >
+                  Save to Live Firestore
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================
+          MODAL: VIEW LANDING PAGE INQUIRIES & LEADS
+      ======================================================== */}
+      {isLeadsModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#0C101A] border border-[#CFA55A]/30 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-bold font-caughe text-white flex items-center gap-2">
+                    <Users className="w-5 h-5 text-[#CFA55A]" />
+                    <span>Landing Page Investor Leads</span>
+                  </h3>
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">
+                    {landingLeads.length} Captured Inquiries
+                  </span>
+                </div>
+                <span className="text-xs text-slate-400">
+                  Investor contacts submitted through your hidden campaign landing pages
+                </span>
+              </div>
+              <button
+                onClick={() => setIsLeadsModalOpen(false)}
+                className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {loadingLeads ? (
+              <div className="text-center py-12 text-slate-400 text-xs">
+                <div className="w-8 h-8 border-2 border-[#CFA55A] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                Loading inquiries from Firestore...
+              </div>
+            ) : landingLeads.length === 0 ? (
+              <div className="text-center py-12 bg-black/40 border border-white/5 rounded-xl space-y-2">
+                <MessageSquare className="w-8 h-8 text-slate-600 mx-auto" />
+                <p className="text-sm font-semibold text-slate-300">No leads captured yet</p>
+                <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                  When visitors submit the VIP allocation form on your hidden landing pages, their contact records will populate here in real-time.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {landingLeads.map((lead) => (
+                  <div
+                    key={lead.id}
+                    className="p-4 rounded-xl bg-black/50 border border-white/10 hover:border-[#CFA55A]/30 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-white">{lead.name}</span>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-[#CFA55A]/10 text-[#CFA55A] border border-[#CFA55A]/20">
+                          {lead.budget || 'High Net Worth'}
+                        </span>
+                        <span className="text-[10px] text-slate-400 uppercase font-mono">
+                          {lead.preferredLanguage}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-300">
+                        <span className="font-mono text-emerald-400 font-semibold">{lead.phone}</span>
+                        {lead.email && <span className="text-slate-400">{lead.email}</span>}
+                        <span className="text-slate-400">
+                          Source:{' '}
+                          <code className="text-[#CFA55A] font-mono text-[11px]">
+                            /landing/{lead.landingPageSlug}
+                          </code>
+                        </span>
+                      </div>
+
+                      {lead.notes && (
+                        <p className="text-[11px] text-slate-400 bg-white/[0.02] p-2 rounded-lg mt-1 italic">
+                          "{lead.notes}"
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <a
+                        href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5" />
+                        <span>Chat WhatsApp</span>
+                      </a>
+
+                      <button
+                        onClick={() => handleDeleteLead(lead.id)}
+                        className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 transition-colors cursor-pointer"
+                        title="Delete lead"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="pt-4 border-t border-white/10 flex justify-end">
+              <button
+                onClick={() => setIsLeadsModalOpen(false)}
+                className="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold transition-colors cursor-pointer"
+              >
+                Close Drawer
+              </button>
+            </div>
           </div>
         </div>
       )}
