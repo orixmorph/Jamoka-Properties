@@ -488,7 +488,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
           </div>
 
           {/* Mode Switcher */}
-          <div className="flex rounded-lg bg-black/40 p-1 mb-6 border border-white/10 text-xs">
+          <div className="flex rounded-lg bg-black/40 p-1 mb-4 border border-white/10 text-xs">
             <button
               type="button"
               onClick={() => {
@@ -497,7 +497,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
               }}
               className={`flex-1 py-1.5 rounded-md font-medium transition-all ${
                 authMode === 'signin'
-                  ? 'bg-[#CFA55A] text-black font-semibold'
+                  ? 'bg-[#CFA55A] text-black font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -511,12 +511,26 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
               }}
               className={`flex-1 py-1.5 rounded-md font-medium transition-all ${
                 authMode === 'signup'
-                  ? 'bg-[#CFA55A] text-black font-semibold'
+                  ? 'bg-[#CFA55A] text-black font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Create Account
+              Create Account (Set Password)
             </button>
+          </div>
+
+          <div className="mb-5 p-3 rounded-xl bg-white/[0.03] border border-white/10 text-[11px] text-slate-300 space-y-1">
+            <div className="flex items-center gap-1.5 text-[#CFA55A] font-semibold uppercase tracking-wider text-[10px]">
+              <Sparkles className="w-3 h-3" />
+              <span>Admin Credentials Notice</span>
+            </div>
+            <p className="text-slate-400 leading-relaxed">
+              There is no default or hardcoded password. If this is your first time:
+            </p>
+            <ul className="list-disc list-inside text-slate-400 space-y-0.5 pl-0.5">
+              <li>Click <strong className="text-white">Create Account</strong> above, enter your email and set your own secure password.</li>
+              <li>Or click <strong className="text-white">Sign in with Google</strong> below for 1-click access.</li>
+            </ul>
           </div>
 
           {authError && (
