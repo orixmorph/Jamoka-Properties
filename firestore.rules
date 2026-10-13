@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Connection test document
+    match /test/connection {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Public blogs: anyone can read published articles; authenticated admin has full access
+    match /blogs/{blogId} {
+      allow read: if resource == null || resource.data.status == 'published' || isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    // Property listings: anyone can read published items; authenticated admin has full access
+    match /projects/{projectId} {
+      allow read: if resource == null || resource.data.status == 'published' || !('status' in resource.data) || isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    // Internal planning pages & notes: strictly private, authenticated admin only
+    match /planning/{planId} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

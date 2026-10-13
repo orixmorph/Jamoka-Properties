@@ -11,6 +11,7 @@ import { ServicesPage } from './pages/ServicesPage';
 import { BlogsPage } from './pages/BlogsPage';
 import { CareersPage } from './pages/CareersPage';
 import { ContactPage } from './pages/ContactPage';
+import { AdminPage } from './pages/AdminPage';
 import { Footer } from './components/Footer';
 import { SecondaryMarketPopup } from './components/SecondaryMarketPopup';
 import { SecondaryMarketModal } from './components/SecondaryMarketModal';
@@ -27,6 +28,9 @@ const getInitialRoute = (): { page: PageType; careerSlug: string | null } => {
 
   const effectivePath = hash ? (hash.startsWith('/') ? hash : `/${hash}`) : path;
 
+  if (effectivePath.startsWith('/admin') || effectivePath.startsWith('/secret-admin')) {
+    return { page: 'admin', careerSlug: null };
+  }
   if (effectivePath.startsWith('/careers/real-estate-agent')) {
     return { page: 'careers', careerSlug: 'real-estate-agent' };
   }
@@ -204,6 +208,24 @@ function MainApp() {
     }
     trackMetaPixel('PageView');
   };
+
+  // Keyboard shortcut (Ctrl+Shift+A or Cmd+Shift+A) for quick executive admin access
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        handleNavigate(activePage === 'admin' ? 'home' : 'admin');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activePage]);
+
+  // Fullscreen isolated view for secure Admin Portal
+  if (activePage === 'admin') {
+    return <AdminPage onExit={() => handleNavigate('home')} />;
+  }
 
   return (
     <div

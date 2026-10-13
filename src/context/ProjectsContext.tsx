@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { OffPlanProject, OFF_PLAN_PROJECTS } from '../data/realEstateData';
+import { getPublishedProjects } from '../services/firestoreDataService';
 import { fetchListings } from '../services/listingsApi';
 
 interface ProjectsContextType {
@@ -20,13 +21,21 @@ export const ProjectsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setIsLoading(true);
     setError(null);
     try {
+      // First try Firestore dynamic published listings
+      const firestoreProjects = await getPublishedProjects();
+      if (firestoreProjects && firestoreProjects.length > 0) {
+        setProjects(firestoreProjects);
+        return;
+      }
+
+      // Fallback to listings API or static catalog
       const result = await fetchListings();
       setProjects(result.projects);
       if (result.error) {
         setError(result.error);
       }
     } catch (err: unknown) {
-      console.warn('Listings loaded from catalog fallback:', err);
+      console.warn('Projects fallback to default catalog:', err);
       setProjects(OFF_PLAN_PROJECTS);
       setError(err instanceof Error ? err.message : 'Error loading project listings');
     } finally {

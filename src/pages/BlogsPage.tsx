@@ -1,20 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { BLOGS_DATA, BlogPost } from '../data/realEstateData';
+import { getPublishedBlogs } from '../services/firestoreDataService';
 import { BookOpen, Calendar, Clock, ArrowRight, X, Sparkles, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export const BlogsPage: React.FC = () => {
   const { t, isRTL } = useLanguage();
+  const [blogs, setBlogs] = useState<BlogPost[]>(BLOGS_DATA);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeArticle, setActiveArticle] = useState<BlogPost | null>(null);
 
-  const categories = ['All', 'Market Guide', 'Financing Guide', 'Market Trends'];
+  useEffect(() => {
+    let mounted = true;
+    getPublishedBlogs()
+      .then((data) => {
+        if (mounted && data && data.length > 0) {
+          setBlogs(data);
+        }
+      })
+      .catch((err) => {
+        console.warn('Failed to load published blogs from Firestore:', err);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const categories = [
+    'All',
+    'Market Trends',
+    'Investment Analysis',
+    'Lifestyle & Living',
+    'Regulatory & Visas',
+  ];
 
   const filteredBlogs =
     selectedCategory === 'All'
-      ? BLOGS_DATA
-      : BLOGS_DATA.filter((b) => b.category === selectedCategory);
+      ? blogs
+      : blogs.filter((b) => b.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] pb-24">

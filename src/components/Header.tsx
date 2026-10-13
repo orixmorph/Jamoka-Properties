@@ -3,7 +3,7 @@ import { JamokaLogo, SqftDxbLogo } from './Logos';
 import { Menu, X, PhoneCall, ExternalLink, ChevronDown, ShieldCheck, Globe, Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
-export type PageType = 'home' | 'about' | 'offplan' | 'mortgage' | 'developers' | 'services' | 'blogs' | 'careers' | 'contact';
+export type PageType = 'home' | 'about' | 'offplan' | 'mortgage' | 'developers' | 'services' | 'blogs' | 'careers' | 'contact' | 'admin';
 
 interface HeaderProps {
   activePage: PageType;

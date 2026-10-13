@@ -1,0 +1,80 @@
+{
+  "entities": {
+    "BlogPost": {
+      "title": "BlogPost",
+      "description": "Article or blog post managed via Admin CMS",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "date": { "type": "string" },
+        "readTime": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "image": { "type": "string" },
+        "content": { "type": "string" },
+        "status": { "type": "string", "enum": ["published", "draft"] },
+        "author": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "category", "status", "content"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Off-plan property project listing managed via Admin CMS",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "developer": { "type": "string" },
+        "enclave": { "type": "string" },
+        "priceAED": { "type": "number" },
+        "priceUSD": { "type": "number" },
+        "paymentPlan": { "type": "string" },
+        "handover": { "type": "string" },
+        "bedrooms": { "type": "string" },
+        "type": { "type": "string" },
+        "badge": { "type": "string" },
+        "image": { "type": "string" },
+        "coverImage": { "type": "string" },
+        "heroImage": { "type": "string" },
+        "area": { "type": "string" },
+        "tagline": { "type": "string" },
+        "description": { "type": "string" },
+        "roi": { "type": "string" },
+        "status": { "type": "string", "enum": ["published", "draft", "archived"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "developer", "priceAED", "status"]
+    },
+    "PlanningPage": {
+      "title": "PlanningPage",
+      "description": "Confidential internal planning notes, strategy and launch schedules",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "content": { "type": "string" },
+        "targetDate": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "content"]
+    }
+  },
+  "firestore": {
+    "/blogs/{blogId}": {
+      "schema": { "$ref": "BlogPost" },
+      "description": "Public and draft blog posts"
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "Project" },
+      "description": "Public and draft property development listings"
+    },
+    "/planning/{planId}": {
+      "schema": { "$ref": "PlanningPage" },
+      "description": "Confidential internal planning notes and roadmap items"
+    }
+  }
+}
