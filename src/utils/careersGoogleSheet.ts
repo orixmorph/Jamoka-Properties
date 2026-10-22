@@ -152,3 +152,66 @@ ${payload.coverNote || 'N/A'}`,
     message: 'Application submitted successfully',
   };
 }
+
+export interface LeadSheetPayload {
+  name: string;
+  email: string;
+  phone: string;
+  project?: string;
+  preferredUnit?: string;
+  timeline?: string;
+  notes?: string;
+  source?: string;
+}
+
+/**
+ * Sends a real estate / landing page lead directly to the connected Google Sheets
+ * via the configured Google Apps Script Web App.
+ */
+export async function submitLeadToGoogleSheet(payload: LeadSheetPayload): Promise<boolean> {
+  const scriptUrl = GOOGLE_APPS_SCRIPT_WEBHOOK_URL.trim();
+  if (!scriptUrl) return false;
+
+  const { cleanNumber, waLink } = formatWhatsAppLink(
+    payload.phone,
+    payload.name,
+    payload.project || 'Mercedes-Benz Places'
+  );
+
+  try {
+    const googlePayload = {
+      action: 'lead_inquiry',
+      type: 'landing_page_lead',
+      timestamp: new Date().toISOString(),
+      fullName: payload.name,
+      name: payload.name,
+      email: payload.email,
+      phone: payload.phone,
+      phoneClean: cleanNumber,
+      whatsAppLink: waLink,
+      project: payload.project || 'Mercedes-Benz Places | Binghatti City',
+      position: payload.project || 'Mercedes-Benz Places | Binghatti City',
+      department: payload.preferredUnit || '1-Bedroom Residence (From AED 1.25M)',
+      preferredUnit: payload.preferredUnit || '1-Bedroom Residence (From AED 1.25M)',
+      timeline: payload.timeline || 'Immediate (Within 14 Days)',
+      location: 'Meydan, Dubai',
+      notes: payload.notes || '',
+      source: payload.source || 'Mercedes-Benz Places Campaign Registration Form',
+      residencyStatus: '100% Freehold / 10-Year Golden Visa Candidate',
+    };
+
+    await fetch(scriptUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+      },
+      body: JSON.stringify(googlePayload),
+      mode: 'no-cors',
+    });
+    return true;
+  } catch (err) {
+    console.warn('Google Sheets lead submission error:', err);
+    return false;
+  }
+}
+

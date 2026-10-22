@@ -26,6 +26,7 @@ import {
   getLandingPageBySlug,
   submitLandingLead,
 } from '../services/firestoreDataService';
+import { MercedesLandingPage } from './MercedesLandingPage';
 
 interface LandingPageViewProps {
   slug: string;
@@ -40,6 +41,21 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
   isAdmin = false,
   onOpenAdmin,
 }) => {
+  const isMercedes =
+    slug.toLowerCase() === 'mercedes-benz-places' ||
+    slug.toLowerCase() === 'vision-iconic' ||
+    slug.toLowerCase().includes('mercedes');
+
+  if (isMercedes) {
+    return (
+      <MercedesLandingPage
+        onNavigateHome={onNavigateHome}
+        isAdmin={isAdmin}
+        onOpenAdmin={onOpenAdmin}
+      />
+    );
+  }
+
   const [pageData, setPageData] = useState<LandingPageItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);

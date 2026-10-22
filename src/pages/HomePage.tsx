@@ -24,6 +24,7 @@ interface HomePageProps {
   onFilterChange: (key: string, value: string) => void;
   onResetFilters: () => void;
   onNavigateContact: () => void;
+  onNavigateBlog?: (slug?: string) => void;
   cloudVideoUrl?: string;
   cloudLogoUrl?: string;
 }
@@ -38,6 +39,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   onFilterChange,
   onResetFilters,
   onNavigateContact,
+  onNavigateBlog,
   cloudVideoUrl,
   cloudLogoUrl,
 }) => {
@@ -70,8 +72,11 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* 6. Meet The Team Section */}
       <TeamSection onNavigateContact={onNavigateContact} />
 
-      {/* 7. Dubai Real Estate Insights / Blogs */}
-      <BlogsSection />
+      {/* 7. Dubai Real Estate Insights / Blogs (Baserow Live Source) */}
+      <BlogsSection
+        onOpenBlog={onNavigateBlog}
+        onNavigateAllBlogs={() => onNavigateBlog?.('')}
+      />
 
       {/* 8. Official Contact / Inquiry Desk (Friendly tone, Bayswater Tower 8th & 11th floor address) */}
       <InquiryDesk />

@@ -12,9 +12,9 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // Public blogs: anyone can read published articles; authenticated admin has full access
+    // Public blogs: anyone can read published or scheduled articles; authenticated admin has full access
     match /blogs/{blogId} {
-      allow read: if resource == null || resource.data.status == 'published' || isAuthenticated();
+      allow read: if resource == null || resource.data.status == 'published' || resource.data.status == 'scheduled' || isAuthenticated();
       allow write: if isAuthenticated();
     }
 

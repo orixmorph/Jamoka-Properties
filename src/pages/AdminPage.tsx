@@ -18,6 +18,9 @@ import {
   saveBlogPost,
   deleteBlogPost,
   seedInitialBlogs,
+  approveAndScheduleBlog,
+  approveAndPublishBlog,
+  updateBlogPipelineStatus,
   getAllAdminProjects,
   saveProject,
   deleteProject,
@@ -65,14 +68,25 @@ import {
   Eye,
   MapPin,
   Tag,
+  Wand2,
+  Send,
+  CheckCircle2,
+  CalendarCheck,
+  Sliders,
+  ListChecks,
+  Settings,
+  Key,
+  LayoutDashboard,
 } from 'lucide-react';
 import { JamokaLogo } from '../components/Logos';
+import { DashboardOverview } from '../components/admin/DashboardOverview';
+import { AdvancedBlogCreator } from '../components/admin/AdvancedBlogCreator';
 
 interface AdminPageProps {
   onExit: () => void;
 }
 
-type AdminTab = 'blogs' | 'projects' | 'landing' | 'planning' | 'system';
+type AdminTab = 'dashboard' | 'blogs' | 'projects' | 'landing' | 'planning' | 'system';
 
 const DUBAI_IMAGE_PRESETS = [
   {
@@ -108,7 +122,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
   const [authSuccessMsg, setAuthSuccessMsg] = useState<string | null>(null);
 
   // Active Tab
-  const [activeTab, setActiveTab] = useState<AdminTab>('blogs');
+  const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
 
   // Blogs State
   const [blogs, setBlogs] = useState<FirestoreBlogPost[]>([]);
@@ -117,6 +131,22 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
   const [editingBlog, setEditingBlog] = useState<FirestoreBlogPost | null>(null);
   const [isBlogModalOpen, setIsBlogModalOpen] = useState(false);
   const [blogFeedback, setBlogFeedback] = useState<string | null>(null);
+
+  // Editorial Pipeline & AI Workflow State
+  const [blogPipelineFilter, setBlogPipelineFilter] = useState<'all' | 'ready_for_review' | 'scheduled' | 'published' | 'draft'>('all');
+  const [isAiGeneratorOpen, setIsAiGeneratorOpen] = useState(false);
+  const [aiTopicInput, setAiTopicInput] = useState('');
+  const [aiPointsInput, setAiPointsInput] = useState('');
+  const [aiKeywordsInput, setAiKeywordsInput] = useState('');
+  const [isGeneratingAi, setIsGeneratingAi] = useState(false);
+  const [suggestedTopics, setSuggestedTopics] = useState<Array<{ title: string; category: string; pointsToCover: string[]; keywords: string[] }>>([]);
+  const [loadingTopics, setLoadingTopics] = useState(false);
+
+  // Staging & Review Inspector Modal State
+  const [reviewingBlog, setReviewingBlog] = useState<FirestoreBlogPost | null>(null);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [scheduledDateTime, setScheduledDateTime] = useState('');
+  const [isApproving, setIsApproving] = useState(false);
 
   // Projects State
   const [projects, setProjects] = useState<FirestoreProject[]>([]);
@@ -353,6 +383,179 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
     } catch (err: any) {
       console.error('Seed blogs error:', err);
       setBlogFeedback(`Seed failed: ${err.message}`);
+    }
+  };
+
+  // -----------------------------------------------------------------
+  // Editorial Pipeline & AI Blog Generator Operations
+  // -----------------------------------------------------------------
+  const handleOpenAiGenerator = async () => {
+    setIsAiGeneratorOpen(true);
+    if (suggestedTopics.length === 0) {
+      setLoadingTopics(true);
+      try {
+        const res = await fetch('/api/ai/suggest-topics');
+        const data = await res.json();
+        if (data.success && Array.isArray(data.topics)) {
+          setSuggestedTopics(data.topics);
+        }
+      } catch (err) {
+        console.warn('Could not load topics:', err);
+      } finally {
+        setLoadingTopics(false);
+      }
+    }
+  };
+
+  const handleSelectSuggestedTopic = (topic: {
+    title: string;
+    pointsToCover: string[];
+    keywords: string[];
+  }) => {
+    setAiTopicInput(topic.title);
+    setAiPointsInput(topic.pointsToCover.join('\n'));
+    setAiKeywordsInput(topic.keywords.join(', '));
+  };
+
+  const handleGenerateBlogWithAi = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!aiTopicInput.trim()) return;
+
+    setIsGeneratingAi(true);
+    setBlogFeedback('Researching Dubai real estate market & writing article draft...');
+
+    try {
+      const res = await fetch('/api/ai/generate-blog', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: aiTopicInput.trim(),
+          pointsToCover: aiPointsInput
+            .split('\n')
+            .map((p) => p.trim())
+            .filter(Boolean),
+          keywords: aiKeywordsInput
+            .split(',')
+            .map((k) => k.trim())
+            .filter(Boolean),
+        }),
+      });
+
+      const data = await res.json();
+      if (!data.success || !data.blog) {
+        throw new Error(data.error || 'Failed to generate blog');
+      }
+
+      // Save generated post into Firestore with 'ready_for_review' status
+      const generatedPost: FirestoreBlogPost = {
+        ...data.blog,
+        status: 'ready_for_review',
+        date: new Date().toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        }),
+        author: 'Jamoka Editorial Advisory',
+      };
+
+      const docId = await saveBlogPost(generatedPost);
+      await fetchBlogs();
+
+      setIsAiGeneratorOpen(false);
+      setAiTopicInput('');
+      setAiPointsInput('');
+      setAiKeywordsInput('');
+
+      // Open review modal immediately for inspection and approval
+      setReviewingBlog({ ...generatedPost, id: docId });
+
+      // Default scheduled date to tomorrow at 10:00 AM
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(10, 0, 0, 0);
+      setScheduledDateTime(tomorrow.toISOString().slice(0, 16));
+
+      setIsReviewModalOpen(true);
+      setBlogPipelineFilter('ready_for_review');
+
+      setBlogFeedback('AI research draft prepared! Ready for your review & approval.');
+      setTimeout(() => setBlogFeedback(null), 4000);
+    } catch (err: any) {
+      console.error('AI Blog generation error:', err);
+      setBlogFeedback(`Generation error: ${err.message || 'Please try again'}`);
+    } finally {
+      setIsGeneratingAi(false);
+    }
+  };
+
+  const handleOpenReviewBlog = (blog: FirestoreBlogPost) => {
+    setReviewingBlog(blog);
+    if (blog.scheduledDate) {
+      try {
+        const d = new Date(blog.scheduledDate);
+        setScheduledDateTime(d.toISOString().slice(0, 16));
+      } catch {
+        setScheduledDateTime('');
+      }
+    } else {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(10, 0, 0, 0);
+      setScheduledDateTime(tomorrow.toISOString().slice(0, 16));
+    }
+    setIsReviewModalOpen(true);
+  };
+
+  const handleApproveAndSchedule = async () => {
+    if (!reviewingBlog || !reviewingBlog.id) return;
+    setIsApproving(true);
+    try {
+      setBlogFeedback('Scheduling publication...');
+      const targetDate = scheduledDateTime ? new Date(scheduledDateTime).toISOString() : new Date().toISOString();
+      await approveAndScheduleBlog(reviewingBlog.id, targetDate);
+      await fetchBlogs();
+      setIsReviewModalOpen(false);
+      setReviewingBlog(null);
+      setBlogFeedback('Article approved and scheduled successfully!');
+      setTimeout(() => setBlogFeedback(null), 3000);
+    } catch (err: any) {
+      console.error('Schedule error:', err);
+      setBlogFeedback(`Failed to schedule: ${err.message}`);
+    } finally {
+      setIsApproving(false);
+    }
+  };
+
+  const handleApproveAndPublishNow = async () => {
+    if (!reviewingBlog || !reviewingBlog.id) return;
+    setIsApproving(true);
+    try {
+      setBlogFeedback('Publishing live...');
+      await approveAndPublishBlog(reviewingBlog.id);
+      await fetchBlogs();
+      setIsReviewModalOpen(false);
+      setReviewingBlog(null);
+      setBlogFeedback('Article is now LIVE on the public website!');
+      setTimeout(() => setBlogFeedback(null), 3500);
+    } catch (err: any) {
+      console.error('Publish error:', err);
+      setBlogFeedback(`Failed to publish: ${err.message}`);
+    } finally {
+      setIsApproving(false);
+    }
+  };
+
+  const handleSendBackToDraft = async () => {
+    if (!reviewingBlog || !reviewingBlog.id) return;
+    try {
+      await updateBlogPipelineStatus(reviewingBlog.id, 'draft');
+      await fetchBlogs();
+      setIsReviewModalOpen(false);
+      setReviewingBlog(null);
+      setBlogFeedback('Article moved to Drafts.');
+      setTimeout(() => setBlogFeedback(null), 2500);
+    } catch (err: any) {
+      console.error('Send back to draft error:', err);
     }
   };
 
@@ -809,10 +1012,30 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
     );
   }
 
+  // Editorial Pipeline Counts
+  const readyBlogs = blogs.filter((b) => b.status === 'ready_for_review');
+  const scheduledBlogs = blogs.filter((b) => b.status === 'scheduled');
+  const publishedBlogs = blogs.filter((b) => b.status === 'published');
+  const draftBlogs = blogs.filter((b) => b.status === 'draft');
+
   // Filtered views
-  const filteredBlogs = blogs.filter((b) =>
-    blogSearch ? b.title.toLowerCase().includes(blogSearch.toLowerCase()) || b.category.toLowerCase().includes(blogSearch.toLowerCase()) : true
-  );
+  const filteredBlogs = blogs.filter((b) => {
+    // Pipeline stage filter
+    if (blogPipelineFilter === 'ready_for_review' && b.status !== 'ready_for_review') return false;
+    if (blogPipelineFilter === 'scheduled' && b.status !== 'scheduled') return false;
+    if (blogPipelineFilter === 'published' && b.status !== 'published') return false;
+    if (blogPipelineFilter === 'draft' && b.status !== 'draft') return false;
+
+    // Search query filter
+    if (blogSearch) {
+      const q = blogSearch.toLowerCase();
+      const matchTitle = b.title.toLowerCase().includes(q);
+      const matchCat = b.category.toLowerCase().includes(q);
+      const matchKeywords = b.targetKeywords?.some((k) => k.toLowerCase().includes(q));
+      if (!matchTitle && !matchCat && !matchKeywords) return false;
+    }
+    return true;
+  });
 
   const filteredProjects = projects.filter((p) =>
     projectSearch
@@ -883,6 +1106,18 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
         {/* Tab Navigation */}
         <div className="max-w-7xl mx-auto flex items-center gap-2 mt-4 pt-2 border-t border-white/5 overflow-x-auto">
           <button
+            onClick={() => setActiveTab('dashboard')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all shrink-0 cursor-pointer ${
+              activeTab === 'dashboard'
+                ? 'bg-[#CFA55A] text-black shadow-lg shadow-[#CFA55A]/20'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <LayoutDashboard className="w-4 h-4" />
+            <span>Dashboard & Insights</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('blogs')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold tracking-wider uppercase transition-all shrink-0 cursor-pointer ${
               activeTab === 'blogs'
@@ -891,7 +1126,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
             }`}
           >
             <BookOpen className="w-4 h-4" />
-            <span>Blogs CMS ({blogs.length})</span>
+            <span>Articles Studio ({blogs.length})</span>
           </button>
 
           <button
@@ -947,49 +1182,263 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
         {/* ========================================================
-            TAB 1: BLOGS CMS
+            TAB 0: DASHBOARD & INSIGHTS
+        ======================================================== */}
+        {activeTab === 'dashboard' && (
+          <DashboardOverview
+            blogs={blogs}
+            onOpenCreateBlog={handleOpenNewBlog}
+            onOpenAiGenerator={handleOpenAiGenerator}
+            onViewBlog={(blog) => {
+              setEditingBlog(blog);
+              setIsBlogModalOpen(true);
+            }}
+            onPublishNow={async (blog) => {
+              if (blog.id) {
+                await approveAndPublishBlog(blog.id);
+                await fetchBlogs();
+                setBlogFeedback('Article is now published live!');
+                setTimeout(() => setBlogFeedback(null), 3000);
+              }
+            }}
+            onNavigateToTab={(tab) => setActiveTab(tab)}
+          />
+        )}
+        {/* ========================================================
+            TAB 1: BLOGS CMS & EDITORIAL PIPELINE
         ======================================================== */}
         {activeTab === 'blogs' && (
           <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#0D111C] border border-white/5 p-5 rounded-2xl">
+            {/* Header & Main Actions */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-[#0D111C] border border-white/5 p-5 rounded-2xl">
               <div>
                 <h2 className="text-xl font-bold font-caughe text-white flex items-center gap-2">
-                  <span>Market Intelligence & Articles</span>
-                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#CFA55A]/10 text-[#CFA55A] border border-[#CFA55A]/30">
-                    Live Sync with /blogs
+                  <span>AI SEO Editorial Studio & Workflow Pipeline</span>
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#CFA55A]/10 text-[#CFA55A] border border-[#CFA55A]/30 font-sans">
+                    Human-in-the-Loop Control
                   </span>
                 </h2>
-                <p className="text-xs text-slate-400 mt-1">
-                  Published articles appear instantly on the public website. Drafts stay strictly hidden.
+                <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
+                  Generate in-depth SEO articles from just a title and bullet points. Articles queue in{' '}
+                  <strong className="text-amber-300">Ready for Review</strong> where you inspect market data, set the publishing date manually, and give final approval.
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center gap-2.5 flex-wrap">
                 <button
-                  onClick={handleSeedBlogs}
-                  className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
-                  title="Import the 5 curated sample blogs into Firestore"
+                  onClick={handleOpenAiGenerator}
+                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#CFA55A] via-[#dfb86e] to-[#CFA55A] text-black text-xs font-bold tracking-wider uppercase flex items-center gap-2 shadow-lg shadow-[#CFA55A]/20 hover:opacity-95 transition-all cursor-pointer"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-[#CFA55A]" />
-                  <span>Seed Initial Sample Blogs</span>
+                  <Wand2 className="w-4 h-4 text-black" />
+                  <span>AI Generator (Title + Points)</span>
                 </button>
 
                 <button
                   onClick={handleOpenNewBlog}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#CFA55A] to-[#dfb86e] text-black text-xs font-bold tracking-wider uppercase flex items-center gap-1.5 shadow-lg shadow-[#CFA55A]/20 hover:opacity-95 transition-all cursor-pointer"
+                  className="px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  <Plus className="w-4 h-4" />
-                  <span>New Article</span>
+                  <Plus className="w-4 h-4 text-[#CFA55A]" />
+                  <span>Write Manually</span>
                 </button>
+
+                <button
+                  onClick={handleSeedBlogs}
+                  className="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-slate-400 hover:text-slate-200 flex items-center gap-1.5 transition-colors cursor-pointer"
+                  title="Import the 5 curated sample blogs into Firestore"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-[#CFA55A]" />
+                  <span>Seed Samples</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Executive Blog Studio Control Bar */}
+            <div className="bg-[#0A0D15] border border-[#CFA55A]/30 rounded-3xl p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-5 shadow-xl">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#CFA55A]/20 to-black border border-[#CFA55A]/40 flex items-center justify-center shrink-0 text-[#CFA55A] shadow-lg shadow-[#CFA55A]/10">
+                  <Sparkles className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <h3 className="text-base font-bold text-white font-caughe">
+                      Jamoka Advanced Article Studio
+                    </h3>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold font-mono flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Direct Firestore CMS
+                    </span>
+                    <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-[#CFA55A]/15 text-[#CFA55A] border border-[#CFA55A]/30 font-semibold">
+                      {blogs.filter((b) => b.status === 'published').length} Live • {blogs.filter((b) => b.status === 'scheduled').length} Scheduled Auto-Posts
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed font-light">
+                    Create and publish in-depth luxury real estate articles with rich Markdown/HTML, multiple images, interactive tags, SEO meta, and automated date-scheduled posting.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 shrink-0 flex-wrap">
+                <button
+                  onClick={handleOpenNewBlog}
+                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#CFA55A] to-[#ECC86A] text-slate-900 text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-lg shadow-[#CFA55A]/20 hover:opacity-95 transition-all cursor-pointer"
+                >
+                  <Plus className="w-4 h-4 text-slate-900" />
+                  <span>Open Blog Studio</span>
+                </button>
+                <button
+                  onClick={fetchBlogs}
+                  className="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                  title="Refresh articles"
+                >
+                  <RefreshCw className={`w-4 h-4 ${loadingBlogs ? 'animate-spin' : ''}`} />
+                </button>
+              </div>
+            </div>
+
+            {/* Workflow Pipeline Step Tracker */}
+            <div className="bg-[#0C101A] border border-white/10 rounded-2xl p-4">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                  <Sliders className="w-3.5 h-3.5 text-[#CFA55A]" />
+                  Automated Content Pipeline
+                </span>
+                <span className="text-[10px] text-slate-500">
+                  Step 3 & 4 provide complete manual schedule and approval control
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                <div className="p-3 rounded-xl bg-white/5 border border-white/5 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-white">1. Title & Points</span>
+                    <span className="w-5 h-5 rounded-full bg-white/10 text-slate-300 text-[10px] flex items-center justify-center font-bold">1</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-snug">
+                    Enter only the topic and bullet points. No spreadsheet overload needed.
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-white/5 border border-white/5 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-white">2. Market Intelligence</span>
+                    <span className="w-5 h-5 rounded-full bg-white/10 text-slate-300 text-[10px] flex items-center justify-center font-bold">2</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-snug">
+                    Gemini with Google Search Grounding pulls fresh DLD benchmarks & ROI data.
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-amber-300 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                      3. Ready for Review
+                    </span>
+                    <span className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] flex items-center justify-center font-bold">3</span>
+                  </div>
+                  <p className="text-[11px] text-amber-200/80 leading-snug">
+                    Drafts wait in staging. Nothing publishes without your manual sign-off.
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-emerald-300">4. Schedule & Approve</span>
+                    <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] flex items-center justify-center font-bold">4</span>
+                  </div>
+                  <p className="text-[11px] text-emerald-200/80 leading-snug">
+                    Pick release date & time manually, or hit publish immediately to go live.
+                  </p>
+                </div>
               </div>
             </div>
 
             {blogFeedback && (
               <div className="p-3 rounded-xl bg-[#CFA55A]/10 border border-[#CFA55A]/30 text-[#CFA55A] text-xs flex items-center gap-2 animate-fadeIn">
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-4 h-4 shrink-0" />
                 <span>{blogFeedback}</span>
               </div>
             )}
+
+            {/* Pipeline Stage Filter Tabs */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1">
+              <button
+                onClick={() => setBlogPipelineFilter('all')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                  blogPipelineFilter === 'all'
+                    ? 'bg-white text-black shadow-md'
+                    : 'bg-[#0D111C] border border-white/10 text-slate-400 hover:text-white'
+                }`}
+              >
+                <span>All Articles</span>
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/10 text-inherit font-mono">
+                  {blogs.length}
+                </span>
+              </button>
+
+              <button
+                onClick={() => setBlogPipelineFilter('ready_for_review')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
+                  blogPipelineFilter === 'ready_for_review'
+                    ? 'bg-amber-500 border-amber-400 text-black shadow-md shadow-amber-500/20'
+                    : readyBlogs.length > 0
+                    ? 'bg-amber-500/10 border-amber-500/40 text-amber-300 hover:bg-amber-500/20'
+                    : 'bg-[#0D111C] border-white/10 text-slate-400 hover:text-white'
+                }`}
+              >
+                <span className="flex items-center gap-1.5">
+                  {readyBlogs.length > 0 && <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />}
+                  Ready for Review
+                </span>
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 text-inherit font-mono">
+                  {readyBlogs.length}
+                </span>
+              </button>
+
+              <button
+                onClick={() => setBlogPipelineFilter('scheduled')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
+                  blogPipelineFilter === 'scheduled'
+                    ? 'bg-sky-500 border-sky-400 text-black shadow-md shadow-sky-500/20'
+                    : scheduledBlogs.length > 0
+                    ? 'bg-sky-500/10 border-sky-500/40 text-sky-300 hover:bg-sky-500/20'
+                    : 'bg-[#0D111C] border-white/10 text-slate-400 hover:text-white'
+                }`}
+              >
+                <span>Scheduled</span>
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 text-inherit font-mono">
+                  {scheduledBlogs.length}
+                </span>
+              </button>
+
+              <button
+                onClick={() => setBlogPipelineFilter('published')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
+                  blogPipelineFilter === 'published'
+                    ? 'bg-emerald-500 border-emerald-400 text-black shadow-md shadow-emerald-500/20'
+                    : 'bg-[#0D111C] border-white/10 text-slate-400 hover:text-white'
+                }`}
+              >
+                <span>Published (Live)</span>
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 text-inherit font-mono">
+                  {publishedBlogs.length}
+                </span>
+              </button>
+
+              <button
+                onClick={() => setBlogPipelineFilter('draft')}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
+                  blogPipelineFilter === 'draft'
+                    ? 'bg-slate-300 border-white text-black shadow-md'
+                    : 'bg-[#0D111C] border-white/10 text-slate-400 hover:text-white'
+                }`}
+              >
+                <span>Drafts</span>
+                <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-black/20 text-inherit font-mono">
+                  {draftBlogs.length}
+                </span>
+              </button>
+            </div>
 
             {/* Filter & Search Bar */}
             <div className="flex items-center gap-3">
@@ -997,7 +1446,7 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
                 <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
-                  placeholder="Search articles by title or category..."
+                  placeholder="Search articles by title, category, or target keyword..."
                   value={blogSearch}
                   onChange={(e) => setBlogSearch(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 rounded-xl bg-[#0D111C] border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
@@ -1006,117 +1455,216 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
               <button
                 onClick={fetchBlogs}
                 className="px-3 py-2 rounded-xl bg-[#0D111C] border border-white/10 hover:border-white/20 text-slate-400 hover:text-white transition-colors cursor-pointer"
-                title="Refresh list"
+                title="Refresh list from Firestore"
               >
                 <RefreshCw className={`w-4 h-4 ${loadingBlogs ? 'animate-spin' : ''}`} />
               </button>
             </div>
 
-            {/* Articles Table / Cards */}
+            {/* Articles Grid */}
             {loadingBlogs ? (
               <div className="text-center py-16 text-slate-400 text-xs">
                 <div className="w-8 h-8 border-2 border-[#CFA55A] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-                Loading blogs from Firestore...
+                Loading editorial pipeline from Firestore...
               </div>
             ) : filteredBlogs.length === 0 ? (
-              <div className="text-center py-16 bg-[#0D111C] border border-white/5 rounded-2xl">
+              <div className="text-center py-16 bg-[#0D111C] border border-white/5 rounded-2xl p-6">
                 <BookOpen className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-                <p className="text-sm text-slate-300 font-semibold">No articles found</p>
-                <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
-                  Click "New Article" to write your first post or "Seed Initial Sample Blogs" to import the 5 curated Dubai articles.
+                <p className="text-sm text-slate-300 font-semibold">
+                  {blogPipelineFilter === 'ready_for_review'
+                    ? 'No articles currently awaiting review'
+                    : blogPipelineFilter === 'scheduled'
+                    ? 'No scheduled articles in the queue'
+                    : 'No articles found in this stage'}
                 </p>
+                <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+                  Click "AI Generator (Title + Points)" to research and queue a fresh Dubai real estate article ready for your review!
+                </p>
+                <button
+                  onClick={handleOpenAiGenerator}
+                  className="mt-4 px-4 py-2 rounded-xl bg-[#CFA55A] text-black text-xs font-bold tracking-wider uppercase inline-flex items-center gap-1.5 hover:opacity-95 cursor-pointer"
+                >
+                  <Wand2 className="w-3.5 h-3.5 text-black" />
+                  <span>Generate AI Draft</span>
+                </button>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {filteredBlogs.map((blog) => (
-                  <div
-                    key={blog.id}
-                    className="bg-[#0D111C] border border-white/10 hover:border-[#CFA55A]/40 rounded-2xl overflow-hidden flex flex-col justify-between transition-all group"
-                  >
-                    <div>
-                      {/* Image Thumbnail */}
-                      <div className="relative h-44 w-full overflow-hidden bg-black/50">
-                        <img
-                          src={blog.image}
-                          alt={blog.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                          <span
-                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase border ${
-                              blog.status === 'published'
-                                ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
-                                : 'bg-amber-500/20 border-amber-500/40 text-amber-300'
-                            }`}
+                {filteredBlogs.map((blog) => {
+                  const isReady = blog.status === 'ready_for_review';
+                  const isScheduled = blog.status === 'scheduled';
+                  const isPublished = blog.status === 'published';
+
+                  return (
+                    <div
+                      key={blog.id}
+                      className={`bg-[#0D111C] rounded-2xl overflow-hidden flex flex-col justify-between transition-all group border ${
+                        isReady
+                          ? 'border-amber-500/40 shadow-lg shadow-amber-500/5 hover:border-amber-400'
+                          : isScheduled
+                          ? 'border-sky-500/40 shadow-lg shadow-sky-500/5 hover:border-sky-400'
+                          : isPublished
+                          ? 'border-emerald-500/30 hover:border-[#CFA55A]/50'
+                          : 'border-white/10 hover:border-white/20'
+                      }`}
+                    >
+                      <div>
+                        {/* Status Notice Banner for Pipeline Stages */}
+                        {isReady && (
+                          <div className="bg-gradient-to-r from-amber-500/20 via-amber-500/10 to-transparent border-b border-amber-500/30 px-3.5 py-1.5 flex items-center justify-between text-[11px] text-amber-300">
+                            <span className="flex items-center gap-1.5 font-bold">
+                              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                              Awaiting Your Approval & Schedule
+                            </span>
+                            <span className="text-[10px] text-amber-400/80">Staged</span>
+                          </div>
+                        )}
+
+                        {isScheduled && (
+                          <div className="bg-gradient-to-r from-sky-500/20 via-sky-500/10 to-transparent border-b border-sky-500/30 px-3.5 py-1.5 flex items-center justify-between text-[11px] text-sky-300">
+                            <span className="flex items-center gap-1.5 font-bold">
+                              <CalendarCheck className="w-3.5 h-3.5" />
+                              Scheduled for Release
+                            </span>
+                            <span className="text-[10px] text-sky-400/80 font-mono">
+                              {blog.scheduledDate ? new Date(blog.scheduledDate).toLocaleDateString() : 'Pending'}
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Image Thumbnail */}
+                        <div className="relative h-44 w-full overflow-hidden bg-black/50">
+                          <img
+                            src={blog.image}
+                            alt={blog.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute top-3 left-3 flex items-center gap-1.5">
+                            <span
+                              className={`px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase border ${
+                                isPublished
+                                  ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                                  : isReady
+                                  ? 'bg-amber-500/20 border-amber-500/40 text-amber-300'
+                                  : isScheduled
+                                  ? 'bg-sky-500/20 border-sky-500/40 text-sky-300'
+                                  : 'bg-white/10 border-white/20 text-slate-300'
+                              }`}
+                            >
+                              {blog.status.replace(/_/g, ' ')}
+                            </span>
+                          </div>
+                          <div className="absolute top-3 right-3">
+                            <span className="px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-slate-300">
+                              {blog.category}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="p-4 space-y-2">
+                          <div className="flex items-center gap-3 text-[11px] text-slate-400">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3 text-[#CFA55A]" />
+                              {blog.date}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3 text-[#CFA55A]" />
+                              {blog.readTime}
+                            </span>
+                          </div>
+
+                          <h3 className="text-base font-bold text-white line-clamp-2 leading-snug">
+                            {blog.title}
+                          </h3>
+
+                          <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                            {blog.excerpt}
+                          </p>
+
+                          {/* Keywords Pill tags if available */}
+                          {blog.targetKeywords && blog.targetKeywords.length > 0 && (
+                            <div className="pt-1 flex items-center gap-1 flex-wrap">
+                              {blog.targetKeywords.slice(0, 3).map((kw, i) => (
+                                <span
+                                  key={i}
+                                  className="text-[9px] px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-slate-400"
+                                >
+                                  #{kw}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Actions Bar */}
+                      <div className="p-4 pt-2 border-t border-white/5 flex items-center justify-between gap-2">
+                        {isReady ? (
+                          <button
+                            onClick={() => handleOpenReviewBlog(blog)}
+                            className="flex-1 text-[11px] px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-1.5 shadow-md shadow-amber-500/20 cursor-pointer"
                           >
-                            {blog.status}
-                          </span>
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>Inspect & Approve</span>
+                          </button>
+                        ) : isScheduled ? (
+                          <button
+                            onClick={() => handleOpenReviewBlog(blog)}
+                            className="flex-1 text-[11px] px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/40 text-sky-200 font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                          >
+                            <CalendarCheck className="w-3.5 h-3.5 text-sky-400" />
+                            <span>Reschedule</span>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleToggleBlogStatus(blog)}
+                            className={`text-[11px] px-2.5 py-1 rounded-lg border font-semibold transition-colors cursor-pointer ${
+                              isPublished
+                                ? 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20'
+                                : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20'
+                            }`}
+                            title="Toggle status"
+                          >
+                            {isPublished ? 'Switch to Draft' : 'Publish to Live'}
+                          </button>
+                        )}
+
+                        <div className="flex items-center gap-1.5">
+                          {/* Quick Review Inspector icon */}
+                          <button
+                            onClick={() => handleOpenReviewBlog(blog)}
+                            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[#CFA55A] hover:text-[#dfb86e] transition-colors cursor-pointer"
+                            title="Inspect SEO & approval settings"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+
+                          {/* Edit content */}
+                          <button
+                            onClick={() => {
+                              setEditingBlog(blog);
+                              setIsBlogModalOpen(true);
+                            }}
+                            className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                            title="Edit article"
+                          >
+                            <FileText className="w-4 h-4" />
+                          </button>
+
+                          {/* Delete */}
+                          <button
+                            onClick={() => handleDeleteBlog(blog.id)}
+                            className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 transition-colors cursor-pointer"
+                            title="Delete article"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
-                        <div className="absolute top-3 right-3">
-                          <span className="px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-semibold text-slate-300">
-                            {blog.category}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-4 space-y-2">
-                        <div className="flex items-center gap-3 text-[11px] text-slate-400">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-3 h-3 text-[#CFA55A]" />
-                            {blog.date}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3 h-3 text-[#CFA55A]" />
-                            {blog.readTime}
-                          </span>
-                        </div>
-                        <h3 className="text-base font-bold text-white line-clamp-2 leading-snug">
-                          {blog.title}
-                        </h3>
-                        <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                          {blog.excerpt}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Actions Bar */}
-                    <div className="p-4 pt-2 border-t border-white/5 flex items-center justify-between gap-2">
-                      <button
-                        onClick={() => handleToggleBlogStatus(blog)}
-                        className={`text-[11px] px-2.5 py-1 rounded-lg border font-semibold transition-colors cursor-pointer ${
-                          blog.status === 'published'
-                            ? 'bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20'
-                            : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20'
-                        }`}
-                        title="Toggle status"
-                      >
-                        {blog.status === 'published' ? 'Switch to Draft' : 'Publish to Live'}
-                      </button>
-
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={() => {
-                            setEditingBlog(blog);
-                            setIsBlogModalOpen(true);
-                          }}
-                          className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer"
-                          title="Edit article"
-                        >
-                          <FileText className="w-4 h-4 text-[#CFA55A]" />
-                        </button>
-
-                        <button
-                          onClick={() => handleDeleteBlog(blog.id)}
-                          className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 transition-colors cursor-pointer"
-                          title="Delete article"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -1801,176 +2349,393 @@ export const AdminPage: React.FC<AdminPageProps> = ({ onExit }) => {
       </main>
 
       {/* ========================================================
-          MODAL: EDIT BLOG POST
+          ADVANCED BLOG CREATOR STUDIO MODAL
       ======================================================== */}
-      {isBlogModalOpen && editingBlog && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-[#0C101A] border border-[#CFA55A]/30 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 space-y-5 shadow-2xl relative">
+      <AdvancedBlogCreator
+        isOpen={isBlogModalOpen}
+        initialBlog={editingBlog}
+        onClose={() => {
+          setIsBlogModalOpen(false);
+          setEditingBlog(null);
+        }}
+        onSave={async (blog) => {
+          await saveBlogPost(blog);
+          await fetchBlogs();
+          setBlogFeedback(
+            blog.status === 'scheduled'
+              ? 'Article scheduled for automated posting!'
+              : 'Article saved and published live!'
+          );
+          setTimeout(() => setBlogFeedback(null), 3500);
+        }}
+      />
+
+      {/* ========================================================
+          MODAL: AI BLOG GENERATOR (TITLE & POINTS)
+      ======================================================== */}
+      {isAiGeneratorOpen && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#0C101A] border border-[#CFA55A]/40 rounded-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto p-6 space-y-5 shadow-2xl relative">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <div>
-                <h3 className="text-lg font-bold font-caughe text-white">
-                  {editingBlog.id ? 'Edit Article' : 'Write New Article'}
-                </h3>
-                <span className="text-xs text-slate-400">
-                  Manage content and live publication status
-                </span>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#CFA55A]/20 to-black border border-[#CFA55A]/40 flex items-center justify-center text-[#CFA55A]">
+                  <Wand2 className="w-5 h-5 text-[#CFA55A]" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold font-caughe text-white flex items-center gap-2">
+                    <span>AI SEO Blog Generator</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 uppercase tracking-wider font-sans font-normal">
+                      Google Search Grounded
+                    </span>
+                  </h3>
+                  <span className="text-xs text-slate-400">
+                    Enter only a title & points. Gemini researches live Dubai data and puts draft into <strong>Ready for Review</strong>.
+                  </span>
+                </div>
               </div>
               <button
-                onClick={() => setIsBlogModalOpen(false)}
+                onClick={() => setIsAiGeneratorOpen(false)}
+                disabled={isGeneratingAi}
                 className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleSaveBlog} className="space-y-4 text-xs">
+            {/* Quick Suggested Topics (1-Click Fill) */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-300 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#CFA55A]" />
+                  1-Click Trending Dubai Real Estate Topics
+                </span>
+                <span className="text-[10px] text-slate-500">Click any topic to prefill</span>
+              </div>
+              {loadingTopics ? (
+                <div className="text-[11px] text-slate-500 py-2">Loading trending topics...</div>
+              ) : (
+                <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto p-1 bg-black/40 rounded-xl border border-white/5">
+                  {suggestedTopics.map((top, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleSelectSuggestedTopic(top)}
+                      className="text-left px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-[#CFA55A]/20 border border-white/10 hover:border-[#CFA55A]/40 text-xs text-slate-300 hover:text-white transition-all cursor-pointer group"
+                    >
+                      <span className="text-[10px] text-[#CFA55A] font-bold block">{top.category}</span>
+                      <span className="line-clamp-1">{top.title}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <form onSubmit={handleGenerateBlogWithAi} className="space-y-4 text-xs">
               <div>
                 <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-                  Article Title *
+                  Blog Title or Focus Topic *
                 </label>
                 <input
                   type="text"
                   required
-                  value={editingBlog.title}
-                  onChange={(e) => setEditingBlog({ ...editingBlog, title: e.target.value })}
-                  placeholder="e.g. Dubai Waterfront Property Boom: 2026 Yield Analysis"
+                  value={aiTopicInput}
+                  onChange={(e) => setAiTopicInput(e.target.value)}
+                  placeholder="e.g. Mercedes-Benz Places Meydan: Complete Investor ROI & Architectural Guide"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-sm outline-none"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-                    Category
-                  </label>
-                  <select
-                    value={editingBlog.category}
-                    onChange={(e) => setEditingBlog({ ...editingBlog, category: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
-                  >
-                    <option value="Market Trends">Market Trends</option>
-                    <option value="Investment Analysis">Investment Analysis</option>
-                    <option value="Lifestyle & Living">Lifestyle & Living</option>
-                    <option value="Regulatory & Visas">Regulatory & Visas</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-                    Publication Status
-                  </label>
-                  <select
-                    value={editingBlog.status}
-                    onChange={(e) =>
-                      setEditingBlog({ ...editingBlog, status: e.target.value as 'published' | 'draft' })
-                    }
-                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
-                  >
-                    <option value="published">Published (Visible on site)</option>
-                    <option value="draft">Draft (Hidden)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-                    Estimated Read Time
-                  </label>
-                  <input
-                    type="text"
-                    value={editingBlog.readTime}
-                    onChange={(e) => setEditingBlog({ ...editingBlog, readTime: e.target.value })}
-                    placeholder="e.g. 5 min read"
-                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-                    Author / Byline
-                  </label>
-                  <input
-                    type="text"
-                    value={editingBlog.author || ''}
-                    onChange={(e) => setEditingBlog({ ...editingBlog, author: e.target.value })}
-                    placeholder="e.g. Jamoka Editorial Advisory"
-                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none"
-                  />
-                </div>
-              </div>
-
               <div>
                 <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-                  Cover Image URL
-                </label>
-                <input
-                  type="url"
-                  value={editingBlog.image}
-                  onChange={(e) => setEditingBlog({ ...editingBlog, image: e.target.value })}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none font-mono"
-                />
-
-                <div className="mt-2 flex items-center gap-1.5 flex-wrap">
-                  <span className="text-[10px] text-slate-400">Quick Presets:</span>
-                  {DUBAI_IMAGE_PRESETS.map((preset) => (
-                    <button
-                      key={preset.name}
-                      type="button"
-                      onClick={() => setEditingBlog({ ...editingBlog, image: preset.url })}
-                      className="px-2 py-0.5 rounded bg-white/5 hover:bg-[#CFA55A]/20 border border-white/10 hover:border-[#CFA55A]/40 text-[10px] text-slate-300 transition-colors"
-                    >
-                      {preset.name}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-                  Summary Excerpt *
+                  Key Points / Instructions to Cover (1 per line)
                 </label>
                 <textarea
-                  required
+                  rows={4}
+                  value={aiPointsInput}
+                  onChange={(e) => setAiPointsInput(e.target.value)}
+                  placeholder="e.g.&#10;- Starting from AED 1.25M with 50/50 payment milestone framework&#10;- 100% freehold foreign ownership with 10-year UAE Golden Visa&#10;- Meydan racecourse views and luxury automotive finishes&#10;- Rental yields and capital appreciation forecast"
+                  className="w-full px-3.5 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none leading-relaxed font-mono"
+                />
+                <span className="text-[11px] text-slate-500 mt-1 block">
+                  You do not need raw data rows. Gemini will research current Dubai Land Department benchmarks and policy details automatically.
+                </span>
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
+                  Target SEO Keywords (Comma Separated)
+                </label>
+                <input
+                  type="text"
+                  value={aiKeywordsInput}
+                  onChange={(e) => setAiKeywordsInput(e.target.value)}
+                  placeholder="e.g. Mercedes-Benz Places, Meydan Dubai off-plan, Binghatti, Golden Visa property"
+                  className="w-full px-3.5 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none font-mono"
+                />
+              </div>
+
+              {isGeneratingAi && (
+                <div className="p-4 rounded-xl bg-[#CFA55A]/10 border border-[#CFA55A]/30 text-xs text-[#CFA55A] space-y-2 animate-fadeIn">
+                  <div className="flex items-center gap-2 font-bold">
+                    <div className="w-4 h-4 border-2 border-[#CFA55A] border-t-transparent rounded-full animate-spin" />
+                    <span>Researching Dubai Real Estate Market & Writing Article...</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed font-light">
+                    Querying Google Search Grounding for current Dubai transaction figures, structuring 1,200+ words with H2/H3 headings, data comparison table, and SEO meta tags. Will queue in "Ready for Review".
+                  </p>
+                </div>
+              )}
+
+              <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsAiGeneratorOpen(false)}
+                  disabled={isGeneratingAi}
+                  className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={isGeneratingAi || !aiTopicInput.trim()}
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#CFA55A] via-[#dfb86e] to-[#CFA55A] text-black font-bold tracking-wider uppercase flex items-center gap-2 shadow-lg shadow-[#CFA55A]/20 hover:opacity-95 transition-all disabled:opacity-50 cursor-pointer"
+                >
+                  {isGeneratingAi ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                      <span>Generating Draft...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="w-4 h-4 text-black" />
+                      <span>Research & Generate Draft</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================
+          MODAL: EDITORIAL REVIEW, SCHEDULING & APPROVAL INSPECTOR
+      ======================================================== */}
+      {isReviewModalOpen && reviewingBlog && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-[#0C101A] border border-amber-500/40 rounded-2xl w-full max-w-3xl max-h-[92vh] overflow-y-auto p-6 space-y-5 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1">
+                    <ListChecks className="w-3.5 h-3.5" />
+                    Human-in-the-Loop Editorial Stage
+                  </span>
+                  <span className="text-xs text-slate-400 font-mono">
+                    Status: {reviewingBlog.status.toUpperCase()}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold font-caughe text-white mt-1">
+                  {reviewingBlog.title}
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsReviewModalOpen(false)}
+                className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Research Briefing & Market Facts Found */}
+            {reviewingBlog.researchBrief && (
+              <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#CFA55A] flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  AI Market Research & Verified Takeaways
+                </span>
+                {reviewingBlog.researchBrief.pointsToCover && reviewingBlog.researchBrief.pointsToCover.length > 0 && (
+                  <div>
+                    <span className="text-[10px] text-slate-400 block font-semibold">Requested Points Covered:</span>
+                    <ul className="list-disc list-inside text-xs text-slate-300 space-y-0.5 mt-1 font-light">
+                      {reviewingBlog.researchBrief.pointsToCover.map((pt, i) => (
+                        <li key={i}>{pt}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {reviewingBlog.researchBrief.keyTakeaways && reviewingBlog.researchBrief.keyTakeaways.length > 0 && (
+                  <div className="pt-2 border-t border-white/5">
+                    <span className="text-[10px] text-emerald-400 block font-semibold">Verified Market Metrics:</span>
+                    <ul className="list-disc list-inside text-xs text-emerald-200/90 space-y-0.5 mt-1">
+                      {reviewingBlog.researchBrief.keyTakeaways.map((takeaway, i) => (
+                        <li key={i}>{takeaway}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Google SERP Snippet Preview */}
+            <div className="p-4 rounded-xl bg-[#090D14] border border-white/10 space-y-1.5">
+              <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-bold flex items-center gap-1">
+                <Globe className="w-3 h-3 text-sky-400" />
+                Google SERP Snippet Preview
+              </span>
+              <div className="text-[11px] text-emerald-400 font-mono">
+                https://jamokaproperties.com/blogs/{reviewingBlog.id || 'article'}
+              </div>
+              <div className="text-sm font-semibold text-sky-400 hover:underline cursor-pointer">
+                {reviewingBlog.seoTitle || reviewingBlog.title}
+              </div>
+              <div className="text-xs text-slate-400 leading-relaxed font-light">
+                {reviewingBlog.seoDescription || reviewingBlog.excerpt}
+              </div>
+            </div>
+
+            {/* Content Preview & Excerpt */}
+            <div className="space-y-3">
+              <div>
+                <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1 text-xs">
+                  Article Excerpt
+                </label>
+                <textarea
                   rows={2}
-                  value={editingBlog.excerpt}
-                  onChange={(e) => setEditingBlog({ ...editingBlog, excerpt: e.target.value })}
-                  placeholder="Brief 1-2 sentence teaser shown on blog cards..."
+                  value={reviewingBlog.excerpt}
+                  onChange={(e) => setReviewingBlog({ ...reviewingBlog, excerpt: e.target.value })}
                   className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none leading-relaxed"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1">
-                  Full Article Body (Markdown or Text) *
+                <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1 text-xs">
+                  Article Body (Full Markdown Content)
                 </label>
                 <textarea
-                  required
-                  rows={8}
-                  value={editingBlog.content}
-                  onChange={(e) => setEditingBlog({ ...editingBlog, content: e.target.value })}
-                  placeholder="Write the full in-depth market intelligence article here..."
-                  className="w-full px-3 py-2.5 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none leading-relaxed font-mono"
+                  rows={9}
+                  value={reviewingBlog.content}
+                  onChange={(e) => setReviewingBlog({ ...reviewingBlog, content: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none leading-relaxed font-mono"
                 />
               </div>
+            </div>
 
-              <div className="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
+            {/* Manual Release Scheduler Box */}
+            <div className="p-4 rounded-xl bg-[#0D1220] border border-[#CFA55A]/30 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                  <CalendarCheck className="w-4 h-4 text-[#CFA55A]" />
+                  Schedule Publication Date & Time
+                </span>
+                <span className="text-[11px] text-slate-400 font-light">
+                  Manual release control
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                <div>
+                  <label className="block text-slate-400 text-[11px] mb-1 font-medium">
+                    Pick Custom Date & Time:
+                  </label>
+                  <input
+                    type="datetime-local"
+                    value={scheduledDateTime}
+                    onChange={(e) => setScheduledDateTime(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl bg-black/60 border border-white/10 focus:border-[#CFA55A] text-white text-xs outline-none font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-400 text-[11px] mb-1 font-medium">
+                    Quick Preset Scheduling:
+                  </label>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const now = new Date();
+                        setScheduledDateTime(now.toISOString().slice(0, 16));
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-slate-300 transition-colors cursor-pointer"
+                    >
+                      Now
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const d = new Date();
+                        d.setDate(d.getDate() + 1);
+                        d.setHours(10, 0, 0, 0);
+                        setScheduledDateTime(d.toISOString().slice(0, 16));
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-slate-300 transition-colors cursor-pointer"
+                    >
+                      Tomorrow 10 AM
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const d = new Date();
+                        d.setDate(d.getDate() + 3);
+                        d.setHours(10, 0, 0, 0);
+                        setScheduledDateTime(d.toISOString().slice(0, 16));
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-slate-300 transition-colors cursor-pointer"
+                    >
+                      In 3 Days
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const d = new Date();
+                        d.setDate(d.getDate() + 7);
+                        d.setHours(10, 0, 0, 0);
+                        setScheduledDateTime(d.toISOString().slice(0, 16));
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] text-slate-300 transition-colors cursor-pointer"
+                    >
+                      In 1 Week
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Approval Action Footer */}
+            <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={handleSendBackToDraft}
+                disabled={isApproving}
+                className="w-full sm:w-auto px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs transition-colors cursor-pointer"
+              >
+                Send to Drafts
+              </button>
+
+              <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
                 <button
                   type="button"
-                  onClick={() => setIsBlogModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-semibold transition-colors cursor-pointer"
+                  onClick={handleApproveAndSchedule}
+                  disabled={isApproving}
+                  className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-black text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 shadow-lg shadow-sky-500/20 transition-all cursor-pointer"
                 >
-                  Cancel
+                  <CalendarCheck className="w-4 h-4" />
+                  <span>Approve & Schedule</span>
                 </button>
+
                 <button
-                  type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#CFA55A] to-[#dfb86e] text-black font-bold tracking-wider uppercase shadow-lg shadow-[#CFA55A]/20 hover:opacity-95 transition-all cursor-pointer"
+                  type="button"
+                  onClick={handleApproveAndPublishNow}
+                  disabled={isApproving}
+                  className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#CFA55A] via-[#dfb86e] to-[#CFA55A] text-black text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 shadow-lg shadow-[#CFA55A]/20 hover:opacity-95 transition-all cursor-pointer"
                 >
-                  Save & Sync to Firestore
+                  <CheckCircle2 className="w-4 h-4 text-black" />
+                  <span>Publish Immediately</span>
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}

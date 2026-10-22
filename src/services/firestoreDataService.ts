@@ -13,8 +13,27 @@ import { BlogPost, BLOGS_DATA, OffPlanProject, OFF_PLAN_PROJECTS } from '../data
 
 export interface FirestoreBlogPost extends Omit<BlogPost, 'id'> {
   id?: string;
-  status: 'published' | 'draft';
+  status: 'published' | 'draft' | 'ready_for_review' | 'scheduled';
+  scheduledDate?: string;
+  slug?: string;
+  galleryImages?: string[];
+  imageAlt?: string;
+  contentFormat?: 'markdown' | 'html' | 'rich';
+  tags?: string[];
   author?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  keyTakeaways?: string[];
+  faqs?: { question: string; answer: string }[];
+  viewsCount?: number;
+  sharesCount?: number;
+  targetKeywords?: string[];
+  pointsToCover?: string[];
+  researchBrief?: {
+    pointsToCover?: string[];
+    sources?: string[];
+    keyTakeaways?: string[];
+  };
   createdAt?: any;
   updatedAt?: any;
 }
@@ -156,6 +175,65 @@ export const DEFAULT_LANDING_PAGES: LandingPageItem[] = [
       'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1600&auto=format&fit=crop'
     ],
     targetAudience: 'Global Investors & Real Estate Collectors'
+  },
+  {
+    id: 'lp-mercedes-benz-places',
+    slug: 'mercedes-benz-places',
+    title: 'Mercedes-Benz Places | Binghatti City',
+    badge: 'Inspired by Mercedes-Benz',
+    tagline: 'Envisioned for Dubai',
+    heroHeadline: 'A NEW ICON OF LIVING.',
+    heroSubheadline: 'Inspired by Mercedes-Benz. Envisioned for Dubai. Discover Mercedes-Benz Places | Binghatti City, where iconic automotive design meets contemporary architecture and elevated living. Explore distinctive residences designed for those who appreciate exceptional design, modern luxury and a lifestyle beyond the ordinary.',
+    heroImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop',
+    developer: 'Binghatti Developers',
+    location: 'Meydan, Dubai',
+    priceAED: 1250000,
+    priceUSD: 340000,
+    paymentPlan: '50 / 50 Handover Framework',
+    handover: 'Q4 2029',
+    roiEstimate: '11.8% Projected Net Capital Growth',
+    status: 'published',
+    highlights: [
+      'Part of Mercedes-Benz Places | Binghatti City in Meydan, Dubai',
+      'Distinctive residences from 1- to 5-bedroom configurations',
+      'More than 30 world-class amenities including wellness, pools & leisure',
+      'Starting from AED 1.25M with confirmed investor payment plans',
+      'UAE 10-Year Golden Visa eligibility for global homeowners'
+    ],
+    description: 'WHERE DESIGN MEETS DISTINCTION.\n\nExperience a new expression of branded living at Mercedes-Benz Places. Inspired by the precision and design philosophy of Mercedes-Benz, this landmark community combines striking architecture, refined interiors and thoughtfully designed residential spaces.\n\nPart of Mercedes-Benz Places | Binghatti City in Meydan, Dubai, bringing together contemporary living and an unmistakable architectural identity.',
+    ctaButtonText: 'Explore Residences',
+    galleryImages: [
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop'
+    ],
+    targetAudience: 'Automotive & Architecture Connoisseurs, Global Investors'
+  },
+  {
+    id: 'lp-vision-iconic',
+    slug: 'vision-iconic',
+    title: 'Vision Iconic at Mercedes-Benz Places | Binghatti City',
+    badge: 'Vision Iconic',
+    tagline: 'Automotive Precision Architecture',
+    heroHeadline: 'THE ART OF AUTOMOTIVE-INSPIRED LIVING.',
+    heroSubheadline: 'Discover Vision Iconic at Mercedes-Benz Places | Binghatti City, where iconic automotive design meets contemporary architecture and elevated living. Starting from AED 2.25M.',
+    heroImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop',
+    developer: 'Binghatti Developers',
+    location: 'Meydan, Dubai',
+    priceAED: 2250000,
+    priceUSD: 612500,
+    paymentPlan: '50 / 50 Handover Framework',
+    handover: 'Q4 2029',
+    roiEstimate: '11.8% Projected Net Capital Growth',
+    status: 'published',
+    highlights: [
+      'Sensual Purity design language with aerodynamic curves',
+      'Cantilevered private infinity sky pool with Burj Khalifa views',
+      'Automated Mercedes-Benz smart valet and mobility integration',
+      'Cryotherapy and luxury wellness sanctuaries',
+      'Zero tax jurisdiction with 10-Year Golden Visa'
+    ],
+    description: 'An exceptional collaboration between Mercedes-Benz and Binghatti Developers, offering private residences infused with precision engineering, aerodynamic lines, and elevated luxury in Meydan Dubai.',
+    ctaButtonText: 'Request Brochure',
+    targetAudience: 'International Private Investors'
   }
 ];
 
@@ -163,70 +241,219 @@ export const DEFAULT_LANDING_PAGES: LandingPageItem[] = [
 // BLOG POSTS
 // ==========================================
 
-// Fetch all published blogs for public view
+// Fetch all published blogs for public view (published OR scheduled whose date has arrived)
 export async function getPublishedBlogs(): Promise<BlogPost[]> {
   try {
     const blogsRef = collection(db, BLOGS_COLLECTION);
-    const q = query(blogsRef, where('status', '==', 'published'));
-    const snapshot = await getDocs(q);
+    const snapshot = await getDocs(blogsRef);
 
     if (snapshot.empty) {
       // Fallback to initial sample blogs
       return BLOGS_DATA;
     }
 
-    return snapshot.docs.map((docSnap) => {
-      const data = docSnap.data();
-      return {
-        id: docSnap.id,
-        title: data.title || '',
-        category: data.category || 'Market Intelligence',
-        date: data.date || 'Recent',
-        readTime: data.readTime || '5 min read',
-        excerpt: data.excerpt || '',
-        image:
-          data.image ||
-          'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop',
-        content: data.content || '',
-      };
-    });
+    const now = new Date();
+
+    const activeBlogs = snapshot.docs
+      .map((docSnap) => {
+        const data = docSnap.data();
+        const status = data.status || 'published';
+        
+        // Auto-Schedule Rule: If scheduled and scheduledDate <= now, it is published and live!
+        let isLive = status === 'published';
+        if (status === 'scheduled') {
+          if (data.scheduledDate) {
+            const sched = new Date(data.scheduledDate);
+            if (!isNaN(sched.getTime()) && sched <= now) {
+              isLive = true;
+            }
+          } else {
+            isLive = true;
+          }
+        }
+
+        if (!isLive) return null;
+
+        const dateDisplay =
+          data.date ||
+          (data.scheduledDate
+            ? new Date(data.scheduledDate).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })
+            : 'Recent');
+
+        return {
+          id: docSnap.id,
+          title: data.title || '',
+          category: data.category || 'Market Intelligence',
+          slug: data.slug || docSnap.id,
+          date: dateDisplay,
+          publishDate: data.publishDate || dateDisplay,
+          readTime: data.readTime || '5 min read',
+          excerpt: data.excerpt || '',
+          image:
+            data.image ||
+            'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop',
+          featuredImage: data.image,
+          additionalImages: data.galleryImages || data.additionalImages || [],
+          imageAlt: data.imageAlt || data.title,
+          content: data.content || '',
+          contentFormat: data.contentFormat || 'markdown',
+          tags: Array.isArray(data.tags) ? data.tags : [],
+          primaryKeywords: Array.isArray(data.primaryKeywords) ? data.primaryKeywords : Array.isArray(data.tags) ? data.tags : [],
+          secondaryKeywords: Array.isArray(data.secondaryKeywords) ? data.secondaryKeywords : [],
+          sourceLinks: Array.isArray(data.sourceLinks) ? data.sourceLinks : [],
+          author: data.author || 'Jamoka Editorial Advisory',
+          seoTitle: data.seoTitle || data.title,
+          metaDescription: data.seoDescription || data.excerpt,
+          keyTakeaways: Array.isArray(data.keyTakeaways) ? data.keyTakeaways : [],
+          faqs: Array.isArray(data.faqs) ? data.faqs : [],
+          viewsCount: typeof data.viewsCount === 'number' ? data.viewsCount : 0,
+          sharesCount: typeof data.sharesCount === 'number' ? data.sharesCount : 0,
+          status: 'published',
+          isPublished: true,
+          isScheduled: false,
+        } as BlogPost;
+      })
+      .filter((b): b is BlogPost => b !== null);
+
+    return activeBlogs.length > 0 ? activeBlogs : BLOGS_DATA;
   } catch (error) {
     console.warn('Error fetching blogs from Firestore, falling back to static data:', error);
     return BLOGS_DATA;
   }
 }
 
-// Fetch all blogs (both drafts & published) for Admin
+// Fetch all blogs (both drafts, ready for review, scheduled & published) for Admin
 export async function getAllAdminBlogs(): Promise<FirestoreBlogPost[]> {
   try {
     const blogsRef = collection(db, BLOGS_COLLECTION);
     const snapshot = await getDocs(blogsRef);
 
     if (snapshot.empty) {
-      return BLOGS_DATA.map((b) => ({ ...b, status: 'published' as const }));
+      return BLOGS_DATA.map((b) => ({
+        ...b,
+        status: 'published' as const,
+        tags: b.primaryKeywords || [],
+        galleryImages: b.additionalImages || [],
+        contentFormat: 'markdown' as const,
+        viewsCount: 1420,
+      }));
     }
+
+    const now = new Date();
 
     return snapshot.docs.map((docSnap) => {
       const data = docSnap.data();
+      const rawStatus = (data.status as 'published' | 'draft' | 'ready_for_review' | 'scheduled') || 'published';
+      
+      // Auto-schedule check
+      let computedStatus = rawStatus;
+      if (rawStatus === 'scheduled' && data.scheduledDate) {
+        const schedTime = new Date(data.scheduledDate);
+        if (!isNaN(schedTime.getTime()) && schedTime <= now) {
+          computedStatus = 'published';
+        }
+      }
+
       return {
         id: docSnap.id,
         title: data.title || '',
         category: data.category || 'Market Intelligence',
+        slug: data.slug || docSnap.id,
         date: data.date || '',
+        scheduledDate: data.scheduledDate || '',
         readTime: data.readTime || '5 min read',
         excerpt: data.excerpt || '',
         image: data.image || '',
+        galleryImages: Array.isArray(data.galleryImages) ? data.galleryImages : Array.isArray(data.additionalImages) ? data.additionalImages : [],
+        imageAlt: data.imageAlt || data.title || '',
         content: data.content || '',
-        status: (data.status as 'published' | 'draft') || 'published',
-        author: data.author || 'Jamoka Editorial',
+        contentFormat: data.contentFormat || 'markdown',
+        tags: Array.isArray(data.tags) ? data.tags : Array.isArray(data.primaryKeywords) ? data.primaryKeywords : [],
+        primaryKeywords: Array.isArray(data.primaryKeywords) ? data.primaryKeywords : [],
+        secondaryKeywords: Array.isArray(data.secondaryKeywords) ? data.secondaryKeywords : [],
+        sourceLinks: Array.isArray(data.sourceLinks) ? data.sourceLinks : [],
+        status: computedStatus,
+        author: data.author || 'Jamoka Editorial Advisory',
+        seoTitle: data.seoTitle || data.title || '',
+        seoDescription: data.seoDescription || data.excerpt || '',
+        keyTakeaways: Array.isArray(data.keyTakeaways) ? data.keyTakeaways : [],
+        faqs: Array.isArray(data.faqs) ? data.faqs : [],
+        viewsCount: typeof data.viewsCount === 'number' ? data.viewsCount : 0,
+        sharesCount: typeof data.sharesCount === 'number' ? data.sharesCount : 0,
+        targetKeywords: data.targetKeywords || [],
+        pointsToCover: data.pointsToCover || [],
+        researchBrief: data.researchBrief || undefined,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
       };
     });
   } catch (error) {
     console.error('Error fetching admin blogs:', error);
-    return BLOGS_DATA.map((b) => ({ ...b, status: 'published' as const }));
+    return BLOGS_DATA.map((b) => ({
+      ...b,
+      status: 'published' as const,
+      tags: b.primaryKeywords || [],
+      galleryImages: b.additionalImages || [],
+      contentFormat: 'markdown' as const,
+    }));
   }
+}
+
+// Pipeline: Approve & Schedule for a specific date
+export async function approveAndScheduleBlog(id: string, scheduledDate?: string): Promise<void> {
+  const docRef = doc(db, BLOGS_COLLECTION, id);
+  const isFuture = scheduledDate && new Date(scheduledDate) > new Date();
+  await setDoc(
+    docRef,
+    {
+      status: isFuture ? 'scheduled' : 'published',
+      scheduledDate: scheduledDate || new Date().toISOString(),
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true }
+  );
+}
+
+// Pipeline: Approve & Publish Immediately
+export async function approveAndPublishBlog(id: string): Promise<void> {
+  const docRef = doc(db, BLOGS_COLLECTION, id);
+  const now = new Date();
+  const dateFormatted = now.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+  await setDoc(
+    docRef,
+    {
+      status: 'published',
+      date: dateFormatted,
+      scheduledDate: now.toISOString(),
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true }
+  );
+}
+
+// Pipeline: Send back to Draft or Ready for Review
+export async function updateBlogPipelineStatus(
+  id: string,
+  status: 'draft' | 'ready_for_review' | 'scheduled' | 'published',
+  scheduledDate?: string
+): Promise<void> {
+  const docRef = doc(db, BLOGS_COLLECTION, id);
+  const updateData: Record<string, any> = {
+    status,
+    updatedAt: serverTimestamp(),
+  };
+  if (scheduledDate !== undefined) {
+    updateData.scheduledDate = scheduledDate;
+  }
+  await setDoc(docRef, updateData, { merge: true });
 }
 
 // Save or update blog post

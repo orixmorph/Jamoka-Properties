@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { OffPlanProject } from '../data/realEstateData';
 import { useLanguage } from '../context/LanguageContext';
-import { X, Calendar, Percent, Landmark, Download, CheckCircle2, MessageSquare, ShieldCheck, MapPin, Sparkles, Send, Loader2 } from 'lucide-react';
+import { X, Calendar, Percent, Landmark, Download, CheckCircle2, MessageSquare, ShieldCheck, MapPin, Sparkles, Send, Loader2, ArrowUpRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
 
@@ -9,12 +9,14 @@ interface PropertyDetailModalProps {
   project: OffPlanProject | null;
   onClose: () => void;
   currency: 'AED' | 'USD' | 'EUR' | 'GBP';
+  onNavigateToLanding?: (slug: string) => void;
 }
 
 export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
   project,
   onClose,
   currency,
+  onNavigateToLanding,
 }) => {
   const { t, isRTL } = useLanguage();
   const [showBrochureForm, setShowBrochureForm] = useState(false);
@@ -39,6 +41,21 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
         return `£${(priceAED / 4.65).toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
       default:
         return `AED ${priceAED.toLocaleString()}`;
+    }
+  };
+
+  const isMercedes =
+    Boolean(project.name?.toLowerCase().includes('mercedes')) ||
+    Boolean(project.developer?.toLowerCase().includes('binghatti') && project.name?.toLowerCase().includes('places')) ||
+    project.id === 'project-8';
+
+  const handleOpenMercedesLanding = () => {
+    onClose();
+    if (onNavigateToLanding) {
+      onNavigateToLanding('mercedes-benz-places');
+    } else {
+      window.location.hash = '#/landing/mercedes-benz-places';
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
     }
   };
 
@@ -249,7 +266,27 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                 </div>
               </div>
             ) : (
-              <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleBrochureSubmit} className="space-y-3.5">
+              <>
+                {/* Discreet Landing Page Portal Button for Mercedes-Benz Places */}
+                {isMercedes && (
+                  <div className="flex items-center justify-between pb-2 mb-1 px-1">
+                    <span className="text-[10px] text-slate-400 font-light tracking-wide">
+                      Direct submission desk
+                    </span>
+                    <button
+                      type="button"
+                      onClick={handleOpenMercedesLanding}
+                      className="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] text-slate-400 hover:text-slate-800 bg-black/[0.03] hover:bg-black/[0.07] border border-black/[0.05] hover:border-black/15 transition-all cursor-pointer font-medium tracking-wide"
+                      title="Open Mercedes-Benz Places Campaign Showcase"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-[#CFA55A] transition-colors" />
+                      <span>Mercedes-Benz Places Showcase</span>
+                      <ArrowUpRight className="w-3 h-3 opacity-60 group-hover:opacity-100 text-slate-400 group-hover:text-[#CFA55A] transition-all" />
+                    </button>
+                  </div>
+                )}
+
+                <form action={FORMBOLD_ENDPOINT} method="POST" onSubmit={handleBrochureSubmit} className="space-y-3.5">
                 <input type="hidden" name="project" value={project.name} />
                 <input type="hidden" name="source" value="Property Detail Modal" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
@@ -342,7 +379,8 @@ export const PropertyDetailModal: React.FC<PropertyDetailModalProps> = ({
                   </a>
                 </div>
               </form>
-            )}
+            </>
+          )}
           </div>
         </div>
       </motion.div>

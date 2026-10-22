@@ -23,19 +23,24 @@ export interface RouteState {
   page: PageType;
   careerSlug: string | null;
   landingSlug: string | null;
+  blogSlug: string | null;
 }
 
 const getInitialRoute = (): RouteState => {
   if (typeof window === 'undefined') {
-    return { page: 'home', careerSlug: null, landingSlug: null };
+    return { page: 'home', careerSlug: null, landingSlug: null, blogSlug: null };
   }
 
-  // Check query parameters (e.g. ?landing=palm-residences-vip)
+  // Check query parameters (e.g. ?landing=palm-residences-vip, ?blog=some-slug)
   try {
     const searchParams = new URLSearchParams(window.location.search);
     const queryLp = searchParams.get('landing') || searchParams.get('lp');
     if (queryLp) {
-      return { page: 'landing', careerSlug: null, landingSlug: queryLp };
+      return { page: 'landing', careerSlug: null, landingSlug: queryLp, blogSlug: null };
+    }
+    const queryBlog = searchParams.get('blog') || searchParams.get('article');
+    if (queryBlog) {
+      return { page: 'blogs', careerSlug: null, landingSlug: null, blogSlug: queryBlog };
     }
   } catch (e) {
     // Ignore query parsing errors
@@ -48,48 +53,58 @@ const getInitialRoute = (): RouteState => {
   const effectivePath = hash ? (hash.startsWith('/') ? hash : `/${hash}`) : path;
 
   if (effectivePath.startsWith('/admin') || effectivePath.startsWith('/secret-admin')) {
-    return { page: 'admin', careerSlug: null, landingSlug: null };
+    return { page: 'admin', careerSlug: null, landingSlug: null, blogSlug: null };
   }
 
   // Hidden campaign landing page routes (e.g. /landing/palm-residences-vip or /lp/downtown-sky)
   if (effectivePath.startsWith('/landing') || effectivePath.startsWith('/lp')) {
     const clean = effectivePath.replace(/^\/(landing|lp)\/?/, '');
     const slug = clean.split(/[?#]/)[0] || 'palm-residences-vip';
-    return { page: 'landing', careerSlug: null, landingSlug: slug };
+    return { page: 'landing', careerSlug: null, landingSlug: slug, blogSlug: null };
+  }
+
+  // Blog deep-link route (e.g. /blogs/dubai-golden-visa-2026)
+  if (effectivePath.startsWith('/blogs/')) {
+    const clean = effectivePath.replace(/^\/blogs\/?/, '');
+    const slug = clean.split(/[?#]/)[0];
+    if (slug) {
+      return { page: 'blogs', careerSlug: null, landingSlug: null, blogSlug: slug };
+    }
+    return { page: 'blogs', careerSlug: null, landingSlug: null, blogSlug: null };
   }
 
   if (effectivePath.startsWith('/careers/real-estate-agent')) {
-    return { page: 'careers', careerSlug: 'real-estate-agent', landingSlug: null };
+    return { page: 'careers', careerSlug: 'real-estate-agent', landingSlug: null, blogSlug: null };
   }
   if (effectivePath.startsWith('/careers/social-media-content-creator')) {
-    return { page: 'careers', careerSlug: 'social-media-content-creator', landingSlug: null };
+    return { page: 'careers', careerSlug: 'social-media-content-creator', landingSlug: null, blogSlug: null };
   }
   if (effectivePath.startsWith('/careers')) {
-    return { page: 'careers', careerSlug: null, landingSlug: null };
+    return { page: 'careers', careerSlug: null, landingSlug: null, blogSlug: null };
   }
   if (effectivePath.startsWith('/about')) {
-    return { page: 'about', careerSlug: null, landingSlug: null };
+    return { page: 'about', careerSlug: null, landingSlug: null, blogSlug: null };
   }
   if (effectivePath.startsWith('/offplan')) {
-    return { page: 'offplan', careerSlug: null, landingSlug: null };
+    return { page: 'offplan', careerSlug: null, landingSlug: null, blogSlug: null };
   }
   if (effectivePath.startsWith('/mortgage')) {
-    return { page: 'mortgage', careerSlug: null, landingSlug: null };
+    return { page: 'mortgage', careerSlug: null, landingSlug: null, blogSlug: null };
   }
   if (effectivePath.startsWith('/developers')) {
-    return { page: 'developers', careerSlug: null, landingSlug: null };
+    return { page: 'developers', careerSlug: null, landingSlug: null, blogSlug: null };
   }
   if (effectivePath.startsWith('/services')) {
-    return { page: 'services', careerSlug: null, landingSlug: null };
+    return { page: 'services', careerSlug: null, landingSlug: null, blogSlug: null };
   }
   if (effectivePath.startsWith('/blogs')) {
-    return { page: 'blogs', careerSlug: null, landingSlug: null };
+    return { page: 'blogs', careerSlug: null, landingSlug: null, blogSlug: null };
   }
   if (effectivePath.startsWith('/contact')) {
-    return { page: 'contact', careerSlug: null, landingSlug: null };
+    return { page: 'contact', careerSlug: null, landingSlug: null, blogSlug: null };
   }
 
-  return { page: 'home', careerSlug: null, landingSlug: null };
+  return { page: 'home', careerSlug: null, landingSlug: null, blogSlug: null };
 };
 
 function MainApp() {
@@ -99,6 +114,7 @@ function MainApp() {
   const [activePage, setActivePage] = useState<PageType>(initialRoute.page);
   const [careerSlug, setCareerSlug] = useState<string | null>(initialRoute.careerSlug);
   const [landingSlug, setLandingSlug] = useState<string | null>(initialRoute.landingSlug);
+  const [blogSlug, setBlogSlug] = useState<string | null>(initialRoute.blogSlug);
   const [currency, setCurrency] = useState<'AED' | 'USD' | 'EUR' | 'GBP'>('AED');
   const [secondaryModalOpen, setSecondaryModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -110,6 +126,7 @@ function MainApp() {
       setActivePage(route.page);
       setCareerSlug(route.careerSlug);
       setLandingSlug(route.landingSlug);
+      setBlogSlug(route.blogSlug);
     };
 
     handleLocation();
@@ -219,10 +236,25 @@ function MainApp() {
     if (page === 'careers') {
       setCareerSlug(null);
       window.history.pushState(null, '', '/careers');
+    } else if (page === 'blogs') {
+      setBlogSlug(null);
+      window.history.pushState(null, '', '/blogs');
     } else if (page === 'home') {
       window.history.pushState(null, '', '/');
     } else {
       window.history.pushState(null, '', `/${page}`);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    trackMetaPixel('PageView');
+  };
+
+  const handleBlogSelect = (slug: string | null) => {
+    setBlogSlug(slug);
+    setActivePage('blogs');
+    if (slug) {
+      window.history.pushState(null, '', `/blogs/${slug}`);
+    } else {
+      window.history.pushState(null, '', '/blogs');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     trackMetaPixel('PageView');
@@ -295,6 +327,7 @@ function MainApp() {
             onFilterChange={handleFilterChange}
             onResetFilters={handleResetFilters}
             onNavigateContact={() => handleNavigate('contact')}
+            onNavigateBlog={handleBlogSelect}
           />
         )}
 
@@ -333,7 +366,12 @@ function MainApp() {
           />
         )}
 
-        {activePage === 'blogs' && <BlogsPage />}
+        {activePage === 'blogs' && (
+          <BlogsPage
+            initialBlogSlug={blogSlug}
+            onBlogSelect={handleBlogSelect}
+          />
+        )}
 
         {activePage === 'careers' && (
           <CareersPage

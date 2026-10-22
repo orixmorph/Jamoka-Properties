@@ -61,6 +61,24 @@ export interface BlogPost {
   excerpt: string;
   image: string;
   content: string;
+  slug?: string;
+  primaryKeywords?: string[];
+  secondaryKeywords?: string[];
+  sourceLinks?: string[];
+  featuredImage?: string;
+  additionalImages?: string[];
+  imageAlt?: string;
+  publishDate?: string;
+  isScheduled?: boolean;
+  isPublished?: boolean;
+  seoTitle?: string;
+  metaDescription?: string;
+  keyTakeaways?: string[];
+  faqs?: { question: string; answer: string }[];
+  author?: string;
+  status?: string;
+  baserowId?: number;
+  rawNotes?: string;
 }
 
 export const TEAM_MEMBERS: TeamMember[] = [
