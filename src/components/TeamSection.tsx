@@ -131,7 +131,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-neutral-200/90 aspect-[4/3] sm:aspect-[16/11] bg-[#0A0E17] group">
               {/* Background Team Photo */}
               <img
-                src="https://res.cloudinary.com/dy6km7beb/image/upload/v1790170823/4_Bedrooms_6_qo8wr1.png"
+                src="https://ik.imagekit.io/pkn80iczwu/4%20Bedrooms%20(3).png"
                 alt="Jamoka Properties Team in Dubai"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = '/advisory-team.jpg';
