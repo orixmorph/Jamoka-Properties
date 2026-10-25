@@ -218,8 +218,17 @@ export const ContactPage: React.FC = () => {
                       {t.contactPage.hoursTitle}
                     </span>
                     <div className="font-medium text-white space-y-0.5 text-xs">
-                      <div>Monday to Friday: 10:00am – 6:00pm</div>
-                      <div>Saturday: 10:00am – 2:00pm</div>
+                      {isRTL ? (
+                        <>
+                          <div>من الإثنين إلى الجمعة: 10:00 صباحاً – 7:00 مساءً</div>
+                          <div>السبت: 10:00 صباحاً – 2:00 ظهراً</div>
+                        </>
+                      ) : (
+                        <>
+                          <div>Monday to Friday: 10:00am – 7:00pm</div>
+                          <div>Saturday: 10:00am – 2:00pm</div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

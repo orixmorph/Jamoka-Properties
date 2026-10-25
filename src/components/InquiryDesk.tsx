@@ -80,7 +80,7 @@ export const InquiryDesk: React.FC = () => {
                 <div className="space-y-0.5">
                   <span className="text-white font-bold text-sm block">Working Hours</span>
                   <div className="font-light text-neutral-300 text-xs space-y-0.5">
-                    <div>Monday to Friday: 10:00am – 6:00pm</div>
+                    <div>Monday to Friday: 10:00am – 7:00pm</div>
                     <div>Saturday: 10:00am – 2:00pm</div>
                   </div>
                 </div>

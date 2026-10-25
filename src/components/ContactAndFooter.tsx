@@ -306,7 +306,7 @@ export const ContactAndFooter: React.FC<ContactAndFooterProps> = ({
                 </p>
                 <p className="text-[11px] text-neutral-400">
                   <strong className="text-white">Working Hours:</strong><br />
-                  Monday to Friday: 10:00am – 6:00pm<br />
+                  Monday to Friday: 10:00am – 7:00pm<br />
                   Saturday: 10:00am – 2:00pm
                 </p>
                 <p className="pt-2">

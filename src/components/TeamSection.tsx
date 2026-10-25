@@ -269,7 +269,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                     <Clock className="w-3.5 h-3.5 text-[#CCA14C] shrink-0 mt-0.5" />
                     <div>
                       <span className="font-bold text-slate-900 block">Working Hours</span>
-                      <span>Mon–Fri: 10:00am – 6:00pm | Sat: 10:00am – 2:00pm</span>
+                      <span>Mon–Fri: 10:00am – 7:00pm | Sat: 10:00am – 2:00pm</span>
                     </div>
                   </div>
 

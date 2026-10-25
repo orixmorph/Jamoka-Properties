@@ -397,7 +397,7 @@ export const MortgagePage: React.FC<MortgagePageProps> = ({ onNavigateContact })
                   <div className="space-y-0.5">
                     <span className="text-slate-900 font-bold text-xs block">Working Hours</span>
                     <div className="font-light text-slate-600 text-[11px] space-y-0.5">
-                      <div>Monday to Friday: 10:00am – 6:00pm</div>
+                      <div>Monday to Friday: 10:00am – 7:00pm</div>
                       <div>Saturday: 10:00am – 2:00pm</div>
                     </div>
                   </div>
