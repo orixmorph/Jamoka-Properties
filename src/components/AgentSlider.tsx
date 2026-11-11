@@ -106,14 +106,14 @@ export const AgentSlider: React.FC<AgentSliderProps> = ({ onContactAgent }) => {
             <span>{isRTL ? 'اسحب للتصفح' : 'Drag or scroll'}</span>
           </div>
           <button
-            onClick={() => handleScrollBy(isRTL ? 360 : -360)}
+            onClick={() => handleScrollBy(isRTL ? 410 : -410)}
             aria-label="Previous agents"
             className="w-10 h-10 rounded-full border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-[#CFA55A] flex items-center justify-center text-slate-700 transition-all shadow-sm cursor-pointer"
           >
             {isRTL ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
           </button>
           <button
-            onClick={() => handleScrollBy(isRTL ? -360 : 360)}
+            onClick={() => handleScrollBy(isRTL ? -410 : 410)}
             aria-label="Next agents"
             className="w-10 h-10 rounded-full border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-[#CFA55A] flex items-center justify-center text-slate-700 transition-all shadow-sm cursor-pointer"
           >
@@ -155,54 +155,55 @@ export const AgentSlider: React.FC<AgentSliderProps> = ({ onContactAgent }) => {
                   onContactAgent?.(agent);
                 }
               }}
-              className="w-72 sm:w-80 bg-[#FAF9F6] hover:bg-white border border-neutral-200/90 hover:border-[#CFA55A] rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex items-center gap-4 shrink-0 group/card cursor-pointer relative overflow-hidden"
+              className={`w-80 sm:w-[390px] bg-[#FAF9F6] hover:bg-white border border-neutral-200/90 hover:border-[#CFA55A] rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex items-center gap-4 sm:gap-5 shrink-0 group/card cursor-pointer relative overflow-hidden ${
+                isRTL ? 'flex-row-reverse text-right' : 'text-left'
+              }`}
             >
               {/* Subtle gold glow on hover */}
-              <div className="absolute top-0 right-0 w-28 h-28 bg-[#CFA55A]/5 rounded-full blur-xl pointer-events-none group-hover/card:bg-[#CFA55A]/15 transition-all" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#CFA55A]/5 rounded-full blur-xl pointer-events-none group-hover/card:bg-[#CFA55A]/15 transition-all" />
 
-              {/* Agent Photo - Sized bigger with graceful fallback */}
-              <div className="relative w-20 h-20 sm:w-22 sm:h-22 rounded-2xl overflow-hidden shrink-0 border border-neutral-200/80 shadow-sm bg-neutral-100">
+              {/* Agent Photo - Sized bigger for clear portrait prominence */}
+              <div className="relative w-26 h-26 sm:w-32 sm:h-32 rounded-2xl overflow-hidden shrink-0 border-2 border-neutral-200/90 shadow-md bg-neutral-100">
                 <img
                   src={agent.image}
                   alt={agent.name}
                   loading="lazy"
                   referrerPolicy="no-referrer"
                   onError={(e) => {
-                    // Fallback if Cloudinary link is not accessible
                     const target = e.target as HTMLImageElement;
                     if (target.src !== FALLBACK_PHOTO) {
                       target.src = FALLBACK_PHOTO;
                     }
                   }}
-                  className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300 pointer-events-none"
+                  className="w-full h-full object-cover object-top group-hover/card:scale-105 transition-transform duration-300 pointer-events-none"
                 />
-                <div className="absolute bottom-0 right-0 bg-[#0F172A] text-[#CFA55A] p-1 rounded-tl-lg">
-                  <Shield className="w-3 h-3" />
+                <div className="absolute bottom-0 right-0 bg-[#0F172A] text-[#CFA55A] p-1.5 rounded-tl-lg shadow-sm">
+                  <Shield className="w-3.5 h-3.5" />
                 </div>
               </div>
 
               {/* Agent Details: Name, Designation, Location, Languages */}
               <div className="flex-1 min-w-0 pointer-events-none">
-                <h4 className="text-[15px] font-bold text-slate-900 truncate font-serif-luxury group-hover/card:text-[#A6833D] transition-colors">
+                <h4 className="text-base sm:text-lg font-bold text-slate-900 truncate font-serif-luxury group-hover/card:text-[#A6833D] transition-colors">
                   {agent.name}
                 </h4>
 
-                <p className="text-xs font-semibold text-slate-700 truncate mt-0.5">
+                <p className="text-xs sm:text-[13px] font-semibold text-slate-700 truncate mt-0.5">
                   {agent.title}
                 </p>
 
-                <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-1.5 truncate">
-                  <MapPin className="w-3 h-3 text-[#CFA55A] shrink-0" />
+                <div className={`flex items-center gap-1.5 text-xs text-slate-500 mt-1.5 truncate ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <MapPin className="w-3.5 h-3.5 text-[#CFA55A] shrink-0" />
                   <span className="truncate">{agent.specialty}</span>
                 </div>
 
-                <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                <div className={`flex items-center gap-1.5 mt-2.5 flex-wrap ${isRTL ? 'justify-end' : ''}`}>
                   {agent.languages
                     .filter((lang) => lang && lang.trim().length > 0)
                     .map((lang) => (
                       <span
                         key={lang}
-                        className="text-[9px] px-2 py-0.5 rounded-md bg-neutral-100/90 text-slate-600 font-medium"
+                        className="text-[10px] px-2.5 py-0.5 rounded-md bg-neutral-100/90 text-slate-700 font-medium border border-neutral-200/60"
                       >
                         {lang}
                       </span>
