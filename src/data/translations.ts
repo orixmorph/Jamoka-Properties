@@ -87,6 +87,15 @@ export interface Translations {
     ceoName: string;
     ceoRole: string;
     ceoCompany: string;
+    cooTitle: string;
+    cooBadge: string;
+    cooParagraph1: string;
+    cooParagraph2: string;
+    cooParagraph3: string;
+    cooClosing: string;
+    cooName: string;
+    cooRole: string;
+    cooCompany: string;
     valuesTitle: string;
   };
   mortgage: {
@@ -250,6 +259,15 @@ export const translations: Record<Language, Translations> = {
       ceoName: 'Basil Al Naimi',
       ceoRole: 'Managing Director & CEO',
       ceoCompany: 'Jamoka Properties',
+      cooTitle: 'COO Message',
+      cooBadge: 'OPERATIONAL LEADERSHIP',
+      cooParagraph1: 'At Jamoka Properties, we believe success comes from strong foundations, dedicated people, and a commitment to excellence.',
+      cooParagraph2: 'Our focus is to deliver a seamless and transparent real estate experience through teamwork, market knowledge, and a client-first approach. Every interaction is an opportunity to build trust, create value, and deliver on our promises.',
+      cooParagraph3: 'As we continue to grow, our commitment remains to raise standards, build lasting relationships, and create meaningful opportunities for everyone we serve.',
+      cooClosing: 'Thank you for being part of our journey.',
+      cooName: 'Neirouz Lahmadi',
+      cooRole: 'Chief Operating Officer (COO)',
+      cooCompany: 'Jamoka Properties',
       valuesTitle: 'Our Core Principles',
     },
     mortgage: {
@@ -411,6 +429,15 @@ export const translations: Record<Language, Translations> = {
       ceoName: 'باسل النعيمي',
       ceoRole: 'المدير التنفيذي والعضو المنتدب',
       ceoCompany: 'جاموكا العقارية',
+      cooTitle: 'رسالة الرئيس التنفيذي للعمليات',
+      cooBadge: 'القيادة التشغيلية',
+      cooParagraph1: 'في جاموكا العقارية، نؤمن بأن النجاح ينبع من أسس قوية وفريق عمل متفانٍ والتزام راسخ بالتميز.',
+      cooParagraph2: 'ينصب تركيزنا على تقديم تجربة عقارية سلسة وشفافة من خلال العمل الجماعي والخبرة العميقة بالسوق والنهج الذي يضع العميل دائماً في المقام الأول. كل تفاعل هو فرصة لبناء الثقة وخلق القيمة والوفاء بوعودنا.',
+      cooParagraph3: 'مع استمرار نمونا، يبقى التزامنا ثابتاً في الارتقاء بالمعايير وبناء علاقات دائمة وخلق فرص حقيقية ومجدية لكل من نتشرف بخدمتهم.',
+      cooClosing: 'شكراً لكونكم جزءاً من رحلتنا.',
+      cooName: 'نيروز لحمادي',
+      cooRole: 'الرئيس التنفيذي للعمليات (COO)',
+      cooCompany: 'جاموكا العقارية',
       valuesTitle: 'مبادئنا الأساسية',
     },
     mortgage: {

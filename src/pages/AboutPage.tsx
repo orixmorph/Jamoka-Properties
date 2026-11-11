@@ -1,14 +1,10 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { TEAM_MEMBERS } from '../data/realEstateData';
 import { AgentSlider } from '../components/AgentSlider';
-import { ShieldCheck, Award, Building, Users, MapPin, CheckCircle2, ArrowRight, Quote } from 'lucide-react';
+import { ShieldCheck, Award, Building, Users, MapPin, CheckCircle2, ArrowRight, Quote, Sparkles } from 'lucide-react';
 
 const CEO_PHOTO_URL = '/basil-al-naimi.jpg';
-
-// Toggle to show or hide the team members sections (6-member grid and scrolling slider)
-// Set to false for now per user request; change to true whenever ready to restore them.
-export const SHOW_TEAM_MEMBERS_SECTIONS = false;
+const COO_PHOTO_URL = 'https://ik.imagekit.io/pkn80iczwu/teams/NL2.png';
 
 interface AboutPageProps {
   onNavigateContact: () => void;
@@ -135,20 +131,20 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
           <div className="text-center max-w-3xl mx-auto mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-widest uppercase mb-3">
               <Users className="w-3.5 h-3.5 text-[#CFA55A]" />
-              <span>{SHOW_TEAM_MEMBERS_SECTIONS ? 'THE TEAM BEHIND JAMOKA' : 'EXECUTIVE LEADERSHIP'}</span>
+              <span>{isRTL ? 'القيادة التنفيذية وفريق العمل' : 'LEADERSHIP & ADVISORY'}</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 font-serif-luxury">
-              {SHOW_TEAM_MEMBERS_SECTIONS ? t.about.teamTitle : 'Leadership & Advisory Vision'}
+              {t.about.teamTitle || (isRTL ? 'فريق الإدارة والمستشارين' : 'Leadership & Advisory Vision')}
             </h2>
             <p className="text-slate-500 text-sm sm:text-base mt-3 font-light leading-relaxed">
-              {SHOW_TEAM_MEMBERS_SECTIONS
-                ? t.about.teamSubtitle
-                : 'Direct counsel, strategic governance, and client-first commitment from Jamoka Properties executive management.'}
+              {t.about.teamSubtitle || (isRTL
+                ? 'خبرة استشارية راسخة وحوكمة دقيقة لخدمة عملاء جاموكا العقارية.'
+                : 'Direct counsel, strategic governance, and client-first commitment from Jamoka Properties executive management.')}
             </p>
           </div>
 
           {/* CEO Message & Executive Portrait */}
-          <div id="ceo-message" className={`${SHOW_TEAM_MEMBERS_SECTIONS ? 'mb-20' : 'mb-0'} bg-gradient-to-br from-[#FAF9F6] via-white to-[#F7F4EC] rounded-3xl border border-[#CFA55A]/30 p-6 sm:p-8 lg:p-12 shadow-xl shadow-slate-900/5 relative overflow-hidden`}>
+          <div id="ceo-message" className="mb-6 sm:mb-8 bg-gradient-to-br from-[#FAF9F6] via-white to-[#F7F4EC] rounded-3xl border border-[#CFA55A]/30 p-6 sm:p-8 lg:p-12 shadow-xl shadow-slate-900/5 relative overflow-hidden">
             {/* Subtle luxury ambient glow */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-[radial-gradient(circle_at_top_right,rgba(207,165,90,0.09)_0%,transparent_70%)] pointer-events-none" />
 
@@ -240,70 +236,99 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
             </div>
           </div>
 
-          {/* Team Members Grid & Scrolling Profiles (Temporarily hidden per request, re-enable by setting SHOW_TEAM_MEMBERS_SECTIONS to true) */}
-          {SHOW_TEAM_MEMBERS_SECTIONS && (
-            <>
-              {/* Team Members Grid (6 members) */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {TEAM_MEMBERS.map((member) => (
-                  <div
-                    key={member.name}
-                    className="group bg-[#FAF9F6] rounded-2xl overflow-hidden border border-neutral-200/80 hover:border-[#CFA55A]/60 hover:shadow-xl transition-all duration-300 flex flex-col"
-                  >
-                    <div className="relative h-72 w-full overflow-hidden bg-slate-900">
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        referrerPolicy="no-referrer"
-                        onError={(e) => {
-                          const fallback = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop';
-                          const target = e.target as HTMLImageElement;
-                          if (target.src !== fallback) {
-                            target.src = fallback;
-                          }
-                        }}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <span className="text-[10px] font-bold text-[#CFA55A] uppercase tracking-wider block">
-                          {member.experience}
-                        </span>
-                        <h3 className="text-xl font-bold text-white font-serif-luxury">
-                          {member.name}
-                        </h3>
-                      </div>
-                    </div>
+          {/* COO Message & Operations Leadership Section */}
+          <div id="coo-message" className="mb-8 sm:mb-12 bg-gradient-to-br from-[#FCFBF8] via-white to-[#F8F5EE] rounded-3xl border border-[#CFA55A]/30 p-6 sm:p-8 lg:p-10 shadow-lg shadow-slate-900/5 relative overflow-hidden">
+            {/* Subtle luxury ambient glow */}
+            <div className="absolute -bottom-10 -left-10 w-72 h-72 bg-[radial-gradient(circle,rgba(207,165,90,0.07)_0%,transparent_70%)] pointer-events-none" />
 
-                    <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                      <div>
-                        <span className="text-xs font-bold text-slate-800 uppercase tracking-wide block">
-                          {member.role}
-                        </span>
-                        <span className="text-xs font-semibold text-[#A6833D] block mt-1.5 leading-snug">
-                          {member.specialty}
-                        </span>
-                      </div>
-
-                      <div className="pt-3 border-t border-neutral-200 flex items-center justify-between text-xs">
-                        <span className="text-slate-500 font-medium">Jamoka Executive Desk</span>
-                        <button
-                          onClick={onNavigateContact}
-                          className="font-bold text-[#A6833D] hover:text-slate-900 flex items-center gap-1 transition-colors"
-                        >
-                          <span>Connect</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
+              {/* COO Message text */}
+              <div className="lg:col-span-8 order-2 lg:order-1 flex flex-col justify-center space-y-4">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/35 text-[#A6833D] text-[10px] sm:text-[11px] font-bold tracking-widest uppercase mb-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[#CFA55A]" />
+                    <span>{t.about.cooBadge || 'OPERATIONAL LEADERSHIP'}</span>
                   </div>
-                ))}
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 font-serif-luxury tracking-tight leading-tight">
+                    {t.about.cooTitle || 'COO Message'}
+                  </h3>
+                  <div className="w-14 h-0.5 bg-gradient-to-r from-[#CFA55A] to-transparent mt-2.5" />
+                </div>
+
+                <div className="space-y-3.5 text-slate-600 text-sm sm:text-[15px] leading-relaxed font-light">
+                  <p className="border-l-2 rtl:border-l-0 rtl:border-r-2 border-[#CFA55A] pl-3.5 rtl:pl-0 rtl:pr-3.5 py-0.5 text-slate-800 font-normal">
+                    {t.about.cooParagraph1}
+                  </p>
+                  <p>
+                    {t.about.cooParagraph2}
+                  </p>
+                  <p>
+                    {t.about.cooParagraph3}
+                  </p>
+                  <p className="font-serif-luxury italic text-[#A6833D] font-medium text-sm sm:text-base pt-1">
+                    {t.about.cooClosing}
+                  </p>
+                </div>
+
+                {/* Signature & Title Block */}
+                <div className="pt-3 border-t border-[#CFA55A]/20 flex items-center justify-between flex-wrap gap-4">
+                  <div>
+                    <h4 className="text-lg sm:text-xl font-bold text-slate-900 font-serif-luxury">
+                      {t.about.cooName || 'Neirouz Lahmadi'}
+                    </h4>
+                    <p className="text-xs sm:text-sm font-semibold text-[#A6833D] uppercase tracking-wider mt-0.5">
+                      {t.about.cooRole || 'Chief Operating Officer (COO)'}
+                    </p>
+                    <p className="text-xs text-slate-500 font-medium">
+                      {t.about.cooCompany || 'Jamoka Properties'}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={onNavigateContact}
+                    className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>Connect with Operations</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#CFA55A]" />
+                  </button>
+                </div>
               </div>
 
-              {/* Horizontal Sliding Team Profiles (20 Specialized Advisors) */}
-              <AgentSlider onContactAgent={() => onNavigateContact()} />
-            </>
-          )}
+              {/* Portrait on the right side */}
+              <div className="lg:col-span-4 order-1 lg:order-2">
+                <div className="relative rounded-2xl overflow-hidden shadow-xl border-2 border-[#CFA55A]/35 bg-slate-900 group max-w-sm mx-auto lg:max-w-none">
+                  <div className="aspect-[4/5] sm:aspect-[3/4] lg:aspect-[4/5] w-full overflow-hidden bg-slate-950">
+                    <img
+                      src={COO_PHOTO_URL}
+                      alt="Neirouz Lahmadi - Chief Operating Officer (COO) of Jamoka Properties"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                    />
+                  </div>
+                  {/* Subtle dark gradient overlay at bottom for badge contrast */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
+
+                  {/* Name badge over image */}
+                  <div className="absolute bottom-4 left-4 right-4 text-white">
+                    <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#CFA55A] text-[#0A0E17] text-[9px] font-extrabold uppercase tracking-wider mb-1">
+                      <span>{t.about.cooRole || 'Chief Operating Officer (COO)'}</span>
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold font-serif-luxury text-white">
+                      {t.about.cooName || 'Neirouz Lahmadi'}
+                    </h3>
+                    <p className="text-[11px] text-neutral-300 font-light">
+                      {t.about.cooCompany || 'Jamoka Properties'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Realtors Horizontal Sliding Cards (Picture, Name & Specified Languages) */}
+          <div id="realtors-slider">
+            <AgentSlider onContactAgent={() => onNavigateContact()} />
+          </div>
         </div>
       </section>
 

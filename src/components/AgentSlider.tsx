@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { AGENT_PROFILES, AgentProfile } from '../data/teamAgents';
+import { useLanguage } from '../context/LanguageContext';
 import { Shield, Sparkles, MapPin, ChevronLeft, ChevronRight, Hand } from 'lucide-react';
 
 interface AgentSliderProps {
@@ -10,6 +11,7 @@ interface AgentSliderProps {
 const FALLBACK_PHOTO = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop';
 
 export const AgentSlider: React.FC<AgentSliderProps> = ({ onContactAgent }) => {
+  const { isRTL } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const [isInteracting, setIsInteracting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -80,40 +82,42 @@ export const AgentSlider: React.FC<AgentSliderProps> = ({ onContactAgent }) => {
   const duplicatedAgents = [...AGENT_PROFILES, ...AGENT_PROFILES];
 
   return (
-    <div className="w-full mt-16 pt-12 border-t border-neutral-200/80">
-      <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto mb-8 px-4 gap-4">
-        <div className="text-center sm:text-left">
+    <div className="w-full mt-10 pt-10 border-t border-neutral-200/80">
+      <div className={`flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto mb-8 px-4 gap-4 ${isRTL ? 'sm:flex-row-reverse text-right' : 'text-left'}`}>
+        <div className={isRTL ? 'text-center sm:text-right' : 'text-center sm:text-left'}>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[10px] font-bold tracking-[0.2em] uppercase mb-2">
             <Sparkles className="w-3 h-3 text-[#CFA55A]" />
-            <span>OUR GLOBAL ADVISORY NETWORK</span>
+            <span>{isRTL ? 'شبكة مستشارينا العالمية' : 'OUR GLOBAL ADVISORY NETWORK'}</span>
           </div>
           <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 font-serif-luxury">
-            Meet Our Certified Property Specialists
+            {isRTL ? 'تعرف على مستشارينا العقاريين المعتمدين' : 'Meet Our Certified Property Specialists'}
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 font-light mt-1">
-            20+ specialized advisors covering every master community • Drag or swipe horizontally to explore
+            {isRTL
+              ? 'أكثر من 20 مستشاراً متخصصاً يتحدثون لغات متعددة ويغطون كافة مجمعات دبي • اسحب للتنقل'
+              : '20+ specialized advisors covering every master community • Drag or swipe horizontally to explore'}
           </p>
         </div>
 
         {/* Manual navigation controls */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className={`flex items-center gap-2 shrink-0 ${isRTL ? 'flex-row-reverse' : ''}`}>
           <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-400 mr-2 font-medium">
             <Hand className="w-3.5 h-3.5 text-[#CFA55A]" />
-            <span>Drag or scroll</span>
+            <span>{isRTL ? 'اسحب للتصفح' : 'Drag or scroll'}</span>
           </div>
           <button
-            onClick={() => handleScrollBy(-360)}
+            onClick={() => handleScrollBy(isRTL ? 360 : -360)}
             aria-label="Previous agents"
             className="w-10 h-10 rounded-full border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-[#CFA55A] flex items-center justify-center text-slate-700 transition-all shadow-sm cursor-pointer"
           >
-            <ChevronLeft className="w-5 h-5" />
+            {isRTL ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
           </button>
           <button
-            onClick={() => handleScrollBy(360)}
+            onClick={() => handleScrollBy(isRTL ? -360 : 360)}
             aria-label="Next agents"
             className="w-10 h-10 rounded-full border border-neutral-200 bg-white hover:bg-neutral-50 hover:border-[#CFA55A] flex items-center justify-center text-slate-700 transition-all shadow-sm cursor-pointer"
           >
-            <ChevronRight className="w-5 h-5" />
+            {isRTL ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
           </button>
         </div>
       </div>
