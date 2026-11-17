@@ -52,15 +52,24 @@ export interface Enclave {
   startingPrice: string;
 }
 
+export type BlogBlockNode =
+  | { type: 'heading'; text: string; subheading?: string }
+  | { type: 'image'; url: string; alt?: string }
+  | { type: 'body'; text: string }
+  | { type: 'cta'; text: string; url: string };
+
 export interface BlogPost {
   id: string;
   category: string;
   date: string;
   readTime: string;
   title: string;
+  subtitle?: string;
   excerpt: string;
   image: string;
+  heroImage?: string;
   content: string;
+  blocks?: BlogBlockNode[];
   slug?: string;
   primaryKeywords?: string[];
   secondaryKeywords?: string[];
@@ -549,53 +558,5 @@ export const ENCLAVES_DATA: Enclave[] = [
     image: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=1600&auto=format&fit=crop',
     description: 'Dubai’s most anticipated coastal destination featuring 20 kilometers of beaches, eco-resorts, and resort-style living.',
     startingPrice: 'From AED 2.1M',
-  },
-];
-
-export const BLOGS_DATA: BlogPost[] = [
-  {
-    id: 'regulatory-advisory-2026',
-    category: 'Market Guide',
-    date: 'February 2026',
-    readTime: '6 min read',
-    title: "Dubai's Off-Plan Market: What International Buyers Need to Know",
-    excerpt: 'A practical overview of purchasing off-plan property in Dubai, Oqood registration, and how the Dubai Land Department protects buyer funds.',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1600&auto=format&fit=crop',
-    content: `Dubai continues to set the global benchmark for international real estate investment. Driven by Law No. 8 of 2007, every single off-plan development is mandated to maintain an independent Escrow Account overseen strictly by the Real Estate Regulatory Agency (RERA).
-
-Key protection points for foreign investors:
-1. Escrow Guarantee: Developer can only withdraw funds strictly according to verified third-party engineering progress certificates.
-2. Oqood Registration: Within 30 days of reservation, your interim title deed is cataloged on the Dubai Land Department ledger.
-3. 10-Year Golden Visa: Property investment of AED 2,000,000 or above entitles investors to 100% residency without local sponsorship.`,
-  },
-  {
-    id: 'payment-plans-escrow-security',
-    category: 'Financing Guide',
-    date: 'January 2026',
-    readTime: '8 min read',
-    title: 'The Practical Guide to Off-Plan Payment Plans & Escrow Security',
-    excerpt: 'How Law No. 8 of 2007 safeguards buyer deposits through RERA trust accounts and how to compare 50/50, 60/40, and 70/30 schedules.',
-    image: 'https://images.unsplash.com/photo-1554469384-e58fac16e23a?q=80&w=1600&auto=format&fit=crop',
-    content: `Understanding Dubai off-plan payment structures is essential for planning cash flows and maximizing returns. Unlike secondary purchases requiring immediate 100% capital deployment, off-plan permits staggered installments throughout the construction timeline.
-
-Milestone breakdown:
-- 10% to 20% Initial Booking Deposit
-- 40% to 60% construction-linked payments over 2 to 4 years
-- 30% to 40% on Key Handover, eligible for mortgage refinancing up to 50%-80% LTV from top UAE banks (Emirates NBD, FAB, Dubai Islamic Bank).`,
-  },
-  {
-    id: 'waterfront-communities-growth',
-    category: 'Market Trends',
-    date: 'January 2026',
-    readTime: '5 min read',
-    title: 'Top Emerging Waterfront Communities in Dubai for 2026',
-    excerpt: 'Why Dubai Islands, Palm Jebel Ali, and Dubai Canal continue to attract high capital appreciation compared to mature inland locations.',
-    image: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=1600&auto=format&fit=crop',
-    content: `Waterfront real estate in Dubai represents a small, highly sought-after percentage of total residential supply, maintaining strong price resilience.
-
-Key areas to explore:
-1. Dubai Islands: 5 islands, 20km of clean beachfronts, and new luxury resort developments.
-2. Palm Jebel Ali: Double the surface area of Palm Jumeirah, featuring ultra-exclusive villas.
-3. Dubai Water Canal: Prime waterfront corridor linking Business Bay and Downtown to the Arabian Gulf.`,
   },
 ];

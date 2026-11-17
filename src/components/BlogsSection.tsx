@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BlogPost } from '../data/realEstateData';
-import { BookOpen, Calendar, Clock, ArrowUpRight, ArrowRight, Sparkles } from 'lucide-react';
+import { BookOpen, Calendar, Clock, ArrowUpRight, ArrowRight } from 'lucide-react';
 
 interface BlogsSectionProps {
   onOpenBlog?: (slug: string) => void;
@@ -67,15 +67,15 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-3">
+            <div className="inline-flex items-center gap-2 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-2">
               <BookOpen className="w-3.5 h-3.5 text-[#CFA55A]" />
-              <span>BASEROW LIVE INTELLIGENCE</span>
+              <span>MARKET INTELLIGENCE</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-serif-luxury tracking-tight">
               Dubai Real Estate Insights
             </h2>
             <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-2xl font-light">
-              Direct market intelligence sourced from our Baserow editorial repository and enhanced for luxury investors.
+              Research briefings and investment perspectives curated by Jamoka Properties.
             </p>
           </div>
 
@@ -83,7 +83,7 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
             onClick={handleViewAll}
             className="inline-flex items-center gap-2 text-xs font-bold text-[#A6833D] hover:text-[#0F172A] uppercase tracking-wider transition-colors cursor-pointer self-start md:self-end group"
           >
-            <span>Explore All Market Briefings</span>
+            <span>Explore All Articles</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -91,7 +91,7 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
         {/* Live Baserow Articles Grid */}
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2].map((i) => (
+            {[1, 2, 3].map((i) => (
               <div
                 key={i}
                 className="bg-white rounded-3xl border border-neutral-200 overflow-hidden p-4 space-y-4 animate-pulse"
@@ -100,7 +100,6 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
                 <div className="h-4 bg-slate-200 rounded-md w-1/3" />
                 <div className="h-6 bg-slate-200 rounded-md w-3/4" />
                 <div className="h-4 bg-slate-200 rounded-md w-full" />
-                <div className="h-4 bg-slate-200 rounded-md w-2/3" />
               </div>
             ))}
           </div>
@@ -121,13 +120,7 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-[#CFA55A] text-[10px] font-bold tracking-wider uppercase border border-[#CFA55A]/30">
-                        {article.category}
-                      </span>
-                    </div>
-
-                    <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-[11px] text-neutral-300">
+                    <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-[11px] text-neutral-200">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-3 h-3 text-[#CFA55A]" /> {article.date}
                       </span>
@@ -137,33 +130,29 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
                     </div>
                   </div>
 
-                  <div className="p-6 space-y-3">
+                  <div className="p-6 space-y-2">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#A6833D] block">
+                      {article.category}
+                    </span>
+
                     <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-[#A6833D] font-serif-luxury transition-colors leading-snug line-clamp-2">
                       {article.title}
                     </h3>
 
+                    {article.subtitle && (
+                      <p className="text-xs font-semibold text-slate-700 line-clamp-1">
+                        {article.subtitle}
+                      </p>
+                    )}
+
                     <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed font-light">
                       {article.excerpt}
                     </p>
-
-                    {article.primaryKeywords && article.primaryKeywords.length > 0 && (
-                      <div className="pt-2 flex flex-wrap gap-1.5">
-                        {article.primaryKeywords.slice(0, 2).map((kw, i) => (
-                          <span
-                            key={i}
-                            className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-md bg-amber-50 text-[#A6833D] border border-[#CFA55A]/30 font-medium"
-                          >
-                            <Sparkles className="w-2.5 h-2.5" />
-                            {kw}
-                          </span>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 </div>
 
-                <div className="p-6 pt-0 flex items-center justify-between border-t border-neutral-100 text-xs font-bold text-[#A6833D] group-hover:text-[#0F172A] transition-colors">
-                  <span>Read Full Briefing</span>
+                <div className="p-6 pt-3 flex items-center justify-between border-t border-neutral-100 text-xs font-bold text-[#A6833D] group-hover:text-[#0F172A] transition-colors">
+                  <span>Read Full Article</span>
                   <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </article>

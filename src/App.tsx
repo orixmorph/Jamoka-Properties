@@ -11,7 +11,6 @@ import { ServicesPage } from './pages/ServicesPage';
 import { BlogsPage } from './pages/BlogsPage';
 import { CareersPage } from './pages/CareersPage';
 import { ContactPage } from './pages/ContactPage';
-import { AdminPage } from './pages/AdminPage';
 import { LandingPageView } from './pages/LandingPageView';
 import { Footer } from './components/Footer';
 import { SecondaryMarketPopup } from './components/SecondaryMarketPopup';
@@ -51,10 +50,6 @@ const getInitialRoute = (): RouteState => {
   const hash = window.location.hash.toLowerCase().replace(/^#/, '');
 
   const effectivePath = hash ? (hash.startsWith('/') ? hash : `/${hash}`) : path;
-
-  if (effectivePath.startsWith('/admin') || effectivePath.startsWith('/secret-admin')) {
-    return { page: 'admin', careerSlug: null, landingSlug: null, blogSlug: null };
-  }
 
   // Hidden campaign landing page routes (e.g. /landing/palm-residences-vip or /lp/downtown-sky)
   if (effectivePath.startsWith('/landing') || effectivePath.startsWith('/lp')) {
@@ -270,32 +265,12 @@ function MainApp() {
     trackMetaPixel('PageView');
   };
 
-  // Keyboard shortcut (Ctrl+Shift+A or Cmd+Shift+A) for quick executive admin access
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
-        e.preventDefault();
-        handleNavigate(activePage === 'admin' ? 'home' : 'admin');
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activePage]);
-
-  // Fullscreen isolated view for secure Admin Portal
-  if (activePage === 'admin') {
-    return <AdminPage onExit={() => handleNavigate('home')} />;
-  }
-
   // Fullscreen isolated view for hidden campaign landing pages
   if (activePage === 'landing') {
     return (
       <LandingPageView
         slug={landingSlug || 'palm-residences-vip'}
         onNavigateHome={() => handleNavigate('home')}
-        isAdmin={false}
-        onOpenAdmin={() => handleNavigate('admin')}
       />
     );
   }

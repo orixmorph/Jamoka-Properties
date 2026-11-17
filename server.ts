@@ -4,7 +4,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
-import { GoogleGenAI } from '@google/genai';
 
 dotenv.config();
 
@@ -28,6 +27,11 @@ function resolveCipher(b64: string, key = 0x5a): string {
 const SECURE_HOST = process.env.CONFIDENTIAL_DB_HOST || process.env.UPSTREAM_HOST || resolveCipher('Mi4uKilgdXU7KjN0ODspPyg1LXQzNQ==');
 const SECURE_TABLE = process.env.CONFIDENTIAL_DB_TABLE || process.env.UPSTREAM_TABLE || resolveCipher('a2hoaGJpYg==');
 const SECURE_KEY = process.env.CONFIDENTIAL_DB_KEY || process.env.UPSTREAM_KEY || resolveCipher('DxkuEjkxYm81DS4QFzMcMy87CgAZExU9Iyo5AD8/Mh0=');
+
+// Baserow Blogs configuration (env vars override defaults)
+const BLOG_BASEROW_HOST = process.env.BASEROW_BLOG_HOST || SECURE_HOST;
+const BLOG_BASEROW_TABLE = process.env.BASEROW_BLOG_TABLE_ID || '317550';
+const BLOG_BASEROW_TOKEN = process.env.BASEROW_BLOG_TOKEN || resolveCipher('FRZtPx8PIjE/OAkfai4gFm0pMxQMKSAXaQIwCQo8F2o=');
 
 // Secure media registry: maps internal IDs to upstream asset targets to conceal origin
 const mediaRegistry = new Map<string, string>();
@@ -318,7 +322,7 @@ async function fetchFromConfidentialSource(): Promise<NormalizedListing[]> {
 
 async function startServer() {
   const app = express();
-  const PORT = Number(process.env.PORT) || 3000;
+  const PORT = Number(process.env.DEFAULT_APP_PORT) || 3000;
 
   app.use(express.json());
 
@@ -354,229 +358,698 @@ async function startServer() {
   });
 
   // -------------------------------------------------------------
-  // AI SEO BLOG ENGINE: Real Market Research & Search Grounding
+  // BASEROW STRUCTURED BLOG ENGINE
   // -------------------------------------------------------------
-  const TOPIC_SUGGESTIONS = [
-    {
-      title: 'Mercedes-Benz Places Meydan: Complete Investor ROI & Architectural Analysis',
-      category: 'Investment Analysis',
-      pointsToCover: [
-        'Sensual Purity design language and aerodynamic architecture in Meydan Dubai',
-        'Starting price from AED 1.25M / 2.25M and 50/50 payment milestone breakdown',
-        'Projected capital appreciation (11.8% net) and rental demand near Meydan Racecourse',
-        'Eligibility for 10-Year UAE Golden Visa and 100% freehold foreign ownership',
-      ],
-      keywords: ['Mercedes-Benz Places', 'Meydan Dubai off-plan', 'Binghatti Developers', 'Dubai luxury ROI', 'Golden Visa property'],
-    },
-    {
-      title: 'Dubai Golden Visa 2026: Qualifying Through Off-Plan Real Estate',
-      category: 'Regulatory & Visas',
-      pointsToCover: [
-        'AED 2,000,000 ($545,000) property investment threshold for 10-year residency',
-        'Rules for off-plan property eligibility and developer payment certificates',
-        'Sponsorship privileges for spouse, dependent children, and domestic staff',
-        'Comparing UAE residency benefits with European Golden Visa programs',
-      ],
-      keywords: ['Dubai Golden Visa 2026', 'off plan property golden visa', 'UAE 10 year residency', 'Dubai tax free investment'],
-    },
-    {
-      title: 'Dubai Waterfront vs Global Capitals: Why Ultra-Luxury Yields Outperform London & NYC',
-      category: 'Market Trends',
-      pointsToCover: [
-        'Comparative price-per-square-foot: Palm Jumeirah vs Manhattan vs Mayfair',
-        'Zero personal income tax and zero capital gains tax advantages in Dubai',
-        'Net rental yields averaging 7% to 10% in Dubai prime enclaves',
-        'Infrastructure expansion and Dubai Economic Agenda (D33) growth catalysts',
-      ],
-      keywords: ['Dubai luxury property vs London', 'Palm Jumeirah villas', 'Dubai real estate yields', 'tax free property investment'],
-    },
-    {
-      title: 'Off-Plan Payment Frameworks Decoded: 50/50, 60/40, and Post-Handover Strategies',
-      category: 'Investment Analysis',
-      pointsToCover: [
-        'How construction-linked milestone tranches safeguard buyer capital via RERA escrow',
-        'Cash flow optimization using post-handover payment plans up to 3 years',
-        'Secondary market assignment and exit strategies before project handover',
-        'Direct developer allocation perks vs open market brokerage fees',
-      ],
-      keywords: ['Dubai off plan payment plan', 'RERA escrow account', 'post handover payment plan', 'Dubai property assignment'],
-    },
-    {
-      title: 'The Rise of Branded Residences in Dubai: Automotive & Haute Horlogerie Collaborations',
-      category: 'Lifestyle & Living',
-      pointsToCover: [
-        'Why branded residences command a 25-35% capital appreciation premium',
-        'Mercedes-Benz Places, Bugatti Residences, and Jacob & Co Sky Penthouses comparison',
-        'Private concierge services, smart valet, and private mobility integration',
-        'Secondary liquidity among global high-net-worth collectors',
-      ],
-      keywords: ['Dubai branded residences', 'Mercedes Benz Binghatti', 'luxury penthouses Dubai', 'branded real estate premium'],
-    },
-  ];
+  type BlogBlockNode =
+    | { type: 'heading'; text: string; subheading?: string }
+    | { type: 'image'; url: string; alt?: string }
+    | { type: 'body'; text: string }
+    | { type: 'cta'; text: string; url: string };
 
-  app.get('/api/ai/suggest-topics', (_req: Request, res: Response) => {
-    res.json({ success: true, topics: TOPIC_SUGGESTIONS });
-  });
+  interface NormalizedBaserowBlog {
+    id: string;
+    baserowId: number;
+    slug: string;
+    title: string;
+    subtitle: string;
+    category: string;
+    date: string;
+    readTime: string;
+    excerpt: string;
+    image: string;
+    imageAlt: string;
+    content: string;
+    blocks: BlogBlockNode[];
+    author: string;
+    tags: string[];
+    seoTitle?: string;
+    metaDescription?: string;
+  }
 
-  app.post('/api/ai/generate-blog', async (req: Request, res: Response) => {
+  interface BaserowFieldMeta {
+    id: number;
+    name: string;
+    type: string;
+    order: number;
+    primary?: boolean;
+    link_row_table_id?: number;
+  }
+
+  let cachedBlogs: NormalizedBaserowBlog[] = [];
+  let lastBlogsFetchTime = 0;
+  let lastBlogsError: { message: string; code?: string } | null = null;
+  const BLOGS_CACHE_TTL_MS = 30 * 1000;
+
+  const DEFAULT_BLOG_COVER =
+    'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1600&auto=format&fit=crop';
+
+  function extractImageUrlsFromCell(val: unknown): string[] {
+    if (!val) return [];
+    const urls: string[] = [];
+    if (Array.isArray(val)) {
+      for (const item of val) {
+        if (item && typeof item === 'object' && 'url' in item) {
+          const u = String((item as { url: unknown }).url || '').trim();
+          if (u.startsWith('http')) urls.push(u);
+        } else if (typeof item === 'string' && item.trim().startsWith('http')) {
+          urls.push(item.trim());
+        }
+      }
+      return urls;
+    }
+    if (typeof val === 'string') {
+      const parts = val
+        .split(/[\n,]+/)
+        .map((s) => s.trim())
+        .filter((s) => s.startsWith('http'));
+      return parts;
+    }
+    return urls;
+  }
+
+  function extractStringValue(val: unknown): string {
+    if (val === null || val === undefined) return '';
+    if (typeof val === 'string') return val.trim();
+    if (typeof val === 'number' || typeof val === 'boolean') return String(val);
+    if (Array.isArray(val)) {
+      return val
+        .map((item) => {
+          if (item && typeof item === 'object' && 'value' in item) {
+            return String((item as { value: unknown }).value || '');
+          }
+          return typeof item === 'string' ? item : '';
+        })
+        .filter(Boolean)
+        .join(', ')
+        .trim();
+    }
+    if (typeof val === 'object' && 'value' in (val as Record<string, unknown>)) {
+      return String((val as { value: unknown }).value || '').trim();
+    }
+    return '';
+  }
+
+  function htmlToCleanText(raw: string): string {
+    if (!raw) return '';
+    let text = raw
+      .replace(/\r\n/g, '\n')
+      .replace(/<\s*br\s*\/?>/gi, '\n')
+      .replace(/<\/\s*(p|div|h1|h2|h3|h4|h5|h6|blockquote)\s*>/gi, '\n\n')
+      .replace(/<\s*(p|div|h1|h2|h3|h4|h5|h6|blockquote)[^>]*>/gi, '')
+      .replace(/<\s*li[^>]*>/gi, '\n- ')
+      .replace(/<\/\s*li\s*>/gi, '')
+      .replace(/<\/?\s*(ul|ol)[^>]*>/gi, '\n')
+      .replace(/<\s*(strong|b)[^>]*>(.*?)<\/\s*(strong|b)\s*>/gis, '**$2**')
+      .replace(/<[^>]+>/g, '');
+
+    text = text
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/&amp;/gi, '&')
+      .replace(/&lt;/gi, '<')
+      .replace(/&gt;/gi, '>')
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;|&apos;|&rsquo;|&lsquo;/gi, "'")
+      .replace(/&rdquo;|&ldquo;/gi, '"')
+      .replace(/&mdash;/gi, '—')
+      .replace(/&ndash;/gi, '–')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+
+    return text;
+  }
+
+  function slugifyTitle(title: string, id: number): string {
+    const clean = title
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .trim()
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    return clean ? `${clean}-${id}` : `article-${id}`;
+  }
+
+  function isLikelyImageUrl(str: string): boolean {
+    if (!str.startsWith('http')) return false;
+    return /\.(jpg|jpeg|png|webp|gif|avif|svg)(\?.*)?$/i.test(str) ||
+      str.includes('baserow') ||
+      str.includes('cloudinary') ||
+      str.includes('imagekit') ||
+      str.includes('unsplash');
+  }
+
+  async function fetchAllBaserowRows(
+    tableId: string | number,
+    headers: Record<string, string>
+  ): Promise<{ ok: boolean; status: number; errBody: string; rows: Record<string, unknown>[] }> {
+    const allRows: Record<string, unknown>[] = [];
+    let nextUrl: string | null = `${BLOG_BASEROW_HOST}/api/database/rows/table/${tableId}/?user_field_names=true&size=200`;
+    let pageCount = 0;
+
+    while (nextUrl && pageCount < 20) {
+      pageCount++;
+      const res = await fetch(nextUrl, { method: 'GET', headers });
+      if (!res.ok) {
+        const errBody = await res.text();
+        return { ok: false, status: res.status, errBody, rows: allRows };
+      }
+      const json = (await res.json()) as {
+        next?: string | null;
+        results?: Record<string, unknown>[];
+      };
+      if (Array.isArray(json.results)) {
+        allRows.push(...json.results);
+      }
+      nextUrl = json.next || null;
+    }
+
+    return { ok: true, status: 200, errBody: '', rows: allRows };
+  }
+
+  async function fetchBaserowBlogs(forceFresh = false): Promise<{
+    blogs: NormalizedBaserowBlog[];
+    error: { message: string; code?: string } | null;
+  }> {
+    const now = Date.now();
+    if (!forceFresh && cachedBlogs.length > 0 && now - lastBlogsFetchTime < BLOGS_CACHE_TTL_MS) {
+      return { blogs: cachedBlogs, error: lastBlogsError };
+    }
+
+    const headers = {
+      Authorization: `Token ${BLOG_BASEROW_TOKEN}`,
+      'Content-Type': 'application/json',
+    };
+
     try {
-      const { title, pointsToCover, keywords, tone } = req.body;
+      // Fetch ordered field metadata and ALL paginated rows from the main table
+      const [fieldsRes, rowsOutcome] = await Promise.all([
+        fetch(`${BLOG_BASEROW_HOST}/api/database/fields/table/${BLOG_BASEROW_TABLE}/`, {
+          method: 'GET',
+          headers,
+        }),
+        fetchAllBaserowRows(BLOG_BASEROW_TABLE, headers),
+      ]);
 
-      if (!title || typeof title !== 'string') {
-        res.status(400).json({ success: false, error: 'A blog title is required' });
-        return;
+      if (!rowsOutcome.ok) {
+        let parsedErr: { error?: string; detail?: string } = {};
+        try {
+          parsedErr = JSON.parse(rowsOutcome.errBody);
+        } catch {
+          // ignore
+        }
+        const errCode = parsedErr.error || `HTTP_${rowsOutcome.status}`;
+        let humanMessage = `Baserow returned status ${rowsOutcome.status} (${errCode}).`;
+        if (errCode === 'ERROR_USER_NOT_IN_GROUP') {
+          humanMessage = `Baserow could not access table "${BLOG_BASEROW_TABLE}" (ERROR_USER_NOT_IN_GROUP). Please check that "${BLOG_BASEROW_TABLE}" is the Table ID (not the Database ID) and that your token belongs to that workspace.`;
+        } else if (errCode === 'ERROR_NO_PERMISSION_TO_TABLE') {
+          humanMessage = `Your Baserow token does not have read permission for table "${BLOG_BASEROW_TABLE}".`;
+        }
+        console.warn('Baserow blogs fetch error:', errCode, rowsOutcome.errBody);
+        lastBlogsError = { message: humanMessage, code: errCode };
+        return { blogs: [], error: lastBlogsError };
       }
 
-      const pointsArray = Array.isArray(pointsToCover)
-        ? pointsToCover
-        : typeof pointsToCover === 'string'
-        ? pointsToCover.split('\n').filter((l: string) => l.trim().length > 0)
-        : [];
+      const rows = rowsOutcome.rows;
 
-      const targetKeywords = Array.isArray(keywords)
-        ? keywords
-        : typeof keywords === 'string'
-        ? keywords.split(',').map((k: string) => k.trim()).filter(Boolean)
-        : ['Dubai off-plan', 'luxury real estate', 'UAE Golden Visa'];
+      let orderedFields: BaserowFieldMeta[] = [];
+      if (fieldsRes.ok) {
+        const fieldsJson = (await fieldsRes.json()) as BaserowFieldMeta[];
+        if (Array.isArray(fieldsJson)) {
+          orderedFields = [...fieldsJson].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        }
+      }
 
-      const prompt = `You are a premier Dubai real estate analyst and senior editorial director for Jamoka Properties Dubai (an ultra-prime advisory representing Binghatti, Emaar, Sobha, Damac, Omniyat, and Mercedes-Benz Places in Dubai).
+      // Discover and fetch linked section table(s) if a link_row column like "Sections" exists
+      const sectionRowsById = new Map<number, Record<string, unknown>>();
+      const sectionRowsByParentBlogId = new Map<number, Record<string, unknown>[]>();
+      const linkFields = orderedFields.filter(
+        (f) => f.type === 'link_row' && typeof f.link_row_table_id === 'number'
+      );
 
-Write an exhaustive, high-ranking, data-backed SEO article for investors based on this brief:
-TITLE: "${title}"
-KEY POINTS / INSTRUCTIONS TO COVER:
-${pointsArray.length > 0 ? pointsArray.map((p: string) => `- ${p}`).join('\n') : '- Dubai luxury off-plan investment framework\n- 10-year UAE Golden Visa and 100% freehold foreign ownership\n- Capital appreciation & payment plan milestones\n- Strategic location and rental yield forecast'}
-TARGET KEYWORDS: ${targetKeywords.join(', ')}
-TONE: ${tone || 'Authoritative, analytical, high-net-worth investor-grade, clear and actionable'}
-
-SEARCH & MARKET INTELLIGENCE:
-- Incorporate current Dubai Land Department (DLD) transaction benchmarks, actual market price levels (AED), developer payment plans, and official UAE Golden Visa rules.
-- Maintain human-grade E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness).
-- Target length: 1,000 to 1,500 words.
-- Format the content with clean Markdown: use ## for main sections, ### for sub-sections, bullet lists, and a comparison table.
-- Do NOT include generic conversational filler.
-
-OUTPUT FORMAT:
-Return ONLY valid JSON (no markdown wrapper, no prefix) matching this exact schema:
-{
-  "title": "Clean, optimized article title",
-  "category": "Market Trends",
-  "readTime": "6 min read",
-  "excerpt": "Compelling 2-sentence executive summary hook for investor preview cards.",
-  "content": "Full markdown text of the article with ## headings, data tables, and investor takeaways...",
-  "seoTitle": "SEO Meta Title (50-60 characters, with high-intent keywords)",
-  "seoDescription": "SEO Meta Description (140-160 characters with call-to-action)",
-  "targetKeywords": ["keyword1", "keyword2", "keyword3", "keyword4"],
-  "suggestedImage": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1600&auto=format&fit=crop",
-  "researchTakeaways": [
-    "Key verified fact or DLD metric",
-    "Key policy or Golden Visa rule",
-    "Key payment milestone or ROI projection"
-  ]
-}`;
-
-      let generatedJson: any = null;
-      const searchSources: { title: string; uri: string }[] = [];
-
-      try {
-        const ai = new GoogleGenAI();
-        const response = await ai.models.generateContent({
-          model: 'gemini-3.8-flash',
-          contents: prompt,
-          config: {
-            tools: [{ googleSearch: {} }],
-          },
-        });
-
-        const rawText = response.text || '';
-        
-        // Extract search sources if grounding metadata exists
-        const chunks = (response.candidates?.[0] as any)?.groundingMetadata?.groundingChunks;
-        if (Array.isArray(chunks)) {
-          for (const c of chunks) {
-            if (c.web?.uri && c.web?.title) {
-              searchSources.push({ title: c.web.title, uri: c.web.uri });
+      if (linkFields.length > 0) {
+        const linkedResults = await Promise.all(
+          linkFields.map((lf) => fetchAllBaserowRows(lf.link_row_table_id!, headers))
+        );
+        for (const lr of linkedResults) {
+          if (!lr.ok) continue;
+          for (const sRow of lr.rows) {
+            const sId = Number(sRow.id);
+            if (!isNaN(sId)) {
+              sectionRowsById.set(sId, sRow);
+            }
+            const parentLinks = sRow['Parent Blog'];
+            if (Array.isArray(parentLinks)) {
+              for (const pl of parentLinks) {
+                if (pl && typeof pl === 'object' && 'id' in pl) {
+                  const pId = Number((pl as { id: unknown }).id);
+                  if (!isNaN(pId)) {
+                    const existing = sectionRowsByParentBlogId.get(pId) || [];
+                    existing.push(sRow);
+                    sectionRowsByParentBlogId.set(pId, existing);
+                  }
+                }
+              }
             }
           }
         }
+      }
 
-        // Clean JSON parsing
-        const cleaned = rawText
-          .replace(/^```json\s*/i, '')
-          .replace(/^```\s*/i, '')
-          .replace(/\s*```$/i, '')
-          .trim();
+      const posts: NormalizedBaserowBlog[] = [];
 
-        const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          generatedJson = JSON.parse(jsonMatch[0]);
+      const META_FIELD_PATTERNS = [
+        /^id$/i,
+        /^order$/i,
+        /^blog[\s_-]*id$/i,
+        /^section[\s_-]*id$/i,
+        /^active$/i,
+        /^published$/i,
+        /^is[\s_-]*published$/i,
+        /^featured([\s_-]*blog)?$/i,
+        /^status$/i,
+        /^(blog[\s_-]*)?category$/i,
+        /^(publication[\s_-]*|publish[\s_-]*|created[\s_-]*|last[\s_-]*updated[\s_-]*)?date$/i,
+        /^created[\s_-]*on$/i,
+        /^last[\s_-]*updated$/i,
+        /^author([\s_-]*name)?$/i,
+        /^(url[\s_-]*)?slug$/i,
+        /^meta[\s_-]*(title|description|keywords)$/i,
+        /^(featured[\s_-]*)?image[\s_-]*alt([\s_-]*text)?$/i,
+        /^tags?$/i,
+        /^keywords?$/i,
+        /^sections?$/i,
+      ];
+
+      const hasStatusColumn = orderedFields.some((f) => f.name.toLowerCase().trim() === 'status');
+
+      for (const row of rows) {
+        const rowId = Number(row.id) || posts.length + 1;
+
+        if (row.Active === false || row.active === false || row.Published === false || row.published === false) {
+          continue;
         }
-      } catch (genErr) {
-        console.warn('Gemini generation with Google Search failed, running fallback model:', genErr);
-        try {
-          const ai = new GoogleGenAI();
-          const fallbackRes = await ai.models.generateContent({
-            model: 'gemini-3.8-flash',
-            contents: prompt,
-          });
-          const raw = fallbackRes.text || '';
-          const cleaned = raw
-            .replace(/^```json\s*/i, '')
-            .replace(/^```\s*/i, '')
-            .replace(/\s*```$/i, '')
-            .trim();
-          const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            generatedJson = JSON.parse(jsonMatch[0]);
+        const statusVal = extractStringValue(row.Status ?? row.status).toLowerCase().trim();
+        if (hasStatusColumn || 'Status' in row || 'status' in row) {
+          if (statusVal !== 'published') {
+            continue;
           }
-        } catch (innerErr) {
-          console.warn('Gemini fallback failed as well, using luxury market builder:', innerErr);
         }
-      }
 
-      // If AI generation was unavailable, supply a rich, curated market intelligence draft
-      if (!generatedJson || !generatedJson.content) {
-        generatedJson = {
-          title: title,
-          category: 'Investment Analysis',
-          readTime: '6 min read',
-          excerpt: `A comprehensive investor breakdown of ${title}, examining capital appreciation drivers, payment schedules, and UAE residency privileges.`,
-          content: `## Executive Overview: ${title}\n\nDubai's luxury real estate sector continues to capture unprecedented global liquidity, driven by zero personal taxation, progressive residency frameworks, and world-class master developments.\n\n### Core Investment Thesis\n${pointsArray.map((p: string) => `- **${p}**: Direct alignment with prime developer standards and sustained international demand.`).join('\n')}\n\n### Market Metrics & Framework\n| Metric | Prime Dubai Benchmark | Investor Advantage |\n| :--- | :--- | :--- |\n| **Foreign Ownership** | 100% Freehold | Unrestricted repatriation of capital |\n| **Residency Pathway** | 10-Year UAE Golden Visa | Qualifying at AED 2,000,000+ investment |\n| **Payment Flexibility** | 50/50 & 60/40 Frameworks | RERA escrow account security |\n| **Gross Rental Yield** | 7.2% – 10.5% Net | Outperforming London (3.4%) and New York (4.1%) |\n\n### Strategic Takeaways for Private Buyers\nInvestors securing allocations in landmark developments such as Mercedes-Benz Places in Meydan benefit from early-tier pricing tranches, post-handover payment optionality, and substantial capital appreciation ahead of handover.`,
-          seoTitle: `${title} | Jamoka Properties Dubai`,
-          seoDescription: `Expert investor analysis covering ${title}. Explore off-plan pricing, 100% freehold status, and 10-year UAE Golden Visa pathways.`,
-          targetKeywords: targetKeywords,
-          suggestedImage: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1600&auto=format&fit=crop',
-          researchTakeaways: [
-            'Dubai Land Department records persistent year-on-year off-plan transaction growth.',
-            'AED 2,000,000 threshold grants renewable 10-year Golden Visa residency for buyer and dependents.',
-            'Escrow law ensures 100% investor payment isolation linked to certified construction milestones.'
-          ],
+        // Determine column list in Baserow order, grouping numbered repeating blocks
+        // (e.g. Blog Subtitle 2 / Cover Image 2 / Introduction 2) so newly inserted
+        // columns in Baserow Grid View align cleanly with their matching section.
+        const rawColumns: { name: string; type: string; value: unknown; order: number }[] =
+          orderedFields.length > 0
+            ? orderedFields.map((f, idx) => ({
+                name: f.name,
+                type: f.type,
+                value: row[f.name],
+                order: typeof f.order === 'number' ? f.order : idx,
+              }))
+            : Object.keys(row)
+                .filter((k) => k !== 'id' && k !== 'order')
+                .map((k, idx) => ({
+                  name: k,
+                  type: 'text',
+                  value: row[k],
+                  order: idx,
+                }));
+
+        const contentColumns = rawColumns.filter((col) => {
+          const nameLower = col.name.toLowerCase().trim();
+          return (
+            col.type !== 'link_row' &&
+            col.type !== 'formula' &&
+            !META_FIELD_PATTERNS.some((rx) => rx.test(nameLower))
+          );
+        });
+
+        const getColumnSortTuple = (col: { name: string; type: string; value: unknown; order: number }) => {
+          const lower = col.name.toLowerCase().trim();
+          const isMainTitleCol = /^(block[\s_-]*title|blog[\s_-]*title|article[\s_-]*title|title|name|headline)$/i.test(
+            lower
+          );
+          const isHeroImageCol = /^(hero[\s_-]*image|hero|banner[\s_-]*image)$/i.test(lower);
+          const isOverviewCol = /^(blog[\s_-]*overview|overview)$/i.test(lower);
+          const isDescriptionCol = /^(description|blog[\s_-]*description|summary|lead)$/i.test(lower);
+
+          const numMatch = lower.match(/(?:^|[\s_-])(\d+)$/);
+          const isBaseBlockCol =
+            /^(blog[\s_-]*subtitle|sub[\s_-]*title|subtitle|cover[\s_-]*image|image|introduction|intro|body|content)(?:[\s_-]*\d+)?$/i.test(
+              lower
+            );
+
+          const groupNum = isMainTitleCol
+            ? -1
+            : isHeroImageCol || isOverviewCol || isDescriptionCol
+              ? 0
+              : numMatch
+                ? Number(numMatch[1])
+                : isBaseBlockCol
+                  ? 1
+                  : 100000 + col.order;
+
+          // Group 0 (top): Hero Image (0) -> Blog Overview (1) -> Description (2)
+          // Groups 1..N (sections): Cover Image (0) -> Blog Subtitle (1) -> Introduction (2)
+          let roleRank = 2;
+          if (isMainTitleCol) {
+            roleRank = 0;
+          } else if (
+            isHeroImageCol ||
+            col.type === 'file' ||
+            /cover|image|photo|img|picture|banner|thumbnail|media/i.test(lower)
+          ) {
+            roleRank = 0;
+          } else if (
+            isOverviewCol ||
+            /subtitle|sub[\s_-]*title|overview|heading|sub[\s_-]*heading|topic/i.test(lower)
+          ) {
+            roleRank = 1;
+          } else if (isDescriptionCol) {
+            roleRank = 2;
+          }
+
+          return { groupNum, roleRank, order: col.order };
         };
+
+        const columns = [...contentColumns].sort((a, b) => {
+          const sa = getColumnSortTuple(a);
+          const sb = getColumnSortTuple(b);
+          if (sa.groupNum !== sb.groupNum) return sa.groupNum - sb.groupNum;
+          if (sa.roleRank !== sb.roleRank) return sa.roleRank - sb.roleRank;
+          return sa.order - sb.order;
+        });
+
+        let mainTitle = '';
+        let firstSubtitle = '';
+        let firstCoverImage = '';
+        let firstIntro = '';
+        const blocks: BlogBlockNode[] = [];
+        let lastHeading = '';
+
+        // Extract rich metadata fields accurately without leaking them into article body blocks
+        const categoryVal =
+          extractStringValue(row['Blog Category'] ?? row.Category ?? row.category) || 'Market Intelligence';
+        const authorVal =
+          extractStringValue(row['Author Name'] ?? row.Author ?? row.author) || 'Jamoka Advisory Desk';
+        const rawDate = extractStringValue(
+          row['Publication Date'] ??
+            row.Date ??
+            row.date ??
+            row['Publish Date'] ??
+            row['Created Date'] ??
+            row['Created on']
+        );
+        const formattedDate = rawDate
+          ? (() => {
+              const d = new Date(rawDate);
+              return isNaN(d.getTime())
+                ? rawDate
+                : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            })()
+          : new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const customSlug = extractStringValue(row['URL Slug'] ?? row.Slug ?? row.slug);
+        const featuredAltText = extractStringValue(
+          row['Featured Image Alt Text'] ?? row['Image Alt Text']
+        );
+        const seoTitle = extractStringValue(row['Meta Title']);
+        const metaDescription = extractStringValue(row['Meta Description']);
+        const tagsRaw = extractStringValue(row.Tags ?? row.tags ?? row.Keywords ?? row.keywords);
+        const tags = tagsRaw
+          ? tagsRaw.split(',').map((t) => t.trim()).filter(Boolean)
+          : [];
+
+        for (const col of columns) {
+          const nameLower = col.name.toLowerCase().trim();
+          if (col.type === 'link_row' || col.type === 'formula' || META_FIELD_PATTERNS.some((rx) => rx.test(nameLower))) {
+            continue;
+          }
+
+          if (col.value === null || col.value === undefined || col.value === '') {
+            continue;
+          }
+          if (Array.isArray(col.value) && col.value.length === 0) {
+            continue;
+          }
+
+          // 1. Check if this column is an IMAGE (file field, image URL field, or array of file objects)
+          const isFileOrImageField =
+            col.type === 'file' ||
+            /cover|image|photo|img|picture|banner|thumbnail|media/i.test(nameLower) ||
+            (Array.isArray(col.value) && col.value.some((x) => x && typeof x === 'object' && 'url' in x));
+
+          if (isFileOrImageField) {
+            const urls = extractImageUrlsFromCell(col.value);
+            if (urls.length > 0) {
+              for (const u of urls) {
+                if (!firstCoverImage) firstCoverImage = u;
+                blocks.push({
+                  type: 'image',
+                  url: u,
+                  alt: featuredAltText || lastHeading || mainTitle || 'Jamoka Properties Insight',
+                });
+              }
+              continue;
+            }
+          }
+
+          const rawStr = extractStringValue(col.value);
+          if (!rawStr) continue;
+
+          // If a generic URL field contains an image link, treat as image
+          if (isLikelyImageUrl(rawStr)) {
+            if (!firstCoverImage) firstCoverImage = rawStr;
+            blocks.push({
+              type: 'image',
+              url: rawStr,
+              alt: featuredAltText || lastHeading || mainTitle || 'Jamoka Properties Insight',
+            });
+            continue;
+          }
+
+          // 2. Check if this is the MAIN BLOCK TITLE (first title column encountered)
+          const isTitleColumn = /^(block[\s_-]*title|blog[\s_-]*title|article[\s_-]*title|title|name|headline)$/i.test(
+            nameLower
+          );
+
+          if (
+            !mainTitle &&
+            (isTitleColumn ||
+              (blocks.length === 0 && !/subtitle|overview|description|intro|content|body/i.test(nameLower)))
+          ) {
+            mainTitle = htmlToCleanText(rawStr);
+            continue;
+          }
+
+          // 3. Check if this is a SUBTITLE / OVERVIEW / LITTLE HEADING
+          const isHeadingColumn =
+            /subtitle|sub[\s_-]*title|overview|heading|sub[\s_-]*heading|topic|section|block[\s_-]*title|title/i.test(
+              nameLower
+            );
+
+          if (isHeadingColumn) {
+            const cleanHeading = htmlToCleanText(rawStr);
+            if (!firstSubtitle) firstSubtitle = cleanHeading;
+            lastHeading = cleanHeading;
+            blocks.push({ type: 'heading', text: cleanHeading });
+            continue;
+          }
+
+          // 4. Otherwise it's DESCRIPTION / INTRODUCTION / BODY DATA
+          const cleanBody = htmlToCleanText(rawStr);
+          if (cleanBody) {
+            if (!firstIntro) firstIntro = cleanBody;
+            blocks.push({ type: 'body', text: cleanBody });
+          }
+        }
+
+        // Enrich image alt attributes using the heading immediately following each image (except hero alt)
+        for (let i = 0; i < blocks.length - 1; i++) {
+          const cur = blocks[i];
+          const nxt = blocks[i + 1];
+          if (cur.type === 'image' && nxt.type === 'heading' && !(i === 0 && featuredAltText)) {
+            cur.alt = nxt.text;
+          }
+        }
+
+        // Expand linked Sections rows (if present on this row or referencing this row)
+        const linkedSectionRefs = Array.isArray(row.Sections) ? row.Sections : [];
+        const resolvedSectionsMap = new Map<number, Record<string, unknown>>();
+        for (const ref of linkedSectionRefs) {
+          if (ref && typeof ref === 'object' && 'id' in ref) {
+            const sId = Number((ref as { id: unknown }).id);
+            const fullSection = sectionRowsById.get(sId);
+            if (fullSection) {
+              resolvedSectionsMap.set(sId, fullSection);
+            } else if ('value' in ref && String((ref as { value: unknown }).value || '').trim()) {
+              resolvedSectionsMap.set(sId, {
+                id: sId,
+                'Section Heading': String((ref as { value: unknown }).value),
+              });
+            }
+          }
+        }
+        const reverseLinked = sectionRowsByParentBlogId.get(rowId) || [];
+        for (const sRow of reverseLinked) {
+          const sId = Number(sRow.id);
+          if (!isNaN(sId) && !resolvedSectionsMap.has(sId)) {
+            resolvedSectionsMap.set(sId, sRow);
+          }
+        }
+
+        const sortedSections = Array.from(resolvedSectionsMap.values()).sort((a, b) => {
+          const ao = Number(a['Section Order'] ?? a.order ?? a.id ?? 0);
+          const bo = Number(b['Section Order'] ?? b.order ?? b.id ?? 0);
+          return ao - bo;
+        });
+
+        for (const sec of sortedSections) {
+          const secHeading = htmlToCleanText(extractStringValue(sec['Section Heading'] ?? sec.Heading));
+          const secSubheading = htmlToCleanText(extractStringValue(sec['Section Subheading'] ?? sec.Subheading));
+          const secAlt = extractStringValue(sec['Image Alt Text']) || secHeading || mainTitle || 'Section Illustration';
+          const secImages = extractImageUrlsFromCell(sec['Section Image'] ?? sec.Image);
+          const secDesc = htmlToCleanText(extractStringValue(sec['Section Description'] ?? sec.Description));
+          const addImages = extractImageUrlsFromCell(sec['Optional Additional Image']);
+          const addDesc = htmlToCleanText(extractStringValue(sec['Optional Additional Description']));
+          const ctaUrl = extractStringValue(sec['Optional External Link']);
+          const ctaText = extractStringValue(sec['Optional Call-to-Action Text']);
+
+          if (secHeading) {
+            blocks.push({
+              type: 'heading',
+              text: secHeading,
+              ...(secSubheading ? { subheading: secSubheading } : {}),
+            });
+          } else if (secSubheading) {
+            blocks.push({ type: 'heading', text: secSubheading });
+          }
+
+          for (const imgUrl of secImages) {
+            if (!firstCoverImage) firstCoverImage = imgUrl;
+            blocks.push({ type: 'image', url: imgUrl, alt: secAlt });
+          }
+
+          if (secDesc) {
+            if (!firstIntro) firstIntro = secDesc;
+            blocks.push({ type: 'body', text: secDesc });
+          }
+
+          for (const addImgUrl of addImages) {
+            if (!firstCoverImage) firstCoverImage = addImgUrl;
+            blocks.push({ type: 'image', url: addImgUrl, alt: secAlt });
+          }
+
+          if (addDesc) {
+            blocks.push({ type: 'body', text: addDesc });
+          }
+
+          const isExamplePlaceholderUrl = /^https?:\/\/(www\.)?example\.com(\/|$)/i.test(ctaUrl);
+          if (ctaUrl && ctaUrl.startsWith('http') && !isExamplePlaceholderUrl && ctaText) {
+            blocks.push({ type: 'cta', text: ctaText, url: ctaUrl });
+          }
+        }
+
+        // If row has NO mainTitle, check if it's a continuation row for the previous blog post
+        if (!mainTitle && blocks.length > 0 && posts.length > 0) {
+          const prev = posts[posts.length - 1];
+          prev.blocks.push(...blocks);
+          if (!prev.image || prev.image === DEFAULT_BLOG_COVER) {
+            const firstImg = prev.blocks.find((b) => b.type === 'image');
+            if (firstImg && firstImg.type === 'image') prev.image = firstImg.url;
+          }
+          continue;
+        }
+
+        if (!mainTitle && blocks.length === 0) {
+          continue;
+        }
+
+        const resolvedTitle = mainTitle || firstSubtitle || `Market Insight #${rowId}`;
+
+        // Build clean excerpt from first introduction (or meta description / subtitle)
+        const rawExcerptSource = firstIntro || metaDescription || firstSubtitle || resolvedTitle;
+        const cleanExcerptText = rawExcerptSource.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\s+/g, ' ').trim();
+        const excerpt =
+          cleanExcerptText.length > 180
+            ? cleanExcerptText.slice(0, 177).trimEnd() + '...'
+            : cleanExcerptText;
+
+        const markdownContent = blocks
+          .map((b) => {
+            if (b.type === 'heading') return b.subheading ? `## ${b.text}\n${b.subheading}` : `## ${b.text}`;
+            if (b.type === 'image') return `![${b.alt || resolvedTitle}](${b.url})`;
+            if (b.type === 'cta') return `[${b.text}](${b.url})`;
+            return b.text;
+          })
+          .join('\n\n');
+
+        const wordCount = blocks
+          .filter((b): b is Extract<BlogBlockNode, { type: 'heading' | 'body' }> => b.type === 'heading' || b.type === 'body')
+          .map((b) => `${b.text} ${b.type === 'heading' && b.subheading ? b.subheading : ''}`)
+          .join(' ')
+          .split(/\s+/)
+          .filter(Boolean).length;
+        const readMinutes = Math.max(1, Math.ceil(wordCount / 180));
+
+        posts.push({
+          id: `baserow-${rowId}`,
+          baserowId: rowId,
+          slug: customSlug || slugifyTitle(resolvedTitle, rowId),
+          title: resolvedTitle,
+          subtitle: firstSubtitle,
+          category: categoryVal,
+          date: formattedDate,
+          readTime: `${readMinutes} min read`,
+          excerpt,
+          image: firstCoverImage || DEFAULT_BLOG_COVER,
+          imageAlt: featuredAltText || resolvedTitle,
+          content: markdownContent,
+          blocks,
+          author: authorVal,
+          tags,
+          ...(seoTitle ? { seoTitle } : {}),
+          ...(metaDescription ? { metaDescription } : {}),
+        });
       }
 
-      res.json({
-        success: true,
-        blog: {
-          title: generatedJson.title || title,
-          category: generatedJson.category || 'Investment Analysis',
-          readTime: generatedJson.readTime || '6 min read',
-          excerpt: generatedJson.excerpt || '',
-          content: generatedJson.content || '',
-          seoTitle: generatedJson.seoTitle || generatedJson.title || title,
-          seoDescription: generatedJson.seoDescription || generatedJson.excerpt || '',
-          targetKeywords: Array.isArray(generatedJson.targetKeywords) ? generatedJson.targetKeywords : targetKeywords,
-          image: generatedJson.suggestedImage || 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1600&auto=format&fit=crop',
-          researchBrief: {
-            pointsToCover: pointsArray,
-            sources: searchSources.map(s => `${s.title} (${s.uri})`),
-            keyTakeaways: Array.isArray(generatedJson.researchTakeaways) ? generatedJson.researchTakeaways : [],
-          },
-          status: 'ready_for_review',
-        },
-      });
-    } catch (err: any) {
-      console.error('Error generating blog:', err);
-      res.status(500).json({ success: false, error: err.message || 'Generation failed' });
+      cachedBlogs = posts;
+      lastBlogsFetchTime = now;
+      lastBlogsError = null;
+      return { blogs: cachedBlogs, error: null };
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Unable to reach Baserow blog repository';
+      console.error('Baserow blog fetch failed:', err);
+      lastBlogsError = { message: msg };
+      return { blogs: cachedBlogs, error: lastBlogsError };
     }
+  }
+
+  // Public Baserow Blogs API
+  app.get('/api/blogs', async (req: Request, res: Response) => {
+    const force = req.query.fresh === '1';
+    const { blogs, error } = await fetchBaserowBlogs(force);
+    res.setHeader('Cache-Control', 'public, max-age=15');
+    res.json({
+      success: !error,
+      count: blogs.length,
+      blogs,
+      error: error?.message || null,
+      errorCode: error?.code || null,
+    });
+  });
+
+  app.get('/api/blogs/:slug', async (req: Request, res: Response) => {
+    const { blogs, error } = await fetchBaserowBlogs(false);
+    const slug = String(req.params.slug || '').toLowerCase();
+    const match = blogs.find(
+      (b) => b.slug.toLowerCase() === slug || b.id.toLowerCase() === slug
+    );
+    if (!match) {
+      res.status(404).json({
+        success: false,
+        error: error?.message || 'Blog article not found',
+      });
+      return;
+    }
+    res.json({ success: true, blog: match });
   });
 
 

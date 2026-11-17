@@ -1,28 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import {
-  Briefcase,
   MapPin,
-  Clock,
   ArrowRight,
   ArrowLeft,
   CheckCircle2,
-  Sparkles,
-  Building,
-  Users,
-  Video,
-  TrendingUp,
-  ShieldCheck,
   Send,
   Share2,
   Check,
   Coins,
-  Award,
-  Zap,
-  Star,
-  DollarSign,
-  Compass,
-  FileCheck2,
+  Briefcase,
+  UserCheck,
+  Gift,
 } from 'lucide-react';
 import { OPEN_POSITIONS, JobPosition } from '../data/careersData';
 import { JobApplicationModal } from '../components/JobApplicationModal';
@@ -35,10 +24,9 @@ interface CareersPageProps {
 
 export const CareersPage: React.FC<CareersPageProps> = ({
   initialJobSlug,
-  onNavigateContact,
   onJobSelect,
 }) => {
-  const { t, isRTL } = useLanguage();
+  const { isRTL } = useLanguage();
   const [selectedJob, setSelectedJob] = useState<JobPosition | null>(null);
   const [applicationModalJob, setApplicationModalJob] = useState<JobPosition | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
@@ -81,88 +69,36 @@ export const CareersPage: React.FC<CareersPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] pb-24 font-jakarta">
-      {/* ------------------------------------------------------------- */}
-      {/* 1. HERO SECTION                                                */}
-      {/* ------------------------------------------------------------- */}
-      <section className="relative pt-36 sm:pt-40 pb-20 sm:pb-24 bg-[#0A0E17] text-white overflow-hidden">
-        {/* Ambient Glow / Subtle Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0E17] via-[#0A0E17]/95 to-transparent pointer-events-none" />
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#CFA55A]/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-[#CFA55A]/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-[#CFA55A]/40 text-[#CFA55A] text-[11px] font-bold tracking-[0.2em] uppercase mb-4 shadow-sm backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5 text-[#CFA55A]" />
-            <span>WE ARE EXPANDING • HIRING IN DUBAI</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold font-caughe text-white mb-4 tracking-tight leading-tight">
-            Careers at Jamoka Properties
+    <div className={`min-h-screen bg-[#FAF9F6] pb-20 font-jakarta ${isRTL ? 'text-right' : 'text-left'}`}>
+      {/* Clean Top Backdrop Strip for Site Navbar */}
+      <div className="bg-[#0A0E17] pt-28 sm:pt-32 pb-6 sm:pb-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-2xl sm:text-4xl font-bold font-caughe text-white tracking-tight">
+            {isRTL ? 'الوظائف' : 'Careers'}
           </h1>
-
-          <p className="text-[#CFA55A] text-lg sm:text-xl font-medium mb-3 max-w-2xl mx-auto">
-            High-earning potential, prime Business Bay offices & a winning culture.
-          </p>
-
-          <p className="text-neutral-300 text-xs sm:text-sm max-w-2xl mx-auto font-light leading-relaxed mb-8">
-            Whether you are closing mega-deals across Dubai&apos;s luxury skyline or shooting cinematic viral stories, Jamoka Properties provides the qualified leads, attractive salary benefits, and creative freedom you need to excel.
-          </p>
-
-          {/* Quick value badges */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-neutral-300">
-            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10">
-              <Coins className="w-3.5 h-3.5 text-[#CFA55A]" />
-              <span className="font-semibold text-white">Attractive Salary & Benefits</span>
-            </div>
-            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#CFA55A]/15 border border-[#CFA55A]/40 text-[#E8CF94]">
-              <TrendingUp className="w-3.5 h-3.5 text-[#CFA55A]" />
-              <span className="font-semibold text-white">Up to 70% Commission (Paid On Spot)</span>
-            </div>
-            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10">
-              <Zap className="w-3.5 h-3.5 text-[#CFA55A]" />
-              <span className="font-semibold text-white">Daily Qualified Leads</span>
-            </div>
-            <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10">
-              <Building className="w-3.5 h-3.5 text-[#CFA55A]" />
-              <span className="font-semibold text-white">Bayswater Tower, Business Bay</span>
-            </div>
-          </div>
         </div>
-      </section>
+      </div>
 
-      {/* ------------------------------------------------------------- */}
-      {/* 2. MAIN CONTENT: LIST OR DETAIL VIEW                           */}
-      {/* ------------------------------------------------------------- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
+      {/* Main Content */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12">
         {!selectedJob ? (
           /* ========================================================= */
-          /* OPEN POSITIONS LIST VIEW                                  */
+          /* SIDE-BY-SIDE SQUARE JOB LISTINGS                          */
           /* ========================================================= */
           <div className="space-y-8">
-            {/* Section Header */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-neutral-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <div className="flex items-center gap-2 text-[#A6833D] text-xs font-bold uppercase tracking-wider mb-1">
-                  <Briefcase className="w-4 h-4 text-[#CFA55A]" />
-                  <span>SELECT YOUR PATH</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 font-serif-luxury">
-                  Current Open Positions
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-500 font-light mt-1">
-                  Click on any position to view the full scope or apply in 60 seconds.
-                </p>
-              </div>
-
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#FAF5EC] border border-[#CFA55A]/40 text-xs font-bold text-[#A6833D] self-start sm:self-center shadow-xs">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>2 Active Priority Openings in Dubai</span>
-              </div>
+            <div className="text-center">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif-luxury">
+                {isRTL ? 'الوظائف المتاحة حالياً' : 'Open Positions'}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                {isRTL
+                  ? 'اختر دورك الوظيفي وقدّم خلال دقيقة واحدة'
+                  : 'Select a role to view details or apply in 60 seconds'}
+              </p>
             </div>
 
-            {/* Job Opening Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            {/* Square Side-by-Side Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
               {OPEN_POSITIONS.map((position) => {
                 const isSales = position.slug === 'real-estate-agent';
 
@@ -171,396 +107,265 @@ export const CareersPage: React.FC<CareersPageProps> = ({
                     key={position.id}
                     id={`job-card-${position.slug}`}
                     onClick={() => handleSelectJob(position)}
-                    className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-xl border border-neutral-200 hover:border-[#CFA55A] hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group cursor-pointer relative overflow-hidden"
+                    className={`md:aspect-square bg-white rounded-3xl p-6 sm:p-7 border transition-all duration-300 flex flex-col justify-between cursor-pointer shadow-sm hover:shadow-xl relative overflow-hidden group ${
+                      isSales
+                        ? 'border-[#CFA55A]/40 hover:border-[#CFA55A]'
+                        : 'border-slate-200 hover:border-slate-400'
+                    }`}
                   >
-                    {/* Top Accent Gradient Line */}
-                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#CFA55A] via-[#E8CF94] to-[#0A0E17]" />
+                    {/* Subtle Top Color Bar */}
+                    <div
+                      className={`absolute top-0 left-0 right-0 h-1.5 ${
+                        isSales
+                          ? 'bg-gradient-to-r from-[#CFA55A] to-[#E8CF94]'
+                          : 'bg-gradient-to-r from-slate-800 to-slate-500'
+                      }`}
+                    />
 
-                    <div className="space-y-5">
-                      {/* Top Badges & Department */}
-                      <div className="flex flex-wrap items-center justify-between gap-2.5">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/40 text-[11px] font-bold uppercase tracking-wider text-[#A6833D]">
-                          {isSales ? (
-                            <TrendingUp className="w-3.5 h-3.5 text-[#CFA55A]" />
-                          ) : (
-                            <Video className="w-3.5 h-3.5 text-[#CFA55A]" />
-                          )}
-                          <span>{position.department}</span>
+                    {/* Top Info */}
+                    <div className="space-y-3 pt-1">
+                      <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
+                        <span
+                          className={`font-bold uppercase tracking-wider text-[11px] ${
+                            isSales ? 'text-[#9A742E]' : 'text-slate-700'
+                          }`}
+                        >
+                          {position.department}
                         </span>
-
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-bold text-emerald-800">
-                          <Star className="w-3 h-3 text-emerald-600 fill-emerald-600" />
-                          <span>{position.badge}</span>
+                        <span className="flex items-center gap-1 text-slate-500">
+                          <MapPin className="w-3.5 h-3.5 text-[#CFA55A]" />
+                          {position.location}
                         </span>
                       </div>
 
-                      {/* Title & Location */}
-                      <div>
-                        <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 font-serif-luxury group-hover:text-[#A6833D] transition-colors leading-tight">
-                          {position.title}
-                        </h3>
+                      <h3 className="text-2xl sm:text-[26px] font-bold text-slate-900 font-serif-luxury leading-tight group-hover:text-[#9A742E] transition-colors">
+                        {position.title}
+                      </h3>
 
-                        <div className="flex flex-wrap items-center gap-3 mt-2.5 text-xs text-slate-500 font-medium">
-                          <span className="flex items-center gap-1.5 text-slate-700 font-semibold">
-                            <MapPin className="w-3.5 h-3.5 text-[#CFA55A] shrink-0" />
-                            {position.location}
-                          </span>
-                          <span className="text-slate-300">•</span>
-                          <span className="flex items-center gap-1 text-slate-600">
-                            <Clock className="w-3.5 h-3.5 text-slate-400" />
-                            {position.type}
-                          </span>
-                        </div>
+                      {/* Color Highlight Strip */}
+                      <div
+                        className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-2 ${
+                          isSales
+                            ? 'bg-[#FAF5EC] text-[#8E6B2B] border border-[#CFA55A]/25'
+                            : 'bg-slate-50 text-slate-800 border border-slate-200/80'
+                        }`}
+                      >
+                        <Coins
+                          className={`w-4 h-4 shrink-0 ${
+                            isSales ? 'text-[#CFA55A]' : 'text-slate-600'
+                          }`}
+                        />
+                        <span className="truncate">{position.compensationHighlight}</span>
                       </div>
 
-                      {/* Big Attractive Salary / Compensation Banner */}
-                      <div className="p-3.5 rounded-2xl bg-gradient-to-r from-[#FAF5EC] via-[#FFFDF9] to-[#FAF5EC] border border-[#CFA55A]/40 flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-[#CFA55A]/20 border border-[#CFA55A]/40 flex items-center justify-center shrink-0">
-                          <Coins className="w-5 h-5 text-[#A6833D]" />
-                        </div>
-                        <div>
-                          <span className="text-[10px] font-bold text-[#A6833D] uppercase tracking-wider block">
-                            Compensation & Perks
-                          </span>
-                          <span className="text-xs sm:text-sm font-bold text-slate-900 leading-snug block">
-                            {position.compensationHighlight}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Short Description */}
-                      <p className="text-xs sm:text-sm text-slate-600 font-light leading-relaxed">
+                      <p className="text-xs sm:text-[13px] text-slate-600 leading-relaxed line-clamp-2">
                         {position.shortDescription}
                       </p>
 
-                      {/* 4 Key Pillars / Perks */}
-                      <div className="pt-2 border-t border-neutral-100 space-y-2">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block">
-                          Key Role Advantages
-                        </span>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                          {position.keyPerks.map((perk, idx) => (
-                            <div
-                              key={idx}
-                              className="p-2.5 rounded-xl bg-[#FAF9F6] border border-neutral-200/70 hover:border-[#CFA55A]/50 transition-colors"
-                            >
-                              <div className="flex items-center gap-1.5 font-bold text-xs text-slate-900">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-[#CFA55A] shrink-0" />
-                                <span className="truncate">{perk.title}</span>
-                              </div>
-                              <p className="text-[11px] text-slate-500 font-light mt-1 line-clamp-2 leading-tight">
-                                {perk.desc}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+                      {/* 3 Simple Key Points */}
+                      <ul className="space-y-1.5 pt-1">
+                        {position.keyPerks.slice(0, 3).map((perk, idx) => (
+                          <li key={idx} className="flex items-center gap-2 text-xs text-slate-700">
+                            <CheckCircle2
+                              className={`w-3.5 h-3.5 shrink-0 ${
+                                isSales ? 'text-[#CFA55A]' : 'text-emerald-600'
+                              }`}
+                            />
+                            <span className="font-medium truncate">{perk.title}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="pt-6 mt-6 border-t border-neutral-100 flex flex-wrap items-center justify-between gap-3">
-                      <span className="text-[11px] text-slate-400 font-medium">
-                        Jamoka Properties • Business Bay
-                      </span>
+                    {/* Emphasized Apply Now + Simple Details Link */}
+                    <div className="pt-4 mt-4 border-t border-neutral-100 space-y-2.5">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setApplicationModalJob(position);
+                        }}
+                        className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#CFA55A] via-[#dfb56c] to-[#CFA55A] text-slate-950 hover:brightness-105 font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+                      >
+                        <span>{isRTL ? 'قدم الآن' : 'Apply Now'}</span>
+                        <Send className="w-3.5 h-3.5" />
+                      </button>
 
-                      <div className="flex items-center gap-2.5">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setApplicationModalJob(position);
-                          }}
-                          className="px-4 py-2.5 rounded-xl bg-[#FAF5EC] hover:bg-[#FAF0DC] border border-[#CFA55A]/50 text-[#A6833D] font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-xs hover:shadow-sm"
-                        >
-                          Quick Apply
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleSelectJob(position)}
-                          className="px-5 py-2.5 rounded-xl bg-[#0A0E17] hover:bg-[#CFA55A] text-white hover:text-[#0A0E17] font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 shadow-md group-hover:shadow-lg cursor-pointer"
-                        >
-                          <span>View Details</span>
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </button>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSelectJob(position);
+                        }}
+                        className="w-full py-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                      >
+                        <span>{isRTL ? 'عرض تفاصيل الوظيفة' : 'View role details'}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
                 );
               })}
             </div>
-
-            {/* General Culture / Value Strip */}
-            <div className="bg-gradient-to-br from-[#FAF9F6] via-white to-[#F7F4EC] rounded-3xl border border-[#CFA55A]/30 p-6 sm:p-10 shadow-sm">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
-                <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-[#FAF5EC] border border-[#CFA55A]/30 flex items-center justify-center shrink-0">
-                    <Building className="w-6 h-6 text-[#CFA55A]" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
-                      Prime Dubai Headquarters
-                    </h4>
-                    <p className="text-xs text-slate-500 font-light mt-1">
-                      Located in Bayswater Tower, 8th & 11th floor, Business Bay overlooking Dubai Canal.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-[#FAF5EC] border border-[#CFA55A]/30 flex items-center justify-center shrink-0">
-                    <Users className="w-6 h-6 text-[#CFA55A]" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
-                      Collaborative High-Energy Culture
-                    </h4>
-                    <p className="text-xs text-slate-500 font-light mt-1">
-                      Work alongside experienced off-plan specialists, full-time video creators, and market leaders.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-[#FAF5EC] border border-[#CFA55A]/30 flex items-center justify-center shrink-0">
-                    <ShieldCheck className="w-6 h-6 text-[#CFA55A]" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
-                      Licensed & Accredited
-                    </h4>
-                    <p className="text-xs text-slate-500 font-light mt-1">
-                      RERA Brokerage ORN: 49679 with direct tier-1 developer allocations across the UAE.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         ) : (
           /* ========================================================= */
-          /* DEDICATED JOB DETAIL VIEW                                 */
+          /* MINIMAL COLOR-CODED JOB DETAIL VIEW                       */
           /* ========================================================= */
-          <div className="space-y-8 animate-in fade-in duration-300">
-            {/* Top Navigation Strip */}
+          <div className="space-y-6 animate-in fade-in duration-200 max-w-4xl mx-auto">
+            {/* Top Navigation Bar */}
             <div className="flex items-center justify-between gap-4">
               <button
                 onClick={handleBackToPositions}
-                className="inline-flex items-center gap-2 text-xs font-bold text-[#A6833D] hover:text-slate-900 transition-colors uppercase tracking-wider cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs font-bold text-[#8E6B2B] hover:text-slate-900 transition-colors uppercase tracking-wider cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>Back to Open Positions</span>
+                <span>{isRTL ? 'العودة للوظائف' : 'All Open Positions'}</span>
               </button>
 
               <button
                 onClick={() => handleSharePosition(selectedJob)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-xs font-semibold text-slate-600 transition-colors cursor-pointer shadow-xs"
-                title="Share position link"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-xs font-semibold text-slate-600 transition-colors cursor-pointer"
               >
                 {copiedLink ? (
                   <>
                     <Check className="w-3.5 h-3.5 text-emerald-600" />
-                    <span className="text-emerald-700">Link Copied</span>
+                    <span className="text-emerald-700">Copied</span>
                   </>
                 ) : (
                   <>
                     <Share2 className="w-3.5 h-3.5 text-slate-500" />
-                    <span>Share Position</span>
+                    <span>Share</span>
                   </>
                 )}
               </button>
             </div>
 
-            {/* Main Job Detail Card */}
-            <div className="bg-white rounded-3xl p-6 sm:p-10 lg:p-12 shadow-xl border border-neutral-200/80 space-y-10 relative overflow-hidden">
-              {/* Top Accent Gradient */}
-              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#CFA55A] via-[#E8CF94] to-[#0A0E17]" />
-
-              {/* Job Header */}
-              <div className="border-b border-neutral-200 pb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2.5 mb-2.5">
-                    <span className="px-3.5 py-1 rounded-full bg-[#FAF5EC] border border-[#CFA55A]/30 text-[10px] font-bold uppercase tracking-wider text-[#A6833D]">
-                      {selectedJob.department}
-                    </span>
-                    <span className="text-xs text-slate-400">•</span>
-                    <span className="text-xs font-semibold text-slate-700">
-                      {selectedJob.type}
-                    </span>
-                    <span className="text-xs text-slate-400">•</span>
-                    <span className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-[#CFA55A]" />
-                      {selectedJob.location}
-                    </span>
-                  </div>
-
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 font-serif-luxury leading-tight">
+            {/* Clean Overview Header Card */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-neutral-200/80 shadow-sm space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1.5">
+                  <p className="text-xs font-bold uppercase tracking-wider text-[#9A742E]">
+                    {selectedJob.department} • {selectedJob.type} • {selectedJob.location}
+                  </p>
+                  <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 font-serif-luxury">
                     {selectedJob.title}
                   </h2>
+                </div>
 
-                  {/* Compensation highlight banner in detail view */}
-                  <div className="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs sm:text-sm font-bold shadow-xs">
-                    <Coins className="w-4 h-4 text-emerald-600" />
-                    <span>{selectedJob.compensationHighlight}</span>
+                {/* Emphasized Top Apply Now CTA */}
+                <button
+                  onClick={() => setApplicationModalJob(selectedJob)}
+                  className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#CFA55A] via-[#dfb56c] to-[#CFA55A] text-slate-950 hover:brightness-105 font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0 active:scale-[0.98]"
+                >
+                  <span>{isRTL ? 'قدم الآن' : 'Apply Now'}</span>
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Pay & Overview */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#FAF5EC] border border-[#CFA55A]/30 text-[#8E6B2B] text-xs sm:text-sm font-bold">
+                <Coins className="w-4 h-4 text-[#CFA55A] shrink-0" />
+                <span>{selectedJob.compensationHighlight}</span>
+              </div>
+
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                {selectedJob.aboutRole[0]}
+              </p>
+            </div>
+
+            {/* Color-Coded 3-Card Breakdown: Easy to Scan at a Glance */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+              {/* 1. What You'll Do (Warm Gold Tint) */}
+              <div className="rounded-2xl p-5 sm:p-6 bg-[#FDFBF5] border border-[#CFA55A]/30 space-y-3.5">
+                <div className="flex items-center gap-2.5 text-[#8E6B2B]">
+                  <div className="w-8 h-8 rounded-lg bg-[#CFA55A]/15 flex items-center justify-center shrink-0">
+                    <Briefcase className="w-4 h-4 text-[#9A742E]" />
                   </div>
+                  <h3 className="text-sm font-bold uppercase tracking-wider">
+                    {isRTL ? 'مهامك اليومية' : "What You'll Do"}
+                  </h3>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
-                  <button
-                    onClick={() => setApplicationModalJob(selectedJob)}
-                    className="px-8 py-3.5 rounded-xl bg-[#0A0E17] hover:bg-[#CFA55A] text-white hover:text-[#0A0E17] font-bold text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer shrink-0"
-                  >
-                    <span>Apply for this Position</span>
-                    <Send className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* 4 Major Pillars Box */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {selectedJob.keyPerks.map((perk, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 rounded-2xl bg-[#FAF9F6] border border-[#CFA55A]/30 space-y-1.5 shadow-xs"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-white border border-[#CFA55A]/30 flex items-center justify-center mb-2">
-                      <Award className="w-4 h-4 text-[#CFA55A]" />
-                    </div>
-                    <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
-                      {perk.title}
-                    </h4>
-                    <p className="text-[11px] text-slate-600 font-light leading-relaxed">
-                      {perk.desc}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* About the Role */}
-              <div className="space-y-4 pt-4 border-t border-neutral-100">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] text-[#A6833D] text-[10px] font-bold uppercase tracking-wider">
-                  <span>ROLE CONTEXT</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif-luxury">
-                  About the Opportunity
-                </h3>
-                <div className="space-y-3 text-sm sm:text-base text-slate-600 font-light leading-relaxed">
-                  {selectedJob.aboutRole.map((paragraph, idx) => (
-                    <p key={idx}>{paragraph}</p>
-                  ))}
-                </div>
-              </div>
-
-              {/* Responsibilities */}
-              <div className="space-y-4 pt-4 border-t border-neutral-100">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] text-[#A6833D] text-[10px] font-bold uppercase tracking-wider">
-                  <span>DUTIES & EXPECTATIONS</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif-luxury">
-                  Core Responsibilities
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-                  {selectedJob.responsibilities.map((resp, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#FAF9F6] border border-neutral-200/70"
-                    >
+                <ul className="space-y-2.5">
+                  {selectedJob.responsibilities.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-[13px] text-slate-700 leading-snug">
                       <CheckCircle2 className="w-4 h-4 text-[#CFA55A] shrink-0 mt-0.5" />
-                      <span className="text-xs sm:text-sm text-slate-700 leading-relaxed font-light">
-                        {resp}
-                      </span>
-                    </div>
+                      <span>{item}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
 
-              {/* Requirements */}
-              <div className="space-y-4 pt-4 border-t border-neutral-100">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] text-[#A6833D] text-[10px] font-bold uppercase tracking-wider">
-                  <span>WHAT WE ARE LOOKING FOR</span>
+              {/* 2. Who We're Looking For (Cool Slate Blue Tint) */}
+              <div className="rounded-2xl p-5 sm:p-6 bg-[#F4F7FB] border border-slate-200/90 space-y-3.5">
+                <div className="flex items-center gap-2.5 text-slate-800">
+                  <div className="w-8 h-8 rounded-lg bg-slate-200/70 flex items-center justify-center shrink-0">
+                    <UserCheck className="w-4 h-4 text-slate-700" />
+                  </div>
+                  <h3 className="text-sm font-bold uppercase tracking-wider">
+                    {isRTL ? 'المتطلبات' : 'What You Need'}
+                  </h3>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif-luxury">
-                  Role Requirements
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-                  {selectedJob.requirements.map((req, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#FAF9F6] border border-neutral-200/70"
-                    >
+
+                <ul className="space-y-2.5">
+                  {selectedJob.requirements.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-[13px] text-slate-700 leading-snug">
+                      <CheckCircle2 className="w-4 h-4 text-slate-600 shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* 3. What You Get (Fresh Emerald Tint) */}
+              <div className="rounded-2xl p-5 sm:p-6 bg-[#F2FAF6] border border-emerald-200/80 space-y-3.5">
+                <div className="flex items-center gap-2.5 text-emerald-900">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                    <Gift className="w-4 h-4 text-emerald-700" />
+                  </div>
+                  <h3 className="text-sm font-bold uppercase tracking-wider">
+                    {isRTL ? 'ما نقدمه لك' : 'What You Get'}
+                  </h3>
+                </div>
+
+                <ul className="space-y-2.5">
+                  {selectedJob.whatWeOffer.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-[13px] text-slate-800 font-medium leading-snug">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <span className="text-xs sm:text-sm text-slate-700 leading-relaxed font-light">
-                        {req}
-                      </span>
-                    </div>
+                      <span>{item}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
+              </div>
+            </div>
+
+            {/* Minimal Bottom Apply Bar */}
+            <div className="bg-[#0A0E17] text-white rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <h4 className="text-base sm:text-lg font-bold font-serif-luxury">
+                  {isRTL ? 'هل أنت مستعد للانضمام إلينا؟' : 'Ready to apply?'}
+                </h4>
+                <p className="text-xs text-neutral-300 mt-0.5">
+                  {isRTL
+                    ? 'يستغرق التقديم 60 ثانية فقط.'
+                    : 'Takes 60 seconds. Direct review by our Business Bay leadership team.'}
+                </p>
               </div>
 
-              {/* What We Offer / Benefits */}
-              <div className="space-y-4 pt-4 border-t border-neutral-100">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF5EC] text-[#A6833D] text-[10px] font-bold uppercase tracking-wider">
-                  <span>COMPENSATION & BENEFITS</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-serif-luxury">
-                  What You Receive at Jamoka
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-                  {selectedJob.whatWeOffer.map((offer, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#FAF9F6] border border-neutral-200/70"
-                    >
-                      <Sparkles className="w-4 h-4 text-[#CFA55A] shrink-0 mt-0.5" />
-                      <span className="text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">
-                        {offer}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bottom CTA Block */}
-              <div className="pt-8 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#0A0E17] text-white p-6 sm:p-10 rounded-3xl relative overflow-hidden">
-                <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-[#CFA55A]/15 rounded-full blur-2xl pointer-events-none" />
-
-                <div className="relative z-10">
-                  <span className="text-[10px] font-bold text-[#CFA55A] uppercase tracking-widest block">
-                    READY TO APPLY?
-                  </span>
-                  <h4 className="text-xl sm:text-2xl font-bold font-serif-luxury mt-0.5">
-                    Take the next step in your Dubai career.
-                  </h4>
-                  <p className="text-xs text-neutral-300 font-light mt-1 max-w-md">
-                    Submit your application in under 60 seconds. Our talent acquisition team will review your profile immediately.
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3 w-full sm:w-auto relative z-10">
-                  <button
-                    onClick={handleBackToPositions}
-                    className="w-1/2 sm:w-auto px-5 py-3.5 rounded-xl border border-neutral-700 hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer"
-                  >
-                    All Openings
-                  </button>
-
-                  <button
-                    onClick={() => setApplicationModalJob(selectedJob)}
-                    className="w-1/2 sm:w-auto px-8 py-3.5 rounded-xl bg-[#CFA55A] hover:bg-[#b8914b] text-[#0A0E17] font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer shrink-0"
-                  >
-                    <span>Apply Now</span>
-                    <Send className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+              <button
+                onClick={() => setApplicationModalJob(selectedJob)}
+                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#CFA55A] via-[#dfb56c] to-[#CFA55A] text-slate-950 hover:brightness-105 font-bold text-xs uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0 active:scale-[0.98]"
+              >
+                <span>{isRTL ? 'قدم الآن' : 'Apply Now'}</span>
+                <Send className="w-4 h-4" />
+              </button>
             </div>
           </div>
         )}
       </section>
 
-      {/* ------------------------------------------------------------- */}
-      {/* 3. APPLICATION MODAL DIALOG                                   */}
-      {/* ------------------------------------------------------------- */}
+      {/* Application Modal Dialog */}
       {applicationModalJob && (
         <JobApplicationModal
           position={applicationModalJob}
@@ -571,4 +376,6 @@ export const CareersPage: React.FC<CareersPageProps> = ({
     </div>
   );
 };
+
+
 
