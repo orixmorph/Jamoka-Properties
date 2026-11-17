@@ -6,7 +6,7 @@ import {
   createApiApp,
   fetchFromConfidentialSource,
   fetchEditorialBlogs,
-} from './server/createApiApp';
+} from './server/createApiApp.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,6 +14,11 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = createApiApp();
   const PORT = Number(process.env.DEFAULT_APP_PORT) || Number(process.env.PORT) || 3000;
+
+  // Return JSON 404 for unknown API endpoints instead of falling through to HTML
+  app.all('/api/*', (_req: Request, res: Response) => {
+    res.status(404).json({ success: false, error: 'Endpoint not found' });
+  });
 
   // Full-Stack: Vite middleware in dev, static build in production
   if (process.env.NODE_ENV === 'production') {

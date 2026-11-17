@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { BlogPost } from '../data/realEstateData';
 import { withBasePath } from '../utils/basePath';
 
@@ -39,30 +39,52 @@ export const BlogsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const blogsRef = useRef<BlogPost[]>([]);
 
   const loadBlogs = useCallback(async (forceFresh = false): Promise<BlogPost[]> => {
     try {
       setError(null);
       const liveUrl = withBasePath(forceFresh ? '/api/blogs?fresh=1' : '/api/blogs');
-      let data = await fetchJsonSafely(liveUrl).catch(() => null);
+      const liveData = await fetchJsonSafely(liveUrl).catch(() => null);
 
-      if (!data || !Array.isArray(data.blogs)) {
-        data = await fetchJsonSafely(withBasePath('/static-data/blogs.json')).catch(() => null);
+      // Use live endpoint when it responded cleanly and succeeded
+      if (liveData && liveData.success === true && Array.isArray(liveData.blogs)) {
+        const normalized = normalizeBlogAssets(liveData.blogs);
+        blogsRef.current = normalized;
+        setBlogs(normalized);
+        return normalized;
       }
 
-      if (data && Array.isArray(data.blogs)) {
-        const normalized = normalizeBlogAssets(data.blogs);
+      // Fall back to static build snapshot if live API is unavailable, errored, or returned non-JSON
+      const staticData = await fetchJsonSafely(withBasePath('/static-data/blogs.json')).catch(
+        () => null
+      );
+      if (staticData && Array.isArray(staticData.blogs) && staticData.blogs.length > 0) {
+        const normalized = normalizeBlogAssets(staticData.blogs);
+        blogsRef.current = normalized;
         setBlogs(normalized);
-        if (data.error && normalized.length === 0) {
-          setError(data.error);
+        return normalized;
+      }
+
+      // Preserve any previously loaded articles if background sync fails
+      if (blogsRef.current.length > 0) {
+        return blogsRef.current;
+      }
+
+      if (liveData && Array.isArray(liveData.blogs)) {
+        const normalized = normalizeBlogAssets(liveData.blogs);
+        if (liveData.error && normalized.length === 0) {
+          setError(liveData.error);
         }
         return normalized;
       }
 
       throw new Error('Unable to load articles right now.');
     } catch {
-      setError('Unable to load articles right now. Please try again shortly.');
-      return [];
+      if (blogsRef.current.length === 0) {
+        setError('Unable to load articles right now. Please try again shortly.');
+      }
+      return blogsRef.current;
     } finally {
       setIsLoading(false);
     }

@@ -82,21 +82,40 @@ function githubPagesAndStaticFallbackPlugin(): Plugin {
 
         const staticBlogs = await Promise.all(
           blogsOutcome.blogs.map(async (blog) => {
-            const staticImage = await cacheStaticMedia(blog.image);
+            const urlMap = new Map<string, string>();
+            const mapMedia = async (origUrl: string) => {
+              if (!origUrl) return origUrl;
+              const cached = urlMap.get(origUrl);
+              if (cached) return cached;
+              const resolved = await cacheStaticMedia(origUrl);
+              urlMap.set(origUrl, resolved);
+              return resolved;
+            };
+
+            const staticImage = await mapMedia(blog.image);
             const staticBlocks = await Promise.all(
               blog.blocks.map(async (blk) => {
                 if (blk.type === 'image') {
                   return {
                     ...blk,
-                    url: await cacheStaticMedia(blk.url),
+                    url: await mapMedia(blk.url),
                   };
                 }
                 return blk;
               })
             );
+
+            let staticContent = blog.content;
+            for (const [origUrl, mappedUrl] of urlMap.entries()) {
+              if (origUrl !== mappedUrl) {
+                staticContent = staticContent.split(origUrl).join(mappedUrl);
+              }
+            }
+
             return {
               ...blog,
               image: staticImage,
+              content: staticContent,
               blocks: staticBlocks,
             };
           })

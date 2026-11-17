@@ -407,6 +407,11 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                             src={block.url}
                             alt={block.alt || selectedBlog.title}
                             loading="lazy"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              const fallback = 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1600&auto=format&fit=crop';
+                              if (target.src !== fallback) target.src = fallback;
+                            }}
                             className="w-full h-full object-cover"
                           />
                         </div>
@@ -585,6 +590,11 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                       <img
                         src={b.image}
                         alt={b.title}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          const fallback = 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1600&auto=format&fit=crop';
+                          if (target.src !== fallback) target.src = fallback;
+                        }}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
@@ -751,6 +761,11 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
                     <img
                       src={blog.image}
                       alt={blog.imageAlt || blog.title}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        const fallback = 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1600&auto=format&fit=crop';
+                        if (target.src !== fallback) target.src = fallback;
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />

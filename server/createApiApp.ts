@@ -32,11 +32,11 @@ const SECURE_KEY =
   process.env.UPSTREAM_KEY ||
   resolveCipher('DxkuEjkxYm81DS4QFzMcMy87CgAZExU9Iyo5AD8/Mh0=');
 
-// Blogs configuration (env vars override defaults)
-const BLOG_UPSTREAM_HOST = process.env.BASEROW_BLOG_HOST || SECURE_HOST;
-const BLOG_UPSTREAM_TABLE = process.env.BASEROW_BLOG_TABLE_ID || '1317550';
+// Blogs configuration (env vars override defaults when non-empty)
+const BLOG_UPSTREAM_HOST = (process.env.BASEROW_BLOG_HOST?.trim() || SECURE_HOST).replace(/\/+$/, '');
+const BLOG_UPSTREAM_TABLE = process.env.BASEROW_BLOG_TABLE_ID?.trim() || '1317550';
 const BLOG_UPSTREAM_TOKEN =
-  process.env.BASEROW_BLOG_TOKEN ||
+  process.env.BASEROW_BLOG_TOKEN?.trim() ||
   resolveCipher('FRZtPx8PIjE/OAkfai4gFm0pMxQMKSAXaQIwCQo8F2o=');
 
 // Secure media registry: maps internal IDs to upstream asset targets to conceal origin

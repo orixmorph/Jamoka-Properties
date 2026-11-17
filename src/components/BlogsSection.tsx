@@ -96,6 +96,11 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
                     <img
                       src={article.image}
                       alt={article.imageAlt || article.title}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        const fallback = 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1600&auto=format&fit=crop';
+                        if (target.src !== fallback) target.src = fallback;
+                      }}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
