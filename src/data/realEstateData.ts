@@ -86,7 +86,7 @@ export interface BlogPost {
   faqs?: { question: string; answer: string }[];
   author?: string;
   status?: string;
-  baserowId?: number;
+  featured?: boolean;
   rawNotes?: string;
 }
 

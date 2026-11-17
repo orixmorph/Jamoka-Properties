@@ -72,7 +72,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* 6. Meet The Team Section */}
       <TeamSection onNavigateContact={onNavigateContact} />
 
-      {/* 7. Dubai Real Estate Insights / Blogs (Baserow Live Source) */}
+      {/* 7. Featured Dubai Real Estate Insights / Blogs */}
       <BlogsSection
         onOpenBlog={onNavigateBlog}
         onNavigateAllBlogs={() => onNavigateBlog?.('')}

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { ProjectsProvider, useProjects } from './context/ProjectsContext';
+import { BlogsProvider } from './context/BlogsContext';
 import { Header, PageType } from './components/Header';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
@@ -383,7 +384,9 @@ export default function App() {
   return (
     <LanguageProvider>
       <ProjectsProvider>
-        <MainApp />
+        <BlogsProvider>
+          <MainApp />
+        </BlogsProvider>
       </ProjectsProvider>
     </LanguageProvider>
   );

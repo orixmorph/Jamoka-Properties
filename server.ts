@@ -368,7 +368,6 @@ async function startServer() {
 
   interface NormalizedBaserowBlog {
     id: string;
-    baserowId: number;
     slug: string;
     title: string;
     subtitle: string;
@@ -382,6 +381,7 @@ async function startServer() {
     blocks: BlogBlockNode[];
     author: string;
     tags: string[];
+    featured: boolean;
     seoTitle?: string;
     metaDescription?: string;
   }
@@ -398,10 +398,18 @@ async function startServer() {
   let cachedBlogs: NormalizedBaserowBlog[] = [];
   let lastBlogsFetchTime = 0;
   let lastBlogsError: { message: string; code?: string } | null = null;
-  const BLOGS_CACHE_TTL_MS = 30 * 1000;
+  const BLOGS_CACHE_TTL_MS = 10 * 1000;
 
   const DEFAULT_BLOG_COVER =
     'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1600&auto=format&fit=crop';
+
+  function maskEditorialMedia(url: string): string {
+    if (!url || !url.startsWith('http')) return url;
+    if (url.includes('baserow') || url.includes('s3.amazonaws.com')) {
+      return registerMedia(url);
+    }
+    return url;
+  }
 
   function extractImageUrlsFromCell(val: unknown): string[] {
     if (!val) return [];
@@ -410,9 +418,9 @@ async function startServer() {
       for (const item of val) {
         if (item && typeof item === 'object' && 'url' in item) {
           const u = String((item as { url: unknown }).url || '').trim();
-          if (u.startsWith('http')) urls.push(u);
+          if (u.startsWith('http')) urls.push(maskEditorialMedia(u));
         } else if (typeof item === 'string' && item.trim().startsWith('http')) {
-          urls.push(item.trim());
+          urls.push(maskEditorialMedia(item.trim()));
         }
       }
       return urls;
@@ -421,7 +429,8 @@ async function startServer() {
       const parts = val
         .split(/[\n,]+/)
         .map((s) => s.trim())
-        .filter((s) => s.startsWith('http'));
+        .filter((s) => s.startsWith('http'))
+        .map(maskEditorialMedia);
       return parts;
     }
     return urls;
@@ -557,15 +566,10 @@ async function startServer() {
           // ignore
         }
         const errCode = parsedErr.error || `HTTP_${rowsOutcome.status}`;
-        let humanMessage = `Baserow returned status ${rowsOutcome.status} (${errCode}).`;
-        if (errCode === 'ERROR_USER_NOT_IN_GROUP') {
-          humanMessage = `Baserow could not access table "${BLOG_BASEROW_TABLE}" (ERROR_USER_NOT_IN_GROUP). Please check that "${BLOG_BASEROW_TABLE}" is the Table ID (not the Database ID) and that your token belongs to that workspace.`;
-        } else if (errCode === 'ERROR_NO_PERMISSION_TO_TABLE') {
-          humanMessage = `Your Baserow token does not have read permission for table "${BLOG_BASEROW_TABLE}".`;
-        }
-        console.warn('Baserow blogs fetch error:', errCode, rowsOutcome.errBody);
+        const humanMessage = 'Articles are temporarily unavailable. Please try again shortly.';
+        console.warn('Editorial feed fetch error:', errCode);
         lastBlogsError = { message: humanMessage, code: errCode };
-        return { blogs: [], error: lastBlogsError };
+        return { blogs: cachedBlogs, error: cachedBlogs.length > 0 ? null : lastBlogsError };
       }
 
       const rows = rowsOutcome.rows;
@@ -816,10 +820,11 @@ async function startServer() {
 
           // If a generic URL field contains an image link, treat as image
           if (isLikelyImageUrl(rawStr)) {
-            if (!firstCoverImage) firstCoverImage = rawStr;
+            const maskedUrl = maskEditorialMedia(rawStr);
+            if (!firstCoverImage) firstCoverImage = maskedUrl;
             blocks.push({
               type: 'image',
-              url: rawStr,
+              url: maskedUrl,
               alt: featuredAltText || lastHeading || mainTitle || 'Jamoka Properties Insight',
             });
             continue;
@@ -989,9 +994,10 @@ async function startServer() {
           .filter(Boolean).length;
         const readMinutes = Math.max(1, Math.ceil(wordCount / 180));
 
+        const isFeatured = Boolean(row['Featured Blog'] ?? row.Featured ?? row.featured);
+
         posts.push({
-          id: `baserow-${rowId}`,
-          baserowId: rowId,
+          id: `article-${rowId}`,
           slug: customSlug || slugifyTitle(resolvedTitle, rowId),
           title: resolvedTitle,
           subtitle: firstSubtitle,
@@ -1005,6 +1011,7 @@ async function startServer() {
           blocks,
           author: authorVal,
           tags,
+          featured: isFeatured,
           ...(seoTitle ? { seoTitle } : {}),
           ...(metaDescription ? { metaDescription } : {}),
         });
@@ -1015,24 +1022,22 @@ async function startServer() {
       lastBlogsError = null;
       return { blogs: cachedBlogs, error: null };
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Unable to reach Baserow blog repository';
-      console.error('Baserow blog fetch failed:', err);
-      lastBlogsError = { message: msg };
-      return { blogs: cachedBlogs, error: lastBlogsError };
+      console.error('Editorial feed fetch failed:', err);
+      lastBlogsError = { message: 'Unable to load articles right now. Please try again shortly.' };
+      return { blogs: cachedBlogs, error: cachedBlogs.length > 0 ? null : lastBlogsError };
     }
   }
 
-  // Public Baserow Blogs API
+  // Public Editorial Articles API
   app.get('/api/blogs', async (req: Request, res: Response) => {
     const force = req.query.fresh === '1';
     const { blogs, error } = await fetchBaserowBlogs(force);
-    res.setHeader('Cache-Control', 'public, max-age=15');
+    res.setHeader('Cache-Control', 'public, max-age=10');
     res.json({
       success: !error,
       count: blogs.length,
       blogs,
       error: error?.message || null,
-      errorCode: error?.code || null,
     });
   });
 
@@ -1074,6 +1079,11 @@ async function startServer() {
       console.log(`Listings pre-cached: ${listings.length} projects loaded from database`);
     }).catch((err) => {
       console.warn('Initial cache fetch deferred:', err);
+    });
+    fetchBaserowBlogs(true).then(({ blogs }) => {
+      console.log(`Articles pre-cached: ${blogs.length} published articles loaded`);
+    }).catch((err) => {
+      console.warn('Initial articles cache fetch deferred:', err);
     });
   });
 }

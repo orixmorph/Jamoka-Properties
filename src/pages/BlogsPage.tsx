@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useBlogs } from '../context/BlogsContext';
 import { BlogPost, BlogBlockNode } from '../data/realEstateData';
 import {
   BookOpen,
@@ -11,7 +12,6 @@ import {
   Check,
   Copy,
   Search,
-  RefreshCw,
   ShieldCheck,
   FileText,
   MessageSquare,
@@ -47,68 +47,17 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   onBlogSelect,
 }) => {
   const { t, isRTL } = useLanguage();
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isSyncing, setIsSyncing] = useState<boolean>(false);
-  const [syncMessage, setSyncMessage] = useState<string | null>(null);
-  const [fetchError, setFetchError] = useState<string | null>(null);
+  const { blogs, isLoading: loading, error: fetchError, refreshBlogs } = useBlogs();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedBlog, setSelectedBlog] = useState<BlogPost | null>(null);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
   const [scrollProgress, setScrollProgress] = useState<number>(0);
 
-  // Load published blogs directly from Baserow API
-  const loadBlogs = async (forceFresh = false): Promise<BlogPost[]> => {
-    try {
-      if (forceFresh) setIsSyncing(true);
-      setFetchError(null);
-      const res = await fetch(forceFresh ? '/api/blogs?fresh=1' : '/api/blogs');
-      const data = await res.json();
-
-      if (data && Array.isArray(data.blogs)) {
-        setBlogs(data.blogs);
-      } else {
-        setBlogs([]);
-      }
-
-      if (data?.error) {
-        setFetchError(data.error);
-      } else if (forceFresh) {
-        const count = Array.isArray(data.blogs) ? data.blogs.length : 0;
-        setSyncMessage(`Synced with Baserow (${count} ${count === 1 ? 'article' : 'articles'} live).`);
-        setTimeout(() => setSyncMessage(null), 3000);
-      }
-
-      return Array.isArray(data.blogs) ? data.blogs : [];
-    } catch (err) {
-      console.warn('Failed to load blogs from Baserow:', err);
-      setFetchError('Unable to connect to the blog service right now. Please try refreshing.');
-      return [];
-    } finally {
-      setLoading(false);
-      setIsSyncing(false);
-    }
-  };
-
+  // Silently sync latest published articles whenever Blogs view is opened
   useEffect(() => {
-    let isMounted = true;
-    loadBlogs().then((loaded) => {
-      if (!isMounted) return;
-      if (initialBlogSlug) {
-        const target = loaded.find(
-          (b) => b.slug?.toLowerCase() === initialBlogSlug.toLowerCase() || b.id === initialBlogSlug
-        );
-        if (target) {
-          setSelectedBlog(target);
-        }
-      }
-    });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [initialBlogSlug]);
+    refreshBlogs(true);
+  }, [refreshBlogs]);
 
   useEffect(() => {
     if (initialBlogSlug && blogs.length > 0) {
@@ -666,7 +615,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   }
 
   // =========================================================================
-  // 2. MAIN BLOGS DIRECTORY LISTING VIEW (BASEROW SOURCED)
+  // 2. MAIN BLOGS DIRECTORY LISTING VIEW
   // =========================================================================
   return (
     <div className={`min-h-screen bg-[#FAF9F6] pb-24 ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -685,25 +634,9 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
             {t.blogsPage.subtitle}
           </p>
 
-          <div className="inline-flex flex-wrap items-center justify-center gap-3 text-xs text-neutral-300">
-            <span className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          {blogs.length > 0 && (
+            <div className="inline-flex items-center justify-center gap-2 text-xs text-neutral-300">
               <span>Jamoka Editorial • {blogs.length} {blogs.length === 1 ? 'Article' : 'Articles'}</span>
-            </span>
-            <span className="text-neutral-600 hidden sm:inline">|</span>
-            <button
-              onClick={() => loadBlogs(true)}
-              disabled={isSyncing}
-              className="inline-flex items-center gap-1 text-[#CFA55A] hover:text-[#ECC86A] transition-colors cursor-pointer"
-            >
-              <RefreshCw className={`w-3 h-3 ${isSyncing ? 'animate-spin' : ''}`} />
-              <span>{isSyncing ? 'Refreshing...' : 'Refresh Feed'}</span>
-            </button>
-          </div>
-
-          {syncMessage && (
-            <div className="mt-3 text-xs text-emerald-400 font-medium">
-              {syncMessage}
             </div>
           )}
         </div>
@@ -753,25 +686,32 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
 
       {/* Blog Cards Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-        {loading ? (
-          <div className="py-24 text-center">
-            <div className="w-10 h-10 border-4 border-[#CFA55A] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-sm text-slate-600 font-medium">
-              Loading articles from Baserow...
-            </p>
+        {loading && blogs.length === 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="bg-white rounded-3xl border border-neutral-200 overflow-hidden p-4 space-y-4 animate-pulse"
+              >
+                <div className="h-52 bg-slate-200 rounded-2xl w-full" />
+                <div className="h-4 bg-slate-200 rounded-md w-1/3" />
+                <div className="h-6 bg-slate-200 rounded-md w-3/4" />
+                <div className="h-4 bg-slate-200 rounded-md w-full" />
+              </div>
+            ))}
           </div>
         ) : fetchError && blogs.length === 0 ? (
-          <div className="py-16 text-center bg-white rounded-3xl border border-amber-200/90 p-8 max-w-xl mx-auto shadow-xs">
+          <div className="py-16 text-center bg-white rounded-3xl border border-neutral-200/90 p-8 max-w-xl mx-auto shadow-xs">
             <AlertCircle className="w-10 h-10 text-[#CFA55A] mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Baserow Table Connection Notice</h3>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Insights Temporarily Unavailable</h3>
             <p className="text-xs sm:text-sm text-slate-600 mb-5 font-light leading-relaxed">
               {fetchError}
             </p>
             <button
-              onClick={() => loadBlogs(true)}
+              onClick={() => refreshBlogs(true)}
               className="px-5 py-2.5 rounded-xl bg-black text-white text-xs font-bold uppercase tracking-wider cursor-pointer hover:bg-slate-800 transition-colors"
             >
-              Retry Connection
+              Try Again
             </button>
           </div>
         ) : filteredBlogs.length === 0 ? (
@@ -782,7 +722,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
             </h3>
             <p className="text-xs text-slate-500 mb-4 font-light">
               {blogs.length === 0
-                ? 'Add rows to your Baserow blog table to publish articles here immediately.'
+                ? 'New Dubai real estate research and market briefings will appear here shortly.'
                 : 'Try adjusting your search query or resetting category filters.'}
             </p>
             {blogs.length > 0 && (

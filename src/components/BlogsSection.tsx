@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BlogPost } from '../data/realEstateData';
+import { useBlogs } from '../context/BlogsContext';
 import { BookOpen, Calendar, Clock, ArrowUpRight, ArrowRight } from 'lucide-react';
 
 interface BlogsSectionProps {
@@ -11,32 +12,10 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
   onOpenBlog,
   onNavigateAllBlogs,
 }) => {
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { blogs, isLoading } = useBlogs();
 
-  useEffect(() => {
-    let isMounted = true;
-    const fetchBaserowBlogs = async () => {
-      try {
-        const res = await fetch('/api/blogs');
-        if (res.ok) {
-          const data = await res.json();
-          if (isMounted && data.success && Array.isArray(data.blogs)) {
-            setBlogs(data.blogs);
-          }
-        }
-      } catch (err) {
-        console.warn('Unable to load Baserow blogs for home section:', err);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    fetchBaserowBlogs();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const featuredOnly = blogs.filter((b) => b.featured);
+  const displayedBlogs = (featuredOnly.length > 0 ? featuredOnly : blogs).slice(0, 3);
 
   const handleArticleClick = (blog: BlogPost) => {
     const slug = blog.slug || blog.id;
@@ -57,8 +36,8 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
     }
   };
 
-  // If loading has finished and no active blogs exist in Baserow, do not show any dummy blogs
-  if (!loading && blogs.length === 0) {
+  // If initial fetch finished and no published articles exist, omit the section cleanly
+  if (!isLoading && displayedBlogs.length === 0) {
     return null;
   }
 
@@ -69,13 +48,13 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
           <div>
             <div className="inline-flex items-center gap-2 text-[#A6833D] text-[11px] font-bold tracking-[0.2em] uppercase mb-2">
               <BookOpen className="w-3.5 h-3.5 text-[#CFA55A]" />
-              <span>MARKET INTELLIGENCE</span>
+              <span>FEATURED MARKET INTELLIGENCE</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#0F172A] font-serif-luxury tracking-tight">
               Dubai Real Estate Insights
             </h2>
             <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-2xl font-light">
-              Research briefings and investment perspectives curated by Jamoka Properties.
+              Featured research briefings and investment perspectives curated by Jamoka Properties.
             </p>
           </div>
 
@@ -88,8 +67,8 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
           </button>
         </div>
 
-        {/* Live Baserow Articles Grid */}
-        {loading ? (
+        {/* Featured Published Articles Grid (3 Featured Articles) */}
+        {isLoading && displayedBlogs.length === 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((i) => (
               <div
@@ -105,7 +84,7 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogs.map((article) => (
+            {displayedBlogs.map((article) => (
               <article
                 key={article.id}
                 onClick={() => handleArticleClick(article)}
