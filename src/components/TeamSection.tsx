@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Calendar, Clock, MapPin, CheckCircle2, ShieldCheck, Phone, Mail, Send, Users, Loader2 } from 'lucide-react';
 import { TEAM_MEMBERS } from '../data/realEstateData';
 import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
+import { withBasePath } from '../utils/basePath';
 
 interface TeamSectionProps {
   onNavigateContact?: () => void;
@@ -134,7 +135,7 @@ export const TeamSection: React.FC<TeamSectionProps> = ({ onNavigateContact }) =
                 src="https://res.cloudinary.com/ui01u7dm/image/upload/v1793170985/_IMR1064.jpg"
                 alt="Jamoka Properties Team in Dubai"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/advisory-team.jpg';
+                  (e.target as HTMLImageElement).src = withBasePath('/advisory-team.jpg');
                 }}
                 className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-700"
               />

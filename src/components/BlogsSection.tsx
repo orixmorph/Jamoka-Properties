@@ -2,6 +2,7 @@ import React from 'react';
 import { BlogPost } from '../data/realEstateData';
 import { useBlogs } from '../context/BlogsContext';
 import { BookOpen, Calendar, Clock, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { withBasePath } from '../utils/basePath';
 
 interface BlogsSectionProps {
   onOpenBlog?: (slug: string) => void;
@@ -22,7 +23,7 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
     if (onOpenBlog) {
       onOpenBlog(slug);
     } else {
-      window.location.href = `/blogs/${slug}`;
+      window.location.href = withBasePath(`/blogs/${slug}`);
     }
   };
 
@@ -32,7 +33,7 @@ export const BlogsSection: React.FC<BlogsSectionProps> = ({
     } else if (onOpenBlog) {
       onOpenBlog('');
     } else {
-      window.location.href = '/blogs';
+      window.location.href = withBasePath('/blogs');
     }
   };
 

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { OPEN_POSITIONS, JobPosition } from '../data/careersData';
 import { JobApplicationModal } from '../components/JobApplicationModal';
+import { withBasePath } from '../utils/basePath';
 
 interface CareersPageProps {
   initialJobSlug?: string | null;
@@ -60,7 +61,7 @@ export const CareersPage: React.FC<CareersPageProps> = ({
   };
 
   const handleSharePosition = (pos: JobPosition) => {
-    const url = `${window.location.origin}/careers/${pos.slug}`;
+    const url = `${window.location.origin}${withBasePath(`/careers/${pos.slug}`)}`;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(url);
       setCopiedLink(true);

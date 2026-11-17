@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { BlogPost } from '../data/realEstateData';
+import { withBasePath } from '../utils/basePath';
 
 interface BlogsContextType {
   blogs: BlogPost[];
@@ -10,6 +11,30 @@ interface BlogsContextType {
 
 const BlogsContext = createContext<BlogsContextType | undefined>(undefined);
 
+function normalizeBlogAssets(posts: BlogPost[]): BlogPost[] {
+  return posts.map((post) => ({
+    ...post,
+    image: withBasePath(post.image),
+    blocks: Array.isArray(post.blocks)
+      ? post.blocks.map((blk) =>
+          blk.type === 'image' ? { ...blk, url: withBasePath(blk.url) } : blk
+        )
+      : post.blocks,
+  }));
+}
+
+async function fetchJsonSafely(url: string) {
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: { Accept: 'application/json' },
+  });
+  const contentType = res.headers.get('content-type') || '';
+  if (!res.ok || !contentType.includes('application/json')) {
+    return null;
+  }
+  return res.json();
+}
+
 export const BlogsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -18,19 +43,23 @@ export const BlogsProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const loadBlogs = useCallback(async (forceFresh = false): Promise<BlogPost[]> => {
     try {
       setError(null);
-      const res = await fetch(forceFresh ? '/api/blogs?fresh=1' : '/api/blogs');
-      if (!res.ok) {
-        throw new Error('Unable to load articles right now.');
+      const liveUrl = withBasePath(forceFresh ? '/api/blogs?fresh=1' : '/api/blogs');
+      let data = await fetchJsonSafely(liveUrl).catch(() => null);
+
+      if (!data || !Array.isArray(data.blogs)) {
+        data = await fetchJsonSafely(withBasePath('/static-data/blogs.json')).catch(() => null);
       }
-      const data = await res.json();
+
       if (data && Array.isArray(data.blogs)) {
-        setBlogs(data.blogs);
-        if (data.error && data.blogs.length === 0) {
+        const normalized = normalizeBlogAssets(data.blogs);
+        setBlogs(normalized);
+        if (data.error && normalized.length === 0) {
           setError(data.error);
         }
-        return data.blogs;
+        return normalized;
       }
-      return [];
+
+      throw new Error('Unable to load articles right now.');
     } catch {
       setError('Unable to load articles right now. Please try again shortly.');
       return [];

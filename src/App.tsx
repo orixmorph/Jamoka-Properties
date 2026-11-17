@@ -18,6 +18,7 @@ import { SecondaryMarketPopup } from './components/SecondaryMarketPopup';
 import { SecondaryMarketModal } from './components/SecondaryMarketModal';
 import { OFF_PLAN_PROJECTS } from './data/realEstateData';
 import { trackMetaPixel } from './utils/metaPixel';
+import { stripBasePath, withBasePath } from './utils/basePath';
 
 export interface RouteState {
   page: PageType;
@@ -46,8 +47,8 @@ const getInitialRoute = (): RouteState => {
     // Ignore query parsing errors
   }
 
-  // Check both window.location.pathname and hash for deployment environments (e.g. Vercel, sub-domains)
-  const path = window.location.pathname.toLowerCase();
+  // Check both stripped pathname and hash for deployment environments (e.g. GitHub Pages, Vercel, sub-domains)
+  const path = stripBasePath(window.location.pathname).toLowerCase();
   const hash = window.location.hash.toLowerCase().replace(/^#/, '');
 
   const effectivePath = hash ? (hash.startsWith('/') ? hash : `/${hash}`) : path;
@@ -231,14 +232,14 @@ function MainApp() {
     setActivePage(page);
     if (page === 'careers') {
       setCareerSlug(null);
-      window.history.pushState(null, '', '/careers');
+      window.history.pushState(null, '', withBasePath('/careers'));
     } else if (page === 'blogs') {
       setBlogSlug(null);
-      window.history.pushState(null, '', '/blogs');
+      window.history.pushState(null, '', withBasePath('/blogs'));
     } else if (page === 'home') {
-      window.history.pushState(null, '', '/');
+      window.history.pushState(null, '', withBasePath('/'));
     } else {
-      window.history.pushState(null, '', `/${page}`);
+      window.history.pushState(null, '', withBasePath(`/${page}`));
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     trackMetaPixel('PageView');
@@ -248,9 +249,9 @@ function MainApp() {
     setBlogSlug(slug);
     setActivePage('blogs');
     if (slug) {
-      window.history.pushState(null, '', `/blogs/${slug}`);
+      window.history.pushState(null, '', withBasePath(`/blogs/${slug}`));
     } else {
-      window.history.pushState(null, '', '/blogs');
+      window.history.pushState(null, '', withBasePath('/blogs'));
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     trackMetaPixel('PageView');
@@ -259,9 +260,9 @@ function MainApp() {
   const handleJobSelect = (slug: string | null) => {
     setCareerSlug(slug);
     if (slug) {
-      window.history.pushState(null, '', `/careers/${slug}`);
+      window.history.pushState(null, '', withBasePath(`/careers/${slug}`));
     } else {
-      window.history.pushState(null, '', '/careers');
+      window.history.pushState(null, '', withBasePath('/careers'));
     }
     trackMetaPixel('PageView');
   };

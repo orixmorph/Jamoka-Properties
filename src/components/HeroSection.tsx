@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Search, ArrowUpRight, ChevronDown, Sparkles, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { withBasePath } from '../utils/basePath';
 
 // ---------------------------------------------------------------------------------
 // BACKGROUND VIDEO & HERO LOGO CONFIGURATION
@@ -115,7 +116,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         >
           <h1 className="sr-only">Jamoka Properties - Luxury Dubai Real Estate</h1>
           <img
-            src={logoError ? '/jamoka-header-logo.png' : logoSource}
+            src={logoError ? withBasePath('/jamoka-header-logo.png') : logoSource}
             alt="Jamoka Properties"
             onError={() => setLogoError(true)}
             className="w-auto h-auto max-h-[85px] sm:max-h-[110px] md:max-h-[135px] lg:max-h-[160px] max-w-[290px] sm:max-w-[420px] md:max-w-[540px] lg:max-w-[620px] object-contain drop-shadow-[0_8px_30px_rgba(0,0,0,0.7)]"

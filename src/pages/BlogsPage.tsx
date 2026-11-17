@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useBlogs } from '../context/BlogsContext';
 import { BlogPost, BlogBlockNode } from '../data/realEstateData';
+import { withBasePath } from '../utils/basePath';
 import {
   BookOpen,
   Calendar,
@@ -92,7 +93,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
     if (onBlogSelect) {
       onBlogSelect(blog.slug || blog.id);
     } else {
-      window.history.pushState(null, '', `/blogs/${blog.slug || blog.id}`);
+      window.history.pushState(null, '', withBasePath(`/blogs/${blog.slug || blog.id}`));
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -102,7 +103,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
     if (onBlogSelect) {
       onBlogSelect(null);
     } else {
-      window.history.pushState(null, '', '/blogs');
+      window.history.pushState(null, '', withBasePath('/blogs'));
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -272,7 +273,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
   };
 
   // =========================================================================
-  // 1. FULL-PAGE ARTICLE READER VIEW (DYNAMIC BASEROW BLOCK LAYOUT)
+  // 1. FULL-PAGE ARTICLE READER VIEW (DYNAMIC ORDERED BLOCK LAYOUT)
   // =========================================================================
   if (selectedBlog) {
     const relatedBlogs = blogs.filter((b) => b.id !== selectedBlog.id).slice(0, 3);
@@ -365,7 +366,7 @@ export const BlogsPage: React.FC<BlogsPageProps> = ({
         {/* Main Editorial Article + Sidebar */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            {/* Article Content Column (Ordered Baserow Blocks) */}
+            {/* Article Content Column */}
             <main className="lg:col-span-8">
               <article className="bg-white rounded-3xl p-6 sm:p-10 md:p-12 border border-neutral-200/80 shadow-xs space-y-6">
                 {articleBlocks.map((block, idx) => {

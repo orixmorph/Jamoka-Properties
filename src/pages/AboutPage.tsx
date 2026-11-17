@@ -1,9 +1,10 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { AgentSlider } from '../components/AgentSlider';
-import { ShieldCheck, Award, Building, Users, MapPin, CheckCircle2, ArrowRight, Quote, Sparkles } from 'lucide-react';
+import { ShieldCheck, Award, Building, Users, MapPin, ArrowRight, Quote, Sparkles } from 'lucide-react';
+import { withBasePath } from '../utils/basePath';
 
-const CEO_PHOTO_URL = '/basil-al-naimi.jpg';
+const CEO_PHOTO_URL = withBasePath('/basil-al-naimi.jpg');
 const COO_PHOTO_URL = 'https://ik.imagekit.io/pkn80iczwu/teams/NL2.png';
 
 interface AboutPageProps {

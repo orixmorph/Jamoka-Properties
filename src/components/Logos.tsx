@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { withBasePath } from '../utils/basePath';
 
 /**
  * Cloudinary / Cloud Image Array for Jamoka Properties Header Logo
@@ -10,7 +11,7 @@ export const JAMOKA_HEADER_CLOUD_LOGOS: string[] = [
   // Primary Cloudinary link (configured with cloud name: dy6km7beb)
   'https://ik.imagekit.io/zb5ih81ig/SITE%20LOGOS.png?updatedAt=1791790631413',
   // Local high-resolution brand asset fallback
-  '/jamoka-header-logo.png',
+  withBasePath('/jamoka-header-logo.png'),
 ];
 
 /**
@@ -97,7 +98,7 @@ export const JamokaLogo: React.FC<JamokaLogoProps> = ({
     cloudImages && cloudImages.length > 0
       ? cloudImages
       : JAMOKA_HEADER_CLOUD_LOGOS;
-  const currentSrc = imageList[imageIndex] || '/jamoka-header-logo.png';
+  const currentSrc = imageList[imageIndex] || withBasePath('/jamoka-header-logo.png');
 
   const handleImageError = () => {
     // If a cloud URL fails to load (e.g. pending Cloudinary asset), smoothly step to next URL in array
@@ -167,7 +168,7 @@ export const SqftMonogram: React.FC<{ className?: string; size?: number }> = ({
       title="SQFT DXB • We Find, You Move In"
     >
       <img
-        src="/sqft-logo.png"
+        src={withBasePath('/sqft-logo.png')}
         alt="SQFT DXB Monogram Logo"
         className="w-full h-full object-cover"
       />
