@@ -1,19 +1,31 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { ShieldCheck, Sparkles, Award, Key, Building, CheckCircle2, ArrowRight, ArrowUpRight, ExternalLink, UserCheck, FileCheck } from 'lucide-react';
+import { ShieldCheck, Sparkles, Award, Key, CheckCircle2, ArrowRight, ExternalLink, FileCheck, Landmark } from 'lucide-react';
 
 interface ServicesPageProps {
   onNavigateContact: () => void;
   onOpenSecondaryModal: () => void;
+  onOpenPrivateInvestment: () => void;
 }
 
 export const ServicesPage: React.FC<ServicesPageProps> = ({
   onNavigateContact,
   onOpenSecondaryModal,
+  onOpenPrivateInvestment,
 }) => {
   const { t, isRTL } = useLanguage();
 
   const services = [
+    {
+      icon: <Landmark className="w-7 h-7 text-[#A6833D]" />,
+      title: t.servicesPage.privateInvestmentTitle,
+      subtitle: t.servicesPage.privateInvestmentSubtitle,
+      desc: t.servicesPage.privateInvestmentDesc,
+      highlights: t.servicesPage.privateInvestmentHighlights,
+      ctaText: t.servicesPage.privateInvestmentCta,
+      action: onOpenPrivateInvestment,
+      featured: true,
+    },
     {
       icon: <Award className="w-7 h-7 text-[#CFA55A]" />,
       title: t.servicesPage.goldenVisaTitle,
@@ -27,6 +39,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       ],
       ctaText: 'Inquire Golden Visa',
       action: onNavigateContact,
+      featured: false,
     },
     {
       icon: <FileCheck className="w-7 h-7 text-[#A6833D]" />,
@@ -41,6 +54,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       ],
       ctaText: 'Inquire 2-Year Investor Visa',
       action: onNavigateContact,
+      featured: false,
     },
     {
       icon: <Sparkles className="w-7 h-7 text-[#CFA55A]" />,
@@ -55,6 +69,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       ],
       ctaText: 'Access Pre-Launch Units',
       action: onNavigateContact,
+      featured: false,
     },
     {
       icon: <ShieldCheck className="w-7 h-7 text-emerald-600" />,
@@ -69,6 +84,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       ],
       ctaText: 'Escrow Verification',
       action: onNavigateContact,
+      featured: false,
     },
     {
       icon: <Key className="w-7 h-7 text-[#CFA55A]" />,
@@ -83,6 +99,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       ],
       ctaText: 'Explore Secondary Market (SQFT DXB)',
       action: onOpenSecondaryModal,
+      featured: false,
     },
   ];
 
@@ -110,7 +127,11 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         {services.map((service, index) => (
           <div
             key={index}
-            className="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-neutral-200/80 hover:border-[#CFA55A]/60 hover:shadow-xl transition-all"
+            className={`bg-white rounded-3xl p-6 sm:p-10 transition-all ${
+              service.featured
+                ? 'shadow-xl border-2 border-[#CFA55A] ring-1 ring-[#CFA55A]/20'
+                : 'shadow-lg border border-neutral-200/80 hover:border-[#CFA55A]/60 hover:shadow-xl'
+            }`}
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-8 space-y-4">
@@ -132,6 +153,27 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                   {service.desc}
                 </p>
 
+                {service.featured && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div className="rounded-xl bg-[#FAF9F6] border border-slate-200 px-4 py-3">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 tabular-nums">
+                        AED 5,000,000 Allocation
+                      </p>
+                      <p className="text-lg font-bold text-[#0D1B2A] font-serif-luxury tabular-nums">
+                        15% Annual ROI · AED 750,000/yr
+                      </p>
+                    </div>
+                    <div className="rounded-xl bg-[#FAF9F6] border border-[#CFA55A]/60 px-4 py-3">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 tabular-nums">
+                        AED 10,000,000 Allocation
+                      </p>
+                      <p className="text-lg font-bold text-[#0D1B2A] font-serif-luxury tabular-nums">
+                        16% Annual ROI · AED 1,600,000/yr
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
                   {service.highlights.map((h, i) => (
                     <div key={i} className="flex items-start gap-2 text-xs text-slate-700">
@@ -145,10 +187,14 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
               <div className="lg:col-span-4 flex flex-col justify-center items-start lg:items-end pt-4 lg:pt-0 border-t lg:border-t-0 border-neutral-100">
                 <button
                   onClick={service.action}
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-black hover:bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  className={`w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer ${
+                    service.featured
+                      ? 'bg-[#0D1B2A] hover:bg-[#172B40] text-white border border-[#CFA55A]/60'
+                      : 'bg-black hover:bg-neutral-900 text-white'
+                  }`}
                 >
                   <span>{service.ctaText}</span>
-                  <ArrowRight className="w-4 h-4 text-[#CFA55A]" />
+                  <ArrowRight className={`w-4 h-4 text-[#CFA55A] ${isRTL ? 'rotate-180' : ''}`} />
                 </button>
               </div>
             </div>

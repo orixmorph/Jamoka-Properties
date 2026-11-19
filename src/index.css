@@ -75,6 +75,55 @@
   font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
 }
 
+.font-arabic {
+  font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.font-arabic h1,
+.font-arabic h2,
+.font-arabic h3,
+.font-arabic h4,
+.font-arabic .font-secondary,
+.font-arabic .font-caughe {
+  font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+/* Keep Google Translate dropdown discreet without breaking sticky header */
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.jamoka-gt-container .goog-te-gadget {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 0 !important;
+  color: transparent !important;
+}
+
+.jamoka-gt-container .goog-te-gadget span {
+  display: none !important;
+}
+
+.jamoka-gt-container .goog-te-combo {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #1e293b !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 0.5rem !important;
+  padding: 6px 10px !important;
+  outline: none !important;
+  cursor: pointer !important;
+  width: 100% !important;
+}
+
 /* Custom Gold Branding Accents */
 .bg-gold-gradient {
   background: #CFA55A;

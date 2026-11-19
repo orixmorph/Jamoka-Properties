@@ -121,6 +121,11 @@ export interface Translations {
   servicesPage: {
     title: string;
     subtitle: string;
+    privateInvestmentTitle: string;
+    privateInvestmentSubtitle: string;
+    privateInvestmentDesc: string;
+    privateInvestmentCta: string;
+    privateInvestmentHighlights: string[];
     goldenVisaTitle: string;
     goldenVisaDesc: string;
     twoYearVisaTitle: string;
@@ -293,6 +298,16 @@ export const translations: Record<Language, Translations> = {
     servicesPage: {
       title: 'Our Real Estate Services',
       subtitle: 'Comprehensive real estate support from early project selection to handover and ongoing asset management.',
+      privateInvestmentTitle: 'Private Real Estate Investment (15%–16% Structured Annual ROI)',
+      privateInvestmentSubtitle: 'Exclusive Tier-1 Developer Allocation · AED 5M & AED 10M',
+      privateInvestmentDesc: 'An institutional private investment structure with selected Tier-1 Dubai developers offering 15% guaranteed annual ROI on AED 5M (AED 750,000/yr) or 16% guaranteed annual ROI on AED 10M (AED 1,600,000/yr), flexible property allocation across Class-A projects, and a contractual original purchase price buyback option.',
+      privateInvestmentCta: 'Explore Private Investment',
+      privateInvestmentHighlights: [
+        'AED 5M at 15% Annual ROI (AED 750,000/yr) or AED 10M at 16% Annual ROI (AED 1,600,000/yr)',
+        '3-year investment term with optional 3+3-year extended renewal framework',
+        'Contractual original purchase price buyback option or property retention flexibility',
+        'Customisable allocation across studios, 1–2 BR apartments, and selected retail units',
+      ],
       goldenVisaTitle: '10-Year UAE Golden Visa Assistance',
       goldenVisaDesc: 'Property purchases of AED 2M+ qualify for the UAE 10-Year Golden Residency. We coordinate the full verification with the Dubai Land Department and GDRFA.',
       twoYearVisaTitle: '2-Year Property Investor Residency (Under AED 2M)',
@@ -463,6 +478,16 @@ export const translations: Record<Language, Translations> = {
     servicesPage: {
       title: 'خدماتنا العقارية',
       subtitle: 'دعم عقاري شامل يبدأ من اختيار المشروع وحتى الاستلام وإعادة البيع وإدارة الأصول.',
+      privateInvestmentTitle: 'الاستثمار العقاري الخاص (عائد سنوي مهيكل 15% – 16%)',
+      privateInvestmentSubtitle: 'تخصيص حصري مع نخبة مطوّري الفئة الأولى · 5 مليون و10 مليون درهم',
+      privateInvestmentDesc: 'هيكل استثماري خاص عبر نخبة من مطوّري الفئة الأولى في دبي بعائد سنوي مضمون 15% لاستثمار 5 مليون درهم (750,000 درهم سنوياً) أو 16% لاستثمار 10 مليون درهم (1,600,000 درهم سنوياً)، مع مرونة اختيار الوحدات وخيار تعاقدي لإعادة الشراء بسعر الشراء الأصلي.',
+      privateInvestmentCta: 'استكشف الاستثمار الخاص',
+      privateInvestmentHighlights: [
+        '5 مليون درهم بعائد سنوي 15% (750,000 درهم/سنوياً) أو 10 مليون درهم بعائد 16% (1,600,000 درهم/سنوياً)',
+        'مدة استثمار 3 سنوات مع خيار التمديد لمدة 3+3 سنوات وفق الشروط التعاقدية',
+        'خيار تعاقدي لإعادة الشراء بسعر الشراء الأصلي أو الاحتفاظ بملكية العقار',
+        'مرونة التخصيص بين الاستوديوهات وشقق غرفة وغرفتي النوم والوحدات التجارية المختارة',
+      ],
       goldenVisaTitle: 'المساعدة في الإقامة الذهبية (10 سنوات)',
       goldenVisaDesc: 'شراء عقار بقيمة 2 مليون درهم فما فوق يمنحك حق الحصول على الإقامة الذهبية في الإمارات. نقوم بتنسيق الإجراءات كاملة مع دائرة الأراضي والأملاك والإقامة.',
       twoYearVisaTitle: 'إقامة المستثمر العقاري لسنتين (أقل من 2 مليون درهم)',

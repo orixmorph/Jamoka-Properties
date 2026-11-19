@@ -13,6 +13,7 @@ import { BlogsPage } from './pages/BlogsPage';
 import { CareersPage } from './pages/CareersPage';
 import { ContactPage } from './pages/ContactPage';
 import { LandingPageView } from './pages/LandingPageView';
+import { PrivateInvestmentPage } from './pages/PrivateInvestmentPage';
 import { Footer } from './components/Footer';
 import { SecondaryMarketPopup } from './components/SecondaryMarketPopup';
 import { SecondaryMarketModal } from './components/SecondaryMarketModal';
@@ -37,6 +38,9 @@ const getInitialRoute = (): RouteState => {
     const searchParams = new URLSearchParams(window.location.search);
     const queryLp = searchParams.get('landing') || searchParams.get('lp');
     if (queryLp) {
+      if (queryLp.toLowerCase() === 'private-investment') {
+        return { page: 'private-investment', careerSlug: null, landingSlug: null, blogSlug: null };
+      }
       return { page: 'landing', careerSlug: null, landingSlug: queryLp, blogSlug: null };
     }
     const queryBlog = searchParams.get('blog') || searchParams.get('article');
@@ -52,6 +56,16 @@ const getInitialRoute = (): RouteState => {
   const hash = window.location.hash.toLowerCase().replace(/^#/, '');
 
   const effectivePath = hash ? (hash.startsWith('/') ? hash : `/${hash}`) : path;
+
+  // Dedicated Private Investment landing page route
+  if (
+    effectivePath.startsWith('/private-investment') ||
+    effectivePath.startsWith('/services/private-investment') ||
+    effectivePath.startsWith('/landing/private-investment') ||
+    effectivePath.startsWith('/lp/private-investment')
+  ) {
+    return { page: 'private-investment', careerSlug: null, landingSlug: null, blogSlug: null };
+  }
 
   // Hidden campaign landing page routes (e.g. /landing/palm-residences-vip or /lp/downtown-sky)
   if (effectivePath.startsWith('/landing') || effectivePath.startsWith('/lp')) {
@@ -267,6 +281,15 @@ function MainApp() {
     trackMetaPixel('PageView');
   };
 
+  // Fullscreen isolated view for dedicated Private Investment landing page
+  if (activePage === 'private-investment') {
+    return (
+      <PrivateInvestmentPage
+        onNavigateMainSite={(targetPage) => handleNavigate(targetPage || 'home')}
+      />
+    );
+  }
+
   // Fullscreen isolated view for hidden campaign landing pages
   if (activePage === 'landing') {
     return (
@@ -340,6 +363,7 @@ function MainApp() {
           <ServicesPage
             onNavigateContact={() => handleNavigate('contact')}
             onOpenSecondaryModal={() => setSecondaryModalOpen(true)}
+            onOpenPrivateInvestment={() => handleNavigate('private-investment')}
           />
         )}
 
