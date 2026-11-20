@@ -11,6 +11,11 @@
  */
 
 import { sendToFormBold } from './formbold';
+import {
+  GOOGLE_SHEETS_WEBHOOK_URL,
+  formatSheetWhatsAppLink,
+  sendToGoogleSheet,
+} from './googleSheets';
 
 export interface ApplicationPayload {
   positionTitle: string;
@@ -24,112 +29,64 @@ export interface ApplicationPayload {
   coverNote?: string;
 }
 
-// Google Apps Script Web App endpoint for automatic Google Sheet row insertion
-export const GOOGLE_APPS_SCRIPT_WEBHOOK_URL =
-  'https://script.google.com/macros/s/AKfycbxKUgpmyypswdLd6hryfsPstI_vYVgiLzOFec43OQrZGeTkR_7FvVjkaTwseZszYBNb/exec';
+// Re-export the unified Google Apps Script Web App endpoint
+export const GOOGLE_APPS_SCRIPT_WEBHOOK_URL = GOOGLE_SHEETS_WEBHOOK_URL;
 
 /**
  * Formats any candidate phone number into a direct 1-click WhatsApp wa.me link.
- * Handles +, spaces, dashes, leading zeroes, UAE local formats (e.g. 050 -> 97150),
- * and pre-fills a friendly greeting message.
  */
-export function formatWhatsAppLink(phoneInput: string, candidateName: string, positionTitle: string): {
+export function formatWhatsAppLink(
+  phoneInput: string,
+  candidateName: string,
+  positionTitle: string
+): {
   cleanNumber: string;
   waLink: string;
 } {
-  if (!phoneInput) {
-    return { cleanNumber: '', waLink: '' };
-  }
-
-  // Strip all non-digit characters
-  let digits = phoneInput.replace(/\D/g, '');
-
-  // Handle UAE local prefix: if applicant entered e.g. 0501234567 or 052... (10 digits starting with 0)
-  if (digits.startsWith('0') && digits.length === 10) {
-    digits = '971' + digits.substring(1);
-  } else if (digits.startsWith('00')) {
-    // 00971... -> 971...
-    digits = digits.substring(2);
-  }
-
-  if (!digits) {
-    return { cleanNumber: phoneInput, waLink: '' };
-  }
-
-  // Pre-filled greeting so clicking the link immediately prepares a professional message
-  const prefilledMessage = encodeURIComponent(
-    `Hello ${candidateName || 'Candidate'}, thank you for applying for the ${positionTitle || 'open'} position at Jamoka Properties Dubai.`
+  return formatSheetWhatsAppLink(
+    phoneInput,
+    candidateName || 'Candidate',
+    `the ${positionTitle || 'open'} position`
   );
-
-  const waLink = `https://wa.me/${digits}?text=${prefilledMessage}`;
-
-  return {
-    cleanNumber: digits,
-    waLink,
-  };
 }
 
 export async function submitCareerApplication(payload: ApplicationPayload): Promise<{
   success: boolean;
   message: string;
 }> {
-  const scriptUrl = GOOGLE_APPS_SCRIPT_WEBHOOK_URL.trim();
-  let googleSuccess = false;
-
-  // Generate 1-click WhatsApp link
-  const { cleanNumber, waLink } = formatWhatsAppLink(
+  const { waLink } = formatWhatsAppLink(
     payload.phone,
     payload.fullName,
     payload.positionTitle
   );
 
-  // 1. Post to Google Sheet via Google Apps Script Web App
-  if (scriptUrl) {
-    try {
-      const googlePayload = {
-        action: 'job_application',
-        timestamp: new Date().toISOString(),
-        position: payload.positionTitle,
-        department: payload.department,
-        location: payload.location,
-        fullName: payload.fullName,
+  // 1. Post to the unified Google Sheet ("All Leads" + "Careers" tab)
+  const googleSuccess = await sendToGoogleSheet({
+    action: 'job_application',
+    sheetTab: 'Careers',
+    source: `Careers Portal - ${payload.positionTitle}`,
+    subject: `Job Application: ${payload.positionTitle} (${payload.fullName})`,
+    fullName: payload.fullName,
+    email: payload.email,
+    phone: payload.phone,
+    position: payload.positionTitle,
+    department: payload.department,
+    location: payload.location,
+    residencyStatus: payload.residencyStatus,
+    portfolioUrl: payload.portfolioOrCvUrl || '',
+    message: payload.coverNote || '',
+  });
+
+  // 2. FormBold backup notification to Jamoka HR inbox (skipGoogleSheet avoids duplicate rows)
+  try {
+    await sendToFormBold(
+      {
+        name: payload.fullName,
         email: payload.email,
         phone: payload.phone,
-        phoneClean: cleanNumber,
-        whatsAppLink: waLink, // Direct 1-click WhatsApp URL
-        residencyStatus: payload.residencyStatus,
-        resumeUrl: 'N/A (Link provided below)', // Column G placeholder
-        portfolioUrl: payload.portfolioOrCvUrl || '', // Column H (Candidate Link)
-        coverNote: payload.coverNote || '', // Column I (Intro notes)
-        hasFile: false,
-        fileName: '',
-        fileType: '',
-        fileBase64: '',
-      };
-
-      await fetch(scriptUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8',
-        },
-        body: JSON.stringify(googlePayload),
-        mode: 'no-cors',
-      });
-      googleSuccess = true;
-    } catch (err) {
-      console.warn('Google Sheets logging error:', err);
-    }
-  }
-
-  // 2. FormBold backup notification to Jamoka HR inbox
-  try {
-    await sendToFormBold({
-      name: payload.fullName,
-      email: payload.email,
-      phone: payload.phone,
-      source: `Careers Portal - Application for ${payload.positionTitle}`,
-      subject: `Job Application: ${payload.positionTitle} (${payload.fullName})`,
-      message: `Position: ${payload.positionTitle}
+        source: `Careers Portal - Application for ${payload.positionTitle}`,
+        subject: `Job Application: ${payload.positionTitle} (${payload.fullName})`,
+        message: `Position: ${payload.positionTitle}
 Department: ${payload.department}
 Location: ${payload.location}
 Candidate: ${payload.fullName}
@@ -142,7 +99,9 @@ Google Sheets Log: ${googleSuccess ? 'Logged successfully' : 'Dispatched to Apps
 
 Candidate Statement / Introduction:
 ${payload.coverNote || 'N/A'}`,
-    });
+      },
+      { skipGoogleSheet: true }
+    );
   } catch (err) {
     console.warn('FormBold backup notification warning:', err);
   }
@@ -165,53 +124,22 @@ export interface LeadSheetPayload {
 }
 
 /**
- * Sends a real estate / landing page lead directly to the connected Google Sheets
- * via the configured Google Apps Script Web App.
+ * Sends a real estate / landing page lead directly to the unified Google Sheet.
  */
 export async function submitLeadToGoogleSheet(payload: LeadSheetPayload): Promise<boolean> {
-  const scriptUrl = GOOGLE_APPS_SCRIPT_WEBHOOK_URL.trim();
-  if (!scriptUrl) return false;
-
-  const { cleanNumber, waLink } = formatWhatsAppLink(
-    payload.phone,
-    payload.name,
-    payload.project || 'Mercedes-Benz Places'
-  );
-
-  try {
-    const googlePayload = {
-      action: 'lead_inquiry',
-      type: 'landing_page_lead',
-      timestamp: new Date().toISOString(),
-      fullName: payload.name,
-      name: payload.name,
-      email: payload.email,
-      phone: payload.phone,
-      phoneClean: cleanNumber,
-      whatsAppLink: waLink,
-      project: payload.project || 'Mercedes-Benz Places | Binghatti City',
-      position: payload.project || 'Mercedes-Benz Places | Binghatti City',
-      department: payload.preferredUnit || '1-Bedroom Residence (From AED 1.25M)',
-      preferredUnit: payload.preferredUnit || '1-Bedroom Residence (From AED 1.25M)',
-      timeline: payload.timeline || 'Immediate (Within 14 Days)',
-      location: 'Meydan, Dubai',
-      notes: payload.notes || '',
-      source: payload.source || 'Mercedes-Benz Places Campaign Registration Form',
-      residencyStatus: '100% Freehold / 10-Year Golden Visa Candidate',
-    };
-
-    await fetch(scriptUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8',
-      },
-      body: JSON.stringify(googlePayload),
-      mode: 'no-cors',
-    });
-    return true;
-  } catch (err) {
-    console.warn('Google Sheets lead submission error:', err);
-    return false;
-  }
+  return sendToGoogleSheet({
+    action: 'lead_inquiry',
+    sheetTab: 'Campaign Landings',
+    source: payload.source || 'Mercedes-Benz Places Campaign Registration Form',
+    subject: `Campaign Lead: ${payload.project || 'Mercedes-Benz Places | Binghatti City'}`,
+    fullName: payload.name,
+    email: payload.email,
+    phone: payload.phone,
+    project: payload.project || 'Mercedes-Benz Places | Binghatti City',
+    budget: payload.preferredUnit || '1-Bedroom Residence (From AED 1.25M)',
+    timeline: payload.timeline || 'Immediate (Within 14 Days)',
+    location: 'Meydan, Dubai',
+    message: payload.notes || '',
+  });
 }
 

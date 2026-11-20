@@ -165,16 +165,19 @@ export const MercedesLandingPage: React.FC<MercedesLandingPageProps> = ({
         source: 'Mercedes White Registration Form (Mid-Page)',
       });
 
-      // 3. FormBold email notification
-      await sendToFormBold({
-        name: contactData.name,
-        email: contactData.email,
-        phone: contactData.phone,
-        project: 'Mercedes-Benz Places | Binghatti City',
-        source: 'Mercedes White Contact Form (Mid-Page)',
-        subject: `New Mercedes-Benz Places Lead: ${contactData.name} (${contactData.preferredUnit})`,
-        message: `Preferred Unit: ${contactData.preferredUnit}\nTimeline: ${contactData.timeline}\nNotes: ${contactData.notes}`,
-      });
+      // 3. FormBold email notification (skipGoogleSheet avoids duplicate sheet rows)
+      await sendToFormBold(
+        {
+          name: contactData.name,
+          email: contactData.email,
+          phone: contactData.phone,
+          project: 'Mercedes-Benz Places | Binghatti City',
+          source: 'Mercedes White Contact Form (Mid-Page)',
+          subject: `New Mercedes-Benz Places Lead: ${contactData.name} (${contactData.preferredUnit})`,
+          message: `Preferred Unit: ${contactData.preferredUnit}\nTimeline: ${contactData.timeline}\nNotes: ${contactData.notes}`,
+        },
+        { skipGoogleSheet: true }
+      );
 
       setContactSubmitted(true);
     } catch (err: any) {
@@ -224,16 +227,19 @@ export const MercedesLandingPage: React.FC<MercedesLandingPageProps> = ({
         source: 'Mercedes White Registration Form (Bottom)',
       });
 
-      // 3. FormBold email notification
-      await sendToFormBold({
-        name: bottomData.name,
-        email: bottomData.email,
-        phone: bottomData.phone,
-        project: 'Mercedes-Benz Places | Binghatti City',
-        source: 'Mercedes White Contact Form (Bottom)',
-        subject: `New Mercedes-Benz Places Lead (Bottom Form): ${bottomData.name} (${bottomData.preferredUnit})`,
-        message: `Preferred Unit: ${bottomData.preferredUnit}\nTimeline: ${bottomData.timeline}\nNotes: ${bottomData.notes}`,
-      });
+      // 3. FormBold email notification (skipGoogleSheet avoids duplicate sheet rows)
+      await sendToFormBold(
+        {
+          name: bottomData.name,
+          email: bottomData.email,
+          phone: bottomData.phone,
+          project: 'Mercedes-Benz Places | Binghatti City',
+          source: 'Mercedes White Contact Form (Bottom)',
+          subject: `New Mercedes-Benz Places Lead (Bottom Form): ${bottomData.name} (${bottomData.preferredUnit})`,
+          message: `Preferred Unit: ${bottomData.preferredUnit}\nTimeline: ${bottomData.timeline}\nNotes: ${bottomData.notes}`,
+        },
+        { skipGoogleSheet: true }
+      );
 
       setBottomSubmitted(true);
     } catch (err: any) {
@@ -271,15 +277,18 @@ export const MercedesLandingPage: React.FC<MercedesLandingPageProps> = ({
         source: 'Brochure Request Modal',
       });
 
-      await sendToFormBold({
-        name: brochureFormData.name,
-        email: brochureFormData.email,
-        phone: brochureFormData.phone,
-        project: 'Mercedes-Benz Places | Binghatti City',
-        source: 'Brochure Request Modal',
-        subject: `Brochure Request: Mercedes-Benz Places - ${brochureFormData.name}`,
-        message: `Interest: ${brochureFormData.interest}`,
-      });
+      await sendToFormBold(
+        {
+          name: brochureFormData.name,
+          email: brochureFormData.email,
+          phone: brochureFormData.phone,
+          project: 'Mercedes-Benz Places | Binghatti City',
+          source: 'Brochure Request Modal',
+          subject: `Brochure Request: Mercedes-Benz Places - ${brochureFormData.name}`,
+          message: `Interest: ${brochureFormData.interest}`,
+        },
+        { skipGoogleSheet: true }
+      );
 
       setBrochureSubmitted(true);
     } catch (err) {

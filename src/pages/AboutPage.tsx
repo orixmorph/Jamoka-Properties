@@ -3,6 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { AgentSlider } from '../components/AgentSlider';
 import { ShieldCheck, Award, Building, Users, MapPin, ArrowRight, Quote, Sparkles } from 'lucide-react';
 import { withBasePath } from '../utils/basePath';
+import { setInquiryContext } from '../utils/googleSheets';
 
 const CEO_PHOTO_URL = withBasePath('/basil-al-naimi.jpg');
 const COO_PHOTO_URL = 'https://ik.imagekit.io/pkn80iczwu/teams/NL2.png';
@@ -226,7 +227,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
                   </div>
 
                   <button
-                    onClick={onNavigateContact}
+                    onClick={() => {
+                      setInquiryContext('Executive Meeting - CEO (Basil Al Naimi)');
+                      onNavigateContact();
+                    }}
                     className="px-5 py-2.5 rounded-xl bg-black hover:bg-neutral-900 text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-md flex items-center gap-2 cursor-pointer"
                   >
                     <span>Schedule an Appointment</span>
@@ -286,7 +290,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigateContact, onNavig
                   </div>
 
                   <button
-                    onClick={onNavigateContact}
+                    onClick={() => {
+                      setInquiryContext('Executive Meeting - COO (Neirouz Lahmadi)');
+                      onNavigateContact();
+                    }}
                     className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>Connect with Operations</span>

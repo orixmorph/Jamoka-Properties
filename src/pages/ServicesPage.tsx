@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { ShieldCheck, Sparkles, Award, Key, CheckCircle2, ArrowRight, ExternalLink, FileCheck, Landmark } from 'lucide-react';
+import { setInquiryContext } from '../utils/googleSheets';
 
 interface ServicesPageProps {
   onNavigateContact: () => void;
@@ -38,7 +39,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         'Direct coordination with Dubai Land Department (DLD) and GDRFA',
       ],
       ctaText: 'Inquire Golden Visa',
-      action: onNavigateContact,
+      action: () => {
+        setInquiryContext('Services Page - 10-Year UAE Golden Visa');
+        onNavigateContact();
+      },
       featured: false,
     },
     {
@@ -53,7 +57,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         'Enables sponsorship of spouse, children, and UAE residency banking',
       ],
       ctaText: 'Inquire 2-Year Investor Visa',
-      action: onNavigateContact,
+      action: () => {
+        setInquiryContext('Services Page - 2-Year Investor Visa');
+        onNavigateContact();
+      },
       featured: false,
     },
     {
@@ -68,7 +75,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         'Pre-launch price advantage before official public release',
       ],
       ctaText: 'Access Pre-Launch Units',
-      action: onNavigateContact,
+      action: () => {
+        setInquiryContext('Services Page - Stage-0 Pre-Launch Priority Units');
+        onNavigateContact();
+      },
       featured: false,
     },
     {
@@ -83,7 +93,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         'Ensuring 100% safe disbursement of buyer construction tranches',
       ],
       ctaText: 'Escrow Verification',
-      action: onNavigateContact,
+      action: () => {
+        setInquiryContext('Services Page - Escrow & RERA Verification');
+        onNavigateContact();
+      },
       featured: false,
     },
     {

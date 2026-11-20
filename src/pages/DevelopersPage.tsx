@@ -3,6 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { DEVELOPERS_DATA, Developer } from '../data/realEstateData';
 import { useProjects } from '../context/ProjectsContext';
 import { Building2, Award, Calendar, ArrowRight, CheckCircle2, MessageSquare, Sparkles } from 'lucide-react';
+import { setInquiryContext } from '../utils/googleSheets';
 
 interface DevelopersPageProps {
   onNavigateOffPlan: () => void;
@@ -101,7 +102,10 @@ export const DevelopersPage: React.FC<DevelopersPageProps> = ({
                       {t.developersPage.viewProjects}
                     </button>
                     <button
-                      onClick={onNavigateContact}
+                      onClick={() => {
+                        setInquiryContext(`Developers Page - ${dev.name}`);
+                        onNavigateContact();
+                      }}
                       className="px-4 py-2.5 rounded-xl bg-black hover:bg-neutral-900 text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
                     >
                       <span>Inquire</span>

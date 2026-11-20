@@ -229,8 +229,6 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
     { id: 'buyback', label: content.nav.opportunity },
     { id: 'structure', label: content.nav.structure },
     { id: 'about', label: content.nav.team },
-    { id: 'developments', label: content.nav.developments },
-    { id: 'allocation', label: content.nav.allocation },
     { id: 'faq', label: content.nav.faq },
   ];
 
@@ -297,46 +295,46 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
         language === 'ar' ? 'font-arabic' : 'font-jakarta'
       }`}
     >
-      {/* TOP BAR: BRAND · LINKS · LIVE CURRENCY (AED/EUR/USD) · LANGUAGE · CTA */}
+      {/* TOP BAR: BRAND · 4 CLEAN LINKS · LIVE CURRENCY (AED/EUR/USD) · LANGUAGE · CTA */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-3">
-          {/* Left: Brand + Main Site */}
-          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-2 sm:gap-4">
+          {/* Left: Brand + Main Site (2xl+) */}
+          <div className="flex items-center gap-3 min-w-0 shrink-0">
             <button
               type="button"
-              onClick={() => scrollToSection('top')}
+              onClick={() => onNavigateMainSite('home')}
               className="flex items-center shrink-0 cursor-pointer"
-              aria-label="Jamoka Properties Private Investment"
+              aria-label="Jamoka Properties Home"
             >
-              <JamokaLogo className="h-9 sm:h-11" light={false} />
+              <JamokaLogo className="h-7 sm:h-9" light={false} />
             </button>
-            <span className="hidden xl:inline-block h-6 w-px bg-slate-200 shrink-0" />
+            <span className="hidden 2xl:inline-block h-5 w-px bg-slate-200 shrink-0" />
             <button
               type="button"
               onClick={() => onNavigateMainSite('services')}
-              className="hidden xl:inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-[#0D1B2A] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="hidden 2xl:inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-[#0D1B2A] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
               <ArrowLeft className={`w-3.5 h-3.5 ${isRTL ? 'rotate-180' : ''}`} />
               <span>{content.nav.mainSite}</span>
             </button>
           </div>
 
-          {/* Center: Section Links */}
-          <nav aria-label="Primary sections" className="hidden lg:flex items-center gap-5">
+          {/* Center: 4 Clean Section Links */}
+          <nav aria-label="Primary sections" className="hidden lg:flex items-center gap-6 shrink-0">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 type="button"
                 onClick={() => scrollToSection(item.id)}
-                className="text-xs font-medium text-slate-600 hover:text-[#0D1B2A] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                className="text-xs font-semibold text-slate-600 hover:text-[#0D1B2A] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
               >
                 {item.label}
               </button>
             ))}
           </nav>
 
-          {/* Right: Live Currency Switcher (AED | EUR | USD) + EN | العربية + Translate + CTA */}
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Right: Live Currency (AED | EUR | USD) + EN | العربية + Translate (xl+) + CTA */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Live Currency Selector */}
             <div
               role="group"
@@ -353,7 +351,7 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
                   key={code}
                   type="button"
                   onClick={() => setCurrency(code)}
-                  className={`px-2 py-1 rounded text-[11px] font-bold transition-colors whitespace-nowrap cursor-pointer ${
+                  className={`px-1.5 sm:px-2 py-1 rounded text-[10px] sm:text-[11px] font-bold transition-colors whitespace-nowrap cursor-pointer ${
                     currency === code
                       ? 'bg-[#0A0D14] text-[#CFA55A]'
                       : 'text-slate-600 hover:text-[#0A0D14]'
@@ -376,7 +374,7 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
                   setLanguage('en');
                   dismissLangPrompt();
                 }}
-                className={`px-2 py-1 rounded text-[11px] font-bold transition-colors whitespace-nowrap cursor-pointer ${
+                className={`px-1.5 sm:px-2 py-1 rounded text-[10px] sm:text-[11px] font-bold transition-colors whitespace-nowrap cursor-pointer ${
                   language === 'en'
                     ? 'bg-[#0A0D14] text-white'
                     : 'text-slate-600 hover:text-[#0A0D14]'
@@ -390,7 +388,7 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
                   setLanguage('ar');
                   dismissLangPrompt();
                 }}
-                className={`px-2 py-1 rounded text-[11px] font-bold transition-colors whitespace-nowrap cursor-pointer ${
+                className={`px-1.5 sm:px-2 py-1 rounded text-[10px] sm:text-[11px] font-bold transition-colors whitespace-nowrap cursor-pointer ${
                   language === 'ar'
                     ? 'bg-[#0A0D14] text-white'
                     : 'text-slate-600 hover:text-[#0A0D14]'
@@ -400,7 +398,7 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
               </button>
             </div>
 
-            <div className="hidden md:block">
+            <div className="hidden xl:block shrink-0">
               <GoogleTranslateWidget
                 label={content.nav.moreLanguages}
                 openSignal={translateOpenSignal}
@@ -410,7 +408,7 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
             <button
               type="button"
               onClick={() => scrollToSection('enquire')}
-              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#CFA55A] hover:bg-[#BE9346] text-[#0A0D14] text-xs font-bold tracking-wide transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#CFA55A] hover:bg-[#BE9346] text-[#0A0D14] text-xs font-bold tracking-wide transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
               <span>{content.nav.cta}</span>
             </button>
@@ -419,7 +417,7 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
               type="button"
               onClick={() => setMobileNavOpen((prev) => !prev)}
               aria-label="Toggle menu"
-              className="lg:hidden p-2 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 cursor-pointer"
+              className="lg:hidden p-1.5 sm:p-2 rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50 shrink-0 cursor-pointer"
             >
               {mobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -497,7 +495,7 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
                   type="button"
                   onClick={() => {
                     dismissLangPrompt();
-                    if (window.innerWidth < 768) {
+                    if (window.innerWidth < 1280) {
                       setMobileNavOpen(true);
                     }
                     setTranslateOpenSignal((prev) => prev + 1);
@@ -521,10 +519,10 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
           </div>
         )}
 
-        {/* Mobile Drawer */}
+        {/* Mobile / Tablet Drawer */}
         {mobileNavOpen && (
-          <div className="lg:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-3">
-            <div className="grid grid-cols-2 gap-2">
+          <div className="xl:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-3">
+            <div className="grid grid-cols-2 gap-2 lg:hidden">
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -536,6 +534,13 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
                 </button>
               ))}
             </div>
+            <button
+              type="button"
+              onClick={() => scrollToSection('enquire')}
+              className="md:hidden w-full py-2.5 px-4 rounded-lg bg-[#CFA55A] hover:bg-[#BE9346] text-[#0A0D14] text-xs font-bold tracking-wide transition-colors cursor-pointer"
+            >
+              {content.nav.cta}
+            </button>
             <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
               <GoogleTranslateWidget
                 label={content.nav.moreLanguages}
@@ -1493,7 +1498,14 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-white/10">
             <div className="space-y-2">
-              <JamokaLogo className="h-9" light />
+              <button
+                type="button"
+                onClick={() => onNavigateMainSite('home')}
+                className="inline-flex items-center cursor-pointer"
+                aria-label="Jamoka Properties Home"
+              >
+                <JamokaLogo className="h-9" light />
+              </button>
               <p className="text-xs text-slate-400">
                 {PRIVATE_INVESTMENT_CONFIG.companyName} ·{' '}
                 {PRIVATE_INVESTMENT_CONFIG.officeAddress[language]}

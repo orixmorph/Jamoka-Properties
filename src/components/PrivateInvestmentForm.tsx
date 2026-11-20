@@ -6,6 +6,7 @@ import {
   PRIVATE_INVESTMENT_CONTENT,
 } from '../data/privateInvestmentConfig';
 import { sendToFormBold } from '../utils/formbold';
+import { sendToGoogleSheet } from '../utils/googleSheets';
 import { trackMetaCustomEvent, trackMetaPixel } from '../utils/metaPixel';
 
 declare global {
@@ -204,17 +205,43 @@ export const PrivateInvestmentForm: React.FC<PrivateInvestmentFormProps> = ({
         }
       }
 
-      const formboldRes = await sendToFormBold({
+      // 1. Primary delivery: Unified Google Sheet ("All Leads" + "Private Investment" tab)
+      const sheetPromise = sendToGoogleSheet({
+        sheetTab: 'Private Investment',
+        source: `${PRIVATE_INVESTMENT_CONFIG.campaignIdentifier} (${mode})`,
+        subject: `Private Investment Enquiry — ${budget} (${fullName.trim()})`,
+        fullName: fullName.trim(),
         name: fullName.trim(),
         email: email.trim(),
         phone: formattedPhone,
-        subject: `Private Investment Enquiry — ${budget} (${fullName.trim()})`,
-        source: PRIVATE_INVESTMENT_CONFIG.campaignIdentifier,
+        country: country.trim() || 'Not specified (Quick Consultation)',
+        preferredLanguage,
+        budget,
+        displayedCurrency: currency,
+        preference: preference || 'Not specified',
         project: budget,
-        ...payload,
-      });
+        pageUrl: typeof window !== 'undefined' ? window.location.href : '',
+        ...utms,
+      }).catch(() => false);
 
-      if (!formboldRes.success && !webhookDelivered) {
+      // 2. Parallel backup delivery: FormBold email inbox (skipGoogleSheet prevents duplicate rows)
+      const formboldPromise = sendToFormBold(
+        {
+          name: fullName.trim(),
+          email: email.trim(),
+          phone: formattedPhone,
+          country: country.trim() || 'Not specified (Quick Consultation)',
+          subject: `Private Investment Enquiry — ${budget} (${fullName.trim()})`,
+          source: PRIVATE_INVESTMENT_CONFIG.campaignIdentifier,
+          project: budget,
+          ...payload,
+        },
+        { skipGoogleSheet: true }
+      ).catch(() => ({ success: false }));
+
+      const [sheetDelivered, formboldRes] = await Promise.all([sheetPromise, formboldPromise]);
+
+      if (!sheetDelivered && !formboldRes.success && !webhookDelivered) {
         setSubmitError(copy.errors.generic);
         return;
       }

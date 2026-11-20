@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { MapPin, Phone, Mail, Clock, MessageSquare, ShieldCheck, CheckCircle2, Send, Building, Loader2 } from 'lucide-react';
 import { sendToFormBold, FORMBOLD_ENDPOINT } from '../utils/formbold';
+import { clearInquiryContext, getInquiryContext } from '../utils/googleSheets';
 import { SOCIAL_LINKS } from '../components/SocialIcons';
 import { trackMetaPixel } from '../utils/metaPixel';
 
@@ -9,6 +10,7 @@ export const ContactPage: React.FC = () => {
   const { t, isRTL } = useLanguage();
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [inquiryContext, setLocalInquiryContext] = useState<string>(() => getInquiryContext());
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,16 +21,24 @@ export const ContactPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    const activeContext = inquiryContext || getInquiryContext();
+    const extractedDeveloper = activeContext.startsWith('Developers Page - ')
+      ? activeContext.replace('Developers Page - ', '')
+      : undefined;
+
     await sendToFormBold({
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
       message: formData.message,
-      source: 'Contact Page (Main Inquiry)',
-      subject: 'New Inquiry from Contact Page',
+      developer: extractedDeveloper,
+      source: activeContext || 'Contact Page (Main Inquiry)',
+      subject: activeContext ? `New Inquiry: ${activeContext}` : 'New Inquiry from Contact Page',
     });
+    clearInquiryContext();
+    setLocalInquiryContext('');
     trackMetaPixel('Contact', {
-      source: 'Contact Page',
+      source: activeContext || 'Contact Page',
     });
     setIsSubmitting(false);
     setSubmitted(true);

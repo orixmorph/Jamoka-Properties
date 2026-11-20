@@ -27,6 +27,7 @@ import {
   submitLandingLead,
 } from '../services/firestoreDataService';
 import { MercedesLandingPage } from './MercedesLandingPage';
+import { sendToGoogleSheet } from '../utils/googleSheets';
 
 interface LandingPageViewProps {
   slug: string;
@@ -115,6 +116,19 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
         budget: formData.budget,
         preferredLanguage: formData.preferredLanguage,
         notes: formData.notes.trim(),
+      });
+      await sendToGoogleSheet({
+        sheetTab: 'Campaign Landings',
+        source: `Campaign Landing Page (${slug})`,
+        subject: `VIP Campaign Lead: ${pageData?.title || slug}`,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        project: pageData?.title || slug,
+        developer: pageData?.developer || '',
+        budget: formData.budget,
+        preferredLanguage: formData.preferredLanguage,
+        message: formData.notes.trim(),
       });
       setSubmitted(true);
     } catch (err: any) {
