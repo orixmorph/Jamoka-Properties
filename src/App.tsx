@@ -19,6 +19,13 @@ import { SecondaryMarketPopup } from './components/SecondaryMarketPopup';
 import { SecondaryMarketModal } from './components/SecondaryMarketModal';
 import { OFF_PLAN_PROJECTS } from './data/realEstateData';
 import { trackMetaPixel } from './utils/metaPixel';
+import {
+  initGlobalAnalytics,
+  resetPageEngagementTrackers,
+  trackCurrencyChange,
+  trackPageView,
+  trackSiteSearch,
+} from './utils/analytics';
 import { stripBasePath, withBasePath } from './utils/basePath';
 
 export interface RouteState {
@@ -149,6 +156,23 @@ function MainApp() {
     };
   }, []);
 
+  // Initialize site-wide GTM / GA4 tracking (all button clicks, scroll depth, section views, form starts, engaged time)
+  useEffect(() => {
+    initGlobalAnalytics();
+  }, []);
+
+  // Track SPA virtual page views & reset per-page scroll/section/time milestones on every route change
+  useEffect(() => {
+    const slug = blogSlug || careerSlug || landingSlug || undefined;
+    const pageName = slug ? `${activePage}:${slug}` : activePage;
+    resetPageEngagementTrackers();
+    trackPageView(pageName, {
+      page_section: activePage,
+      content_slug: slug,
+      currency,
+    });
+  }, [activePage, blogSlug, careerSlug, landingSlug]);
+
   // Filters for Discovery Tool on Home Page
   const [filters, setFilters] = useState({
     enclave: 'All Enclaves',
@@ -174,6 +198,14 @@ function MainApp() {
   // Search logic with automatic reset when empty or cleared
   const handleSearch = (term: string) => {
     setSearchQuery(term);
+    if (term.trim().length >= 3) {
+      trackSiteSearch(term);
+    }
+  };
+
+  const handleCurrencyChange = (nextCurrency: 'AED' | 'USD' | 'EUR' | 'GBP') => {
+    setCurrency(nextCurrency);
+    trackCurrencyChange(nextCurrency, 'main_header');
   };
 
   // Filtered projects for Home page
@@ -310,7 +342,7 @@ function MainApp() {
         activePage={activePage}
         onNavigate={handleNavigate}
         currentCurrency={currency}
-        onCurrencyChange={setCurrency}
+        onCurrencyChange={handleCurrencyChange}
         onOpenSecondarySite={() => setSecondaryModalOpen(true)}
       />
 

@@ -7,14 +7,8 @@ import {
 } from '../data/privateInvestmentConfig';
 import { sendToFormBold } from '../utils/formbold';
 import { sendToGoogleSheet } from '../utils/googleSheets';
+import { trackEvent } from '../utils/analytics';
 import { trackMetaCustomEvent, trackMetaPixel } from '../utils/metaPixel';
-
-declare global {
-  interface Window {
-    gtag?: (...args: unknown[]) => void;
-    dataLayer?: Array<Record<string, unknown>>;
-  }
-}
 
 import type { SupportedCurrency } from '../hooks/useLiveCurrency';
 
@@ -135,25 +129,13 @@ export const PrivateInvestmentForm: React.FC<PrivateInvestmentFormProps> = ({
       placement: mode,
     });
 
-    if (typeof window !== 'undefined') {
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'generate_lead', {
-          event_category: 'Private Investment',
-          event_label: selectedBudget,
-          language,
-          placement: mode,
-        });
-      }
-      if (Array.isArray(window.dataLayer)) {
-        window.dataLayer.push({
-          event: 'private_investment_lead',
-          campaign: PRIVATE_INVESTMENT_CONFIG.campaignIdentifier,
-          budget: selectedBudget,
-          language,
-          placement: mode,
-        });
-      }
-    }
+    trackEvent('private_investment_lead', {
+      campaign: PRIVATE_INVESTMENT_CONFIG.campaignIdentifier,
+      budget: selectedBudget,
+      currency,
+      language,
+      placement: mode,
+    });
   };
 
   const handleSubmit = async (event: React.FormEvent) => {

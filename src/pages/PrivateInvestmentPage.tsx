@@ -32,6 +32,7 @@ import {
   TEAM_MEDIA,
 } from '../data/privateInvestmentConfig';
 import { SupportedCurrency, useLiveCurrency } from '../hooks/useLiveCurrency';
+import { GTM_CONTAINER_ID, trackCurrencyChange } from '../utils/analytics';
 import { withBasePath } from '../utils/basePath';
 import type { PageType } from '../components/Header';
 
@@ -126,13 +127,13 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
     };
   }, [language]);
 
-  // 5-second auto-fade timer for the language welcome popup
+  // 10-second auto-fade timer for the language welcome popup
   useEffect(() => {
     if (!langPromptMounted || langPromptHovered) return;
 
     const startTimer = window.setTimeout(() => setLangPromptBarStarted(true), 50);
-    const fadeTimer = window.setTimeout(() => setLangPromptFading(true), 4500);
-    const unmountTimer = window.setTimeout(() => setLangPromptMounted(false), 5000);
+    const fadeTimer = window.setTimeout(() => setLangPromptFading(true), 9500);
+    const unmountTimer = window.setTimeout(() => setLangPromptMounted(false), 10000);
 
     return () => {
       window.clearTimeout(startTimer);
@@ -176,7 +177,11 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
       window.gtag('config', ga4MeasurementId);
     }
 
-    if (gtmContainerId && !document.getElementById('jamoka-gtm-script')) {
+    if (
+      gtmContainerId &&
+      gtmContainerId !== GTM_CONTAINER_ID &&
+      !document.getElementById('jamoka-gtm-script')
+    ) {
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
       const script = document.createElement('script');
@@ -350,7 +355,10 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
                 <button
                   key={code}
                   type="button"
-                  onClick={() => setCurrency(code)}
+                  onClick={() => {
+                    setCurrency(code);
+                    trackCurrencyChange(code, 'private_investment_header');
+                  }}
                   className={`px-1.5 sm:px-2 py-1 rounded text-[10px] sm:text-[11px] font-bold transition-colors whitespace-nowrap cursor-pointer ${
                     currency === code
                       ? 'bg-[#0A0D14] text-[#CFA55A]'
@@ -424,31 +432,38 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
           </div>
         </div>
 
-        {/* 5-SECOND AUTO-FADING LANGUAGE POP-UP ON LOAD/RELOAD */}
+        {/* 10-SECOND PROMINENT AUTO-FADING LANGUAGE POP-UP ON LOAD/RELOAD */}
         {langPromptMounted && (
           <div
             onMouseEnter={() => setLangPromptHovered(true)}
             onMouseLeave={() => setLangPromptHovered(false)}
-            role="region"
-            aria-label="Preferred language notice"
-            className={`fixed top-[72px] sm:top-[88px] z-50 w-[calc(100vw-2rem)] sm:w-[340px] rounded-xl bg-[#0A0D14] text-white border border-[#CFA55A]/60 shadow-2xl overflow-hidden transition-opacity duration-500 ${
-              isRTL ? 'left-4 sm:left-6' : 'right-4 sm:right-6'
-            } ${langPromptFading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+            role="dialog"
+            aria-label="Choose your preferred language"
+            className={`fixed top-[76px] sm:top-[88px] left-1/2 -translate-x-1/2 z-50 w-[calc(100vw-1.5rem)] sm:w-[480px] rounded-2xl bg-[#0A0D14] text-white border-2 border-[#CFA55A] ring-4 ring-[#CFA55A]/20 shadow-[0_24px_64px_rgba(0,0,0,0.55)] overflow-hidden transition-all duration-500 ${
+              langPromptFading
+                ? 'opacity-0 -translate-y-2 pointer-events-none'
+                : 'opacity-100 translate-y-0'
+            }`}
           >
-            <div className="p-4 space-y-3">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-[#CFA55A] shrink-0" />
+            <div className="p-5 sm:p-6 space-y-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-[#CFA55A]/15 border border-[#CFA55A]/50 flex items-center justify-center shrink-0">
+                    <Globe className="w-6 h-6 text-[#CFA55A]" />
+                  </div>
                   <div>
-                    <p className="text-xs font-bold text-white leading-tight">
-                      Choose Language · اختر لغتك
-                    </p>
-                    <p className="text-[11px] text-slate-300 mt-0.5">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#CFA55A]">
                       {detectedCountry
                         ? `${detectedCountry} · ${currency}`
-                        : language === 'ar'
-                        ? 'استمر بالعربية أو بدّل اللغة'
-                        : 'Keep English, switch to Arabic, or translate'}
+                        : 'INTERNATIONAL INVESTOR DESK'}
+                    </p>
+                    <p className="text-base sm:text-lg font-bold text-white leading-snug mt-0.5">
+                      Choose Language · اختر لغتك
+                    </p>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-0.5">
+                      {language === 'ar'
+                        ? 'استمر باللغة العربية أو بدّل إلى الإنجليزية أو أي لغة أخرى'
+                        : 'Keep English, switch to Arabic, or translate to your language'}
                     </p>
                   </div>
                 </div>
@@ -456,23 +471,23 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
                   type="button"
                   onClick={dismissLangPrompt}
                   aria-label="Close language prompt"
-                  className="p-1 rounded text-slate-400 hover:text-white cursor-pointer"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer shrink-0"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <button
                   type="button"
                   onClick={() => {
                     setLanguage('en');
                     dismissLangPrompt();
                   }}
-                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                  className={`py-3 px-4 rounded-xl text-sm font-bold transition-colors cursor-pointer ${
                     language === 'en'
-                      ? 'bg-[#CFA55A] text-[#0A0D14]'
-                      : 'bg-white/10 hover:bg-white/20 text-white'
+                      ? 'bg-[#CFA55A] hover:bg-[#BE9346] text-[#0A0D14]'
+                      : 'bg-white/10 hover:bg-white/20 text-white border border-white/15'
                   }`}
                 >
                   {language === 'en' ? 'Keep English' : 'English'}
@@ -483,10 +498,10 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
                     setLanguage('ar');
                     dismissLangPrompt();
                   }}
-                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                  className={`py-3 px-4 rounded-xl text-sm font-bold transition-colors cursor-pointer ${
                     language === 'ar'
-                      ? 'bg-[#CFA55A] text-[#0A0D14]'
-                      : 'bg-white/10 hover:bg-white/20 text-white'
+                      ? 'bg-[#CFA55A] hover:bg-[#BE9346] text-[#0A0D14]'
+                      : 'bg-white/10 hover:bg-white/20 text-white border border-white/15'
                   }`}
                 >
                   {language === 'ar' ? 'الاستمرار بالعربية' : 'العربية'}
@@ -500,19 +515,19 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
                     }
                     setTranslateOpenSignal((prev) => prev + 1);
                   }}
-                  className="py-2 px-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200 text-[11px] font-semibold whitespace-nowrap cursor-pointer"
+                  className="py-3 px-4 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer"
                 >
-                  {language === 'ar' ? 'أخرى' : 'Other'}
+                  {language === 'ar' ? 'لغات أخرى' : 'Other Languages'}
                 </button>
               </div>
             </div>
 
-            <div className="h-0.5 w-full bg-white/10 overflow-hidden">
+            <div className="h-1.5 w-full bg-white/10 overflow-hidden">
               <div
                 className="h-full bg-[#CFA55A] transition-all ease-linear"
                 style={{
                   width: langPromptHovered ? '100%' : langPromptBarStarted ? '0%' : '100%',
-                  transitionDuration: langPromptHovered ? '200ms' : '4900ms',
+                  transitionDuration: langPromptHovered ? '200ms' : '9900ms',
                 }}
               />
             </div>

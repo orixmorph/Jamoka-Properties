@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Language, translations, Translations } from '../data/translations';
+import { trackLanguageChange } from '../utils/analytics';
 
 interface LanguageContextType {
   language: Language;
@@ -15,6 +16,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
+    trackLanguageChange(lang, 'site_language_toggle');
     if (typeof window !== 'undefined') {
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
       document.documentElement.lang = lang;

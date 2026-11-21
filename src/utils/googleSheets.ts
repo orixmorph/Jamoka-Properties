@@ -16,6 +16,8 @@
  * (or update DEFAULT_GOOGLE_SHEETS_WEBHOOK_URL below).
  */
 
+import { trackFormSubmission } from './analytics';
+
 export const DEFAULT_GOOGLE_SHEETS_WEBHOOK_URL =
   'https://script.google.com/macros/s/AKfycbwYFKM9XL0c42WunGRZsHqY5W7hS08XP1n_sAmUp0cO2CFnST9t4y4H00e7mvHducfhTw/exec';
 
@@ -316,6 +318,20 @@ export async function sendToGoogleSheet(data: UniversalSheetPayload): Promise<bo
     utmContent: data.utm_content || utms.utmContent || '',
     extraDetails: Object.keys(extraFields).length > 0 ? JSON.stringify(extraFields) : '',
   };
+
+  // Track every form submission cleanly in Google Analytics / GTM (form_submit + generate_lead)
+  trackFormSubmission({
+    formName: source,
+    formCategory: sheetTab,
+    source,
+    subject,
+    budget: normalizedPayload.budget,
+    currency: normalizedPayload.displayedCurrency || 'AED',
+    project: normalizedPayload.project || normalizedPayload.position,
+    developer: normalizedPayload.developer,
+    country: normalizedPayload.country,
+    preferredLanguage: normalizedPayload.preferredLanguage,
+  });
 
   try {
     await fetch(scriptUrl, {
