@@ -15,6 +15,8 @@
  * - Language changes, currency changes, and property searches
  */
 
+export const GA4_MEASUREMENT_ID = 'G-9GS16D6FZ2';
+export const GA4_STREAM_ID = '16386227619';
 export const GTM_CONTAINER_ID = 'GTM-WD2J2M9S';
 
 declare global {

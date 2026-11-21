@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { ProjectsProvider, useProjects } from './context/ProjectsContext';
 import { BlogsProvider } from './context/BlogsContext';
@@ -161,11 +161,21 @@ function MainApp() {
     initGlobalAnalytics();
   }, []);
 
+  const hasTrackedInitialRouteRef = useRef(false);
+
   // Track SPA virtual page views & reset per-page scroll/section/time milestones on every route change
   useEffect(() => {
     const slug = blogSlug || careerSlug || landingSlug || undefined;
     const pageName = slug ? `${activePage}:${slug}` : activePage;
     resetPageEngagementTrackers();
+
+    // Skip the very first mount because gtag('config', 'G-9GS16D6FZ2') in index.html
+    // already fires the initial page_view immediately on page load.
+    if (!hasTrackedInitialRouteRef.current) {
+      hasTrackedInitialRouteRef.current = true;
+      return;
+    }
+
     trackPageView(pageName, {
       page_section: activePage,
       content_slug: slug,

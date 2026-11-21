@@ -32,7 +32,7 @@ import {
   TEAM_MEDIA,
 } from '../data/privateInvestmentConfig';
 import { SupportedCurrency, useLiveCurrency } from '../hooks/useLiveCurrency';
-import { GTM_CONTAINER_ID, trackCurrencyChange } from '../utils/analytics';
+import { GA4_MEASUREMENT_ID, GTM_CONTAINER_ID, trackCurrencyChange } from '../utils/analytics';
 import { withBasePath } from '../utils/basePath';
 import type { PageType } from '../components/Header';
 
@@ -163,7 +163,11 @@ export const PrivateInvestmentPage: React.FC<PrivateInvestmentPageProps> = ({
     if (cookieChoice !== 'all') return;
     const { ga4MeasurementId, gtmContainerId } = PRIVATE_INVESTMENT_CONFIG.analytics;
 
-    if (ga4MeasurementId && !document.getElementById('jamoka-ga4-script')) {
+    if (
+      ga4MeasurementId &&
+      ga4MeasurementId !== GA4_MEASUREMENT_ID &&
+      !document.getElementById('jamoka-ga4-script')
+    ) {
       const script = document.createElement('script');
       script.id = 'jamoka-ga4-script';
       script.async = true;
